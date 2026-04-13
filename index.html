@@ -998,7 +998,7 @@
               <button class="tab-btn" id="backBtn" type="button">Hátul</button>
             </div>
 
-            <div class="editor-stage" id="editorStage">
+            <div class="editor-stage">
               <div class="shirt-scene" id="sceneFront">
                 <div class="mockup-wrap">
                   <div class="design-surface front" id="surfaceFront">
@@ -1046,7 +1046,7 @@
               <div class="editor-actions" style="margin-top:14px;">
                 <button class="small-btn" type="button" id="centerBtn">Középre</button>
                 <button class="small-btn" type="button" id="copyBtn">Másolás másik oldalra</button>
-                <button class="small-btn" type="button" id="clearBtn">Minta törlése</button>
+                <button class="small-btn" type="button" id="clearBtn">Kijelölt törlése</button>
               </div>
             </div>
 
@@ -1193,7 +1193,6 @@
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
         <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
-        <input class="field" type="file" id="formDesignFile" name="design_file" accept="image/png,image/jpeg,image/webp" multiple>
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
         <button class="btn gold" type="button" id="sendBtn">Ajánlatkérés elküldése</button>
 
@@ -1381,7 +1380,6 @@
     const sizeValue = document.getElementById("sizeValue");
     const rotateValue = document.getElementById("rotateValue");
     const designUpload = document.getElementById("designUpload");
-    const formDesignFile = document.getElementById("formDesignFile");
     const textureStatus = document.getElementById("textureStatus");
     const centerBtn = document.getElementById("centerBtn");
     const copyBtn = document.getElementById("copyBtn");
@@ -1451,7 +1449,7 @@
 
       updatePrice();
       updateEditorControls();
-      textureStatus.textContent = t.editorReady;
+      textureStatus.textContent = getCurrentItems().length ? t.editorLoaded : t.editorReady;
     }
 
     document.getElementById("huBtn").addEventListener("click", () => setLang("hu"));
@@ -1555,6 +1553,7 @@
 
       renderDesigns();
       updateEditorControls();
+      textureStatus.textContent = items.length ? texts[currentLang()].editorLoaded : texts[currentLang()].editorReady;
     }
 
     frontBtn.addEventListener("click", () => switchSide("front"));
@@ -1622,18 +1621,22 @@
       updateHiddenFields();
     }
 
-    function addDesignToCurrentSide(src){
+    function addDesignToCurrentSide(src, file){
       const items = getCurrentItems();
+
       const newItem = {
         id: state.nextId++,
         src,
+        file,
         x: 50,
         y: 50,
         scale: 100,
         rotation: 0
       };
+
       items.push(newItem);
       state.selectedId = newItem.id;
+
       renderDesigns();
       updateEditorControls();
     }
@@ -1644,7 +1647,7 @@
       Array.from(fileList).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(ev){
-          addDesignToCurrentSide(ev.target.result);
+          addDesignToCurrentSide(ev.target.result, file);
           showStatus(texts[currentLang()].editorLoaded);
         };
         reader.readAsDataURL(file);
@@ -1653,10 +1656,7 @@
 
     designUpload.addEventListener("change", (e) => {
       readFilesToCurrentSide(e.target.files);
-    });
-
-    formDesignFile.addEventListener("change", (e) => {
-      readFilesToCurrentSide(e.target.files);
+      e.target.value = "";
     });
 
     centerBtn.addEventListener("click", () => {
@@ -1670,6 +1670,7 @@
       selected.y = 50;
       selected.scale = 100;
       selected.rotation = 0;
+
       renderDesigns();
       updateEditorControls();
     });
@@ -1682,9 +1683,11 @@
       }
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
+
       state[targetSide].push({
         id: state.nextId++,
         src: selected.src,
+        file: selected.file || null,
         x: selected.x,
         y: selected.y,
         scale: selected.scale,
@@ -1705,7 +1708,7 @@
       }
 
       items.splice(index, 1);
-      state.selectedId = items.length ? items[items.length - 1].id : null;
+      state.selectedId = items.length ? items[Math.max(0, index - 1)]?.id || items[items.length - 1].id : null;
 
       renderDesigns();
       updateEditorControls();
@@ -1745,6 +1748,7 @@
       selected.y = y;
       selected.scale = scale;
       selected.rotation = rotation;
+
       renderDesigns();
       updateEditorControls();
       showStatus(texts[currentLang()].editorLoaded);
@@ -1844,11 +1848,26 @@
       const payload = {
         lang: currentLang(),
         currentSide: state.currentSide,
-        front: state.front,
-        back: state.back,
+        front: state.front.map(item => ({
+          id: item.id,
+          x: item.x,
+          y: item.y,
+          scale: item.scale,
+          rotation: item.rotation,
+          hasFile: !!item.file
+        })),
+        back: state.back.map(item => ({
+          id: item.id,
+          x: item.x,
+          y: item.y,
+          scale: item.scale,
+          rotation: item.rotation,
+          hasFile: !!item.file
+        })),
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
+
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
       updatePrice();
     }
@@ -1876,14 +1895,24 @@
       formData.append("editor_data", document.getElementById("hiddenEditorData").value);
       formData.append("selected_options", document.getElementById("hiddenOptions").value);
       formData.append("estimated_total", document.getElementById("hiddenEstimatedTotal").value);
-      formData.append("_subject", "Új érdeklődés - Nextgen Digital Design");
       formData.append("_captcha", "false");
       formData.append("_template", "table");
+      formData.append("_subject", lang === "ro"
+        ? "Cerere nouă - Nextgen Digital Design"
+        : "Új érdeklődés - Nextgen Digital Design"
+      );
 
-      const files = formDesignFile.files;
-      for(let i = 0; i < files.length; i++){
-        formData.append("design_file_" + (i + 1), files[i]);
-      }
+      state.front.forEach((item, index) => {
+        if(item.file){
+          formData.append(`front_design_${index + 1}`, item.file, item.file.name);
+        }
+      });
+
+      state.back.forEach((item, index) => {
+        if(item.file){
+          formData.append(`back_design_${index + 1}`, item.file, item.file.name);
+        }
+      });
 
       sendBtn.disabled = true;
       setFormMessage("info", t.sendingMessage);
