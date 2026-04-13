@@ -741,13 +741,18 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form">
+      <form class="contact-form" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
-        <input class="field" type="text" id="nameField" placeholder="Név">
-        <input class="field" type="email" id="emailField" placeholder="E-mail">
-        <input class="field" type="text" id="phoneField" placeholder="Telefonszám">
-        <textarea class="field" id="messageField" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
-        <button class="btn gold" type="button" id="sendBtn">Ajánlatkérés elküldése</button>
+
+        <input type="hidden" name="_subject" value="Új érdeklődés - Nextgen Digital Design">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <input class="field" type="text" id="nameField" name="name" placeholder="Név">
+        <input class="field" type="email" id="emailField" name="email" placeholder="E-mail">
+        <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
+        <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
+        <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
       </form>
     </section>
 
