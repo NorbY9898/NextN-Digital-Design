@@ -20,6 +20,7 @@
       --max:1320px;
       --success:#c8f7a7;
       --error:#ff9a9a;
+      --info:#f2d675;
     }
 
     *{box-sizing:border-box}
@@ -239,7 +240,7 @@
 
     .builder-layout{
       display:grid;
-      grid-template-columns:1.04fr .96fr;
+      grid-template-columns:1.05fr .95fr;
       gap:18px;
       align-items:start;
     }
@@ -352,44 +353,7 @@
       overflow:hidden;
     }
 
-    .design-surface.front{
-      top:9%;
-      width:72%;
-      height:82%;
-      clip-path:polygon(
-        17% 7%,
-        31% 0%,
-        43% 6%,
-        57% 6%,
-        69% 0%,
-        83% 7%,
-        100% 20%,
-        90% 35%,
-        81% 31%,
-        78% 100%,
-        22% 100%,
-        19% 31%,
-        10% 35%,
-        0% 20%
-      );
-      -webkit-clip-path:polygon(
-        17% 7%,
-        31% 0%,
-        43% 6%,
-        57% 6%,
-        69% 0%,
-        83% 7%,
-        100% 20%,
-        90% 35%,
-        81% 31%,
-        78% 100%,
-        22% 100%,
-        19% 31%,
-        10% 35%,
-        0% 20%
-      );
-    }
-
+    .design-surface.front,
     .design-surface.back{
       top:9%;
       width:72%;
@@ -467,6 +431,12 @@
 
     .design-item.dragging{
       cursor:grabbing;
+    }
+
+    .design-item.selected{
+      outline:2px solid rgba(242,214,117,.95);
+      outline-offset:2px;
+      border-radius:10px;
     }
 
     .design-item img{
@@ -683,7 +653,7 @@
     }
 
     .form-message.info{
-      color:var(--gold2);
+      color:var(--info);
       background:rgba(212,175,55,.06);
       border-color:rgba(212,175,55,.18);
     }
@@ -992,8 +962,8 @@
       </nav>
 
       <div class="lang-switch">
-        <button class="lang-btn active" id="huBtn" type="button" onclick="setLang('hu')">HU</button>
-        <button class="lang-btn" id="roBtn" type="button" onclick="setLang('ro')">RO</button>
+        <button class="lang-btn active" id="huBtn" type="button">HU</button>
+        <button class="lang-btn" id="roBtn" type="button">RO</button>
       </div>
     </div>
   </header>
@@ -1028,14 +998,11 @@
               <button class="tab-btn" id="backBtn" type="button">Hátul</button>
             </div>
 
-            <div class="editor-stage">
+            <div class="editor-stage" id="editorStage">
               <div class="shirt-scene" id="sceneFront">
                 <div class="mockup-wrap">
                   <div class="design-surface front" id="surfaceFront">
                     <div class="surface-label" id="surfaceLabelFront">Teljes póló felület</div>
-                    <div class="design-item hidden" id="designFront">
-                      <img id="designFrontImg" alt="front design">
-                    </div>
                   </div>
                   <img class="shirt-photo" src="front-shirt.png" alt="Póló eleje">
                 </div>
@@ -1045,9 +1012,6 @@
                 <div class="mockup-wrap">
                   <div class="design-surface back" id="surfaceBack">
                     <div class="surface-label" id="surfaceLabelBack">Teljes póló felület</div>
-                    <div class="design-item hidden" id="designBack">
-                      <img id="designBackImg" alt="back design">
-                    </div>
                   </div>
                   <img class="shirt-photo" src="back-shirt.png" alt="Póló háta">
                 </div>
@@ -1059,7 +1023,7 @@
             <div class="sub-card">
               <h4 class="sub-title" id="uploadTitle">Design feltöltése</h4>
               <div class="upload-line">
-                <input class="file-input" type="file" id="designUpload" accept="image/png,image/jpeg,image/webp">
+                <input class="file-input" type="file" id="designUpload" accept="image/png,image/jpeg,image/webp" multiple>
               </div>
               <div class="texture-status" id="textureStatus"></div>
             </div>
@@ -1069,14 +1033,14 @@
 
               <div class="control-row">
                 <label for="sizeRange" id="sizeLabel">Méret</label>
-                <input type="range" id="sizeRange" min="20" max="260" value="100">
-                <div class="control-value" id="sizeValue">100%</div>
+                <input type="range" id="sizeRange" min="10" max="260" value="100">
+                <div class="control-value" id="sizeValue">--</div>
               </div>
 
               <div class="control-row">
                 <label for="rotateRange" id="rotateLabel">Forgatás</label>
                 <input type="range" id="rotateRange" min="-180" max="180" value="0">
-                <div class="control-value" id="rotateValue">0°</div>
+                <div class="control-value" id="rotateValue">--</div>
               </div>
 
               <div class="editor-actions" style="margin-top:14px;">
@@ -1219,31 +1183,19 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form" id="offerForm" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST" enctype="multipart/form-data">
+      <form class="contact-form" id="offerForm">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
-        <input type="hidden" name="_subject" value="Új érdeklődés - Nextgen Digital Design">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-
-        <input type="hidden" name="editor_side" id="hiddenSide">
-        <input type="hidden" name="front_x" id="hiddenFrontX">
-        <input type="hidden" name="front_y" id="hiddenFrontY">
-        <input type="hidden" name="front_scale" id="hiddenFrontScale">
-        <input type="hidden" name="front_rotation" id="hiddenFrontRotation">
-        <input type="hidden" name="back_x" id="hiddenBackX">
-        <input type="hidden" name="back_y" id="hiddenBackY">
-        <input type="hidden" name="back_scale" id="hiddenBackScale">
-        <input type="hidden" name="back_rotation" id="hiddenBackRotation">
-        <input type="hidden" name="selected_options" id="hiddenOptions">
-        <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
+        <input type="hidden" id="hiddenEditorData">
+        <input type="hidden" id="hiddenOptions">
+        <input type="hidden" id="hiddenEstimatedTotal">
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
         <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
-        <input class="field" type="file" id="formDesignFile" name="design_file" accept="image/png,image/jpeg,image/webp">
+        <input class="field" type="file" id="formDesignFile" name="design_file" accept="image/png,image/jpeg,image/webp" multiple>
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
-        <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
+        <button class="btn gold" type="button" id="sendBtn">Ajánlatkérés elküldése</button>
 
         <div id="formMessage" class="form-message"></div>
       </form>
@@ -1257,6 +1209,8 @@
   </footer>
 
   <script>
+    const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/norbertnagy9898@yahoo.com";
+
     const texts = {
       hu: {
         nav1: "Bemutató",
@@ -1299,13 +1253,14 @@
         rotateLabel: "Forgatás",
         centerBtn: "Középre",
         copyBtn: "Másolás másik oldalra",
-        clearBtn: "Minta törlése",
+        clearBtn: "Kijelölt törlése",
         surfaceLabel: "Teljes póló felület",
-        editorReady: "Tölts fel egy képet, majd húzd a pólóra.",
-        editorLoaded: "A minta betöltve. Húzhatod, méretezheted és forgathatod.",
-        editorCleared: "A minta törölve erről az oldalról.",
-        editorCopied: "A minta átmásolva a másik oldalra.",
-        noImageToCopy: "Nincs feltöltött minta, amit másolni lehetne.",
+        editorReady: "Válassz oldalt, majd tölts fel egy vagy több képet.",
+        editorLoaded: "A design feltöltve az aktuális oldalra.",
+        editorCleared: "A kijelölt design törölve.",
+        editorCopied: "A kijelölt design átmásolva a másik oldalra.",
+        noImageToCopy: "Nincs kijelölt design a másoláshoz.",
+        noImageSelected: "Nincs kijelölt design.",
         uploadTitle: "Design feltöltése",
         adjustTitle: "Pozíció és méret",
         presetTitle: "Gyors elhelyezés",
@@ -1370,13 +1325,14 @@
         rotateLabel: "Rotire",
         centerBtn: "Centrează",
         copyBtn: "Copiază pe cealaltă parte",
-        clearBtn: "Șterge designul",
+        clearBtn: "Șterge selectatul",
         surfaceLabel: "Toată suprafața tricoului",
-        editorReady: "Încarcă o imagine, apoi mut-o pe tricou.",
-        editorLoaded: "Designul a fost încărcat. Îl poți muta, redimensiona și roti.",
-        editorCleared: "Designul a fost șters de pe această parte.",
-        editorCopied: "Designul a fost copiat pe cealaltă parte.",
-        noImageToCopy: "Nu există un design încărcat pentru copiere.",
+        editorReady: "Alege partea, apoi încarcă una sau mai multe imagini.",
+        editorLoaded: "Designul a fost încărcat pe partea curentă.",
+        editorCleared: "Designul selectat a fost șters.",
+        editorCopied: "Designul selectat a fost copiat pe cealaltă parte.",
+        noImageToCopy: "Nu există un design selectat pentru copiere.",
+        noImageSelected: "Nu există un design selectat.",
         uploadTitle: "Încarcă designul",
         adjustTitle: "Poziție și mărime",
         presetTitle: "Poziții rapide",
@@ -1402,8 +1358,67 @@
       }
     };
 
+    const sliders = {
+      left: { imgId: "slider-left", dotsId: "dots-left", images: ["bal1.jpg", "bal2.jpg", "bal3.jpg"], index: 0, timer: null },
+      center: { imgId: "slider-center", dotsId: "dots-center", images: ["kozep1.jpg", "kozep2.jpg", "kozep3.jpg"], index: 0, timer: null },
+      right: { imgId: "slider-right", dotsId: "dots-right", images: ["jobb1.jpg", "jobb2.jpg", "jobb3.jpg"], index: 0, timer: null }
+    };
+
+    const state = {
+      currentSide: "front",
+      selectedId: null,
+      nextId: 1,
+      front: [],
+      back: []
+    };
+
+    const sceneFront = document.getElementById("sceneFront");
+    const sceneBack = document.getElementById("sceneBack");
+    const frontBtn = document.getElementById("frontBtn");
+    const backBtn = document.getElementById("backBtn");
+    const sizeRange = document.getElementById("sizeRange");
+    const rotateRange = document.getElementById("rotateRange");
+    const sizeValue = document.getElementById("sizeValue");
+    const rotateValue = document.getElementById("rotateValue");
+    const designUpload = document.getElementById("designUpload");
+    const formDesignFile = document.getElementById("formDesignFile");
+    const textureStatus = document.getElementById("textureStatus");
+    const centerBtn = document.getElementById("centerBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const presetChestBtn = document.getElementById("presetChestBtn");
+    const presetCenterBtn = document.getElementById("presetCenterBtn");
+    const presetFullFrontBtn = document.getElementById("presetFullFrontBtn");
+    const presetFullBackBtn = document.getElementById("presetFullBackBtn");
+
+    const optFront = document.getElementById("optFront");
+    const optBack = document.getElementById("optBack");
+    const optPremium = document.getElementById("optPremium");
+
+    const basePriceValue = document.getElementById("basePriceValue");
+    const extraPriceValue = document.getElementById("extraPriceValue");
+    const totalPriceValue = document.getElementById("totalPriceValue");
+
+    const frontSurface = document.getElementById("surfaceFront");
+    const backSurface = document.getElementById("surfaceBack");
+
+    const offerForm = document.getElementById("offerForm");
+    const sendBtn = document.getElementById("sendBtn");
+    const formMessage = document.getElementById("formMessage");
+
     function currentLang(){
       return document.documentElement.lang === "ro" ? "ro" : "hu";
+    }
+
+    function setFormMessage(type, text){
+      formMessage.className = "form-message show " + type;
+      formMessage.textContent = text;
+    }
+
+    function clearFormMessage(){
+      formMessage.className = "form-message";
+      formMessage.textContent = "";
     }
 
     function setLang(lang){
@@ -1429,42 +1444,24 @@
 
       document.getElementById("surfaceLabelFront").textContent = t.surfaceLabel;
       document.getElementById("surfaceLabelBack").textContent = t.surfaceLabel;
-      document.getElementById("textureStatus").textContent = state.imageDataUrl ? t.editorLoaded : t.editorReady;
 
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
       document.getElementById("roBtn").classList.toggle("active", lang === "ro");
+
       updatePrice();
+      updateEditorControls();
+      textureStatus.textContent = t.editorReady;
     }
 
-    const sliders = {
-      left: {
-        imgId: "slider-left",
-        dotsId: "dots-left",
-        images: ["bal1.jpg", "bal2.jpg", "bal3.jpg"],
-        index: 0,
-        timer: null
-      },
-      center: {
-        imgId: "slider-center",
-        dotsId: "dots-center",
-        images: ["kozep1.jpg", "kozep2.jpg", "kozep3.jpg"],
-        index: 0,
-        timer: null
-      },
-      right: {
-        imgId: "slider-right",
-        dotsId: "dots-right",
-        images: ["jobb1.jpg", "jobb2.jpg", "jobb3.jpg"],
-        index: 0,
-        timer: null
-      }
-    };
+    document.getElementById("huBtn").addEventListener("click", () => setLang("hu"));
+    document.getElementById("roBtn").addEventListener("click", () => setLang("ro"));
 
     function renderDots(name){
       const slider = sliders[name];
       const dotsWrap = document.getElementById(slider.dotsId);
       dotsWrap.innerHTML = "";
+
       slider.images.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "slider-dot" + (i === slider.index ? " active" : "");
@@ -1477,6 +1474,7 @@
       const slider = sliders[name];
       const img = document.getElementById(slider.imgId);
       img.style.opacity = "0";
+
       setTimeout(() => {
         img.src = slider.images[slider.index];
         img.style.opacity = "1";
@@ -1531,98 +1529,16 @@
     initSlider("center");
     initSlider("right");
 
-    const state = {
-      currentSide: "front",
-      imageDataUrl: "",
-      front: { x: 50, y: 50, scale: 100, rotation: 0, hasImage: false },
-      back:  { x: 50, y: 50, scale: 100, rotation: 0, hasImage: false }
-    };
-
-    const sceneFront = document.getElementById("sceneFront");
-    const sceneBack = document.getElementById("sceneBack");
-    const frontBtn = document.getElementById("frontBtn");
-    const backBtn = document.getElementById("backBtn");
-    const sizeRange = document.getElementById("sizeRange");
-    const rotateRange = document.getElementById("rotateRange");
-    const sizeValue = document.getElementById("sizeValue");
-    const rotateValue = document.getElementById("rotateValue");
-    const designUpload = document.getElementById("designUpload");
-    const formDesignFile = document.getElementById("formDesignFile");
-    const textureStatus = document.getElementById("textureStatus");
-    const centerBtn = document.getElementById("centerBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const clearBtn = document.getElementById("clearBtn");
-
-    const presetChestBtn = document.getElementById("presetChestBtn");
-    const presetCenterBtn = document.getElementById("presetCenterBtn");
-    const presetFullFrontBtn = document.getElementById("presetFullFrontBtn");
-    const presetFullBackBtn = document.getElementById("presetFullBackBtn");
-
-    const optFront = document.getElementById("optFront");
-    const optBack = document.getElementById("optBack");
-    const optPremium = document.getElementById("optPremium");
-
-    const basePriceValue = document.getElementById("basePriceValue");
-    const extraPriceValue = document.getElementById("extraPriceValue");
-    const totalPriceValue = document.getElementById("totalPriceValue");
-
-    const frontSurface = document.getElementById("surfaceFront");
-    const backSurface = document.getElementById("surfaceBack");
-    const frontItem = document.getElementById("designFront");
-    const backItem = document.getElementById("designBack");
-    const frontImg = document.getElementById("designFrontImg");
-    const backImg = document.getElementById("designBackImg");
-
-    const offerForm = document.getElementById("offerForm");
-    const sendBtn = document.getElementById("sendBtn");
-    const formMessage = document.getElementById("formMessage");
-
-    function setFormMessage(type, text){
-      formMessage.className = "form-message show " + type;
-      formMessage.textContent = text;
+    function getSideItems(side){
+      return state[side];
     }
 
-    function clearFormMessage(){
-      formMessage.className = "form-message";
-      formMessage.textContent = "";
+    function getCurrentItems(){
+      return getSideItems(state.currentSide);
     }
 
-    function updateEditorValues(){
-      const s = state[state.currentSide];
-      sizeRange.value = s.scale;
-      rotateRange.value = s.rotation;
-      sizeValue.textContent = `${s.scale}%`;
-      rotateValue.textContent = `${s.rotation}°`;
-    }
-
-    function applyStateToSide(side){
-      const s = state[side];
-      const item = side === "front" ? frontItem : backItem;
-      const img = side === "front" ? frontImg : backImg;
-      const surface = side === "front" ? frontSurface : backSurface;
-
-      if(s.hasImage && state.imageDataUrl){
-        img.src = state.imageDataUrl;
-        item.classList.remove("hidden");
-      } else {
-        item.classList.add("hidden");
-      }
-
-      const surfaceW = surface.clientWidth;
-      const surfaceH = surface.clientHeight;
-      const base = Math.min(surfaceW, surfaceH) * 0.9 * (s.scale / 100);
-
-      item.style.width = `${base}px`;
-      item.style.height = `${base}px`;
-      item.style.left = `${s.x}%`;
-      item.style.top = `${s.y}%`;
-      item.style.transform = `translate(-50%, -50%) rotate(${s.rotation}deg)`;
-    }
-
-    function applyAllStates(){
-      applyStateToSide("front");
-      applyStateToSide("back");
-      updateHiddenFields();
+    function getSelectedItem(){
+      return getCurrentItems().find(item => item.id === state.selectedId) || null;
     }
 
     function switchSide(side){
@@ -1631,203 +1547,249 @@
       sceneBack.classList.toggle("hidden", side !== "back");
       frontBtn.classList.toggle("active", side === "front");
       backBtn.classList.toggle("active", side === "back");
-      updateEditorValues();
-      applyAllStates();
+
+      const items = getCurrentItems();
+      if(!items.find(x => x.id === state.selectedId)){
+        state.selectedId = items.length ? items[items.length - 1].id : null;
+      }
+
+      renderDesigns();
+      updateEditorControls();
     }
 
     frontBtn.addEventListener("click", () => switchSide("front"));
     backBtn.addEventListener("click", () => switchSide("back"));
 
+    function updateEditorControls(){
+      const selected = getSelectedItem();
+
+      if(!selected){
+        sizeValue.textContent = "--";
+        rotateValue.textContent = "--";
+        return;
+      }
+
+      sizeRange.value = selected.scale;
+      rotateRange.value = selected.rotation;
+      sizeValue.textContent = `${selected.scale}%`;
+      rotateValue.textContent = `${selected.rotation}°`;
+    }
+
     function showStatus(text){
       textureStatus.textContent = text;
     }
 
-    designUpload.addEventListener("change", handleFileInput);
-    formDesignFile.addEventListener("change", syncFromFormFile);
+    function createDesignNode(item, side, surface){
+      const node = document.createElement("div");
+      node.className = "design-item" + (item.id === state.selectedId ? " selected" : "");
+      node.dataset.id = item.id;
 
-    function handleFileInput(e){
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
+      const base = Math.min(surface.clientWidth, surface.clientHeight) * 0.9 * (item.scale / 100);
+      node.style.width = `${base}px`;
+      node.style.height = `${base}px`;
+      node.style.left = `${item.x}%`;
+      node.style.top = `${item.y}%`;
+      node.style.transform = `translate(-50%, -50%) rotate(${item.rotation}deg)`;
 
-      if(formDesignFile.files.length === 0){
-        trySyncFileInput(designUpload, formDesignFile);
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = "design";
+      node.appendChild(img);
+
+      node.addEventListener("click", (e) => {
+        e.stopPropagation();
+        state.currentSide = side;
+        state.selectedId = item.id;
+        switchSide(side);
+      });
+
+      makeDraggable(node, side, item.id);
+      return node;
+    }
+
+    function renderSide(side, surface){
+      surface.querySelectorAll(".design-item").forEach(el => el.remove());
+
+      getSideItems(side).forEach(item => {
+        const node = createDesignNode(item, side, surface);
+        surface.appendChild(node);
+      });
+    }
+
+    function renderDesigns(){
+      renderSide("front", frontSurface);
+      renderSide("back", backSurface);
+      updateHiddenFields();
+    }
+
+    function addDesignToCurrentSide(src){
+      const items = getCurrentItems();
+      const newItem = {
+        id: state.nextId++,
+        src,
+        x: 50,
+        y: 50,
+        scale: 100,
+        rotation: 0
+      };
+      items.push(newItem);
+      state.selectedId = newItem.id;
+      renderDesigns();
+      updateEditorControls();
+    }
+
+    function readFilesToCurrentSide(fileList){
+      if(!fileList || !fileList.length) return;
+
+      Array.from(fileList).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(ev){
+          addDesignToCurrentSide(ev.target.result);
+          showStatus(texts[currentLang()].editorLoaded);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    designUpload.addEventListener("change", (e) => {
+      readFilesToCurrentSide(e.target.files);
+    });
+
+    formDesignFile.addEventListener("change", (e) => {
+      readFilesToCurrentSide(e.target.files);
+    });
+
+    centerBtn.addEventListener("click", () => {
+      const selected = getSelectedItem();
+      if(!selected){
+        showStatus(texts[currentLang()].noImageSelected);
+        return;
       }
 
-      const reader = new FileReader();
-      reader.onload = function(ev){
-        state.imageDataUrl = ev.target.result;
-        state.front.hasImage = true;
-        state.back.hasImage = false;
-        frontImg.src = state.imageDataUrl;
-        backImg.src = state.imageDataUrl;
-        centerCurrent();
-        switchSide("front");
-        showStatus(texts[currentLang()].editorLoaded);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function syncFromFormFile(e){
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
-
-      if(designUpload.files.length === 0){
-        trySyncFileInput(formDesignFile, designUpload);
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(ev){
-        state.imageDataUrl = ev.target.result;
-        state.front.hasImage = true;
-        state.back.hasImage = false;
-        frontImg.src = state.imageDataUrl;
-        backImg.src = state.imageDataUrl;
-        centerCurrent();
-        switchSide("front");
-        showStatus(texts[currentLang()].editorLoaded);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function trySyncFileInput(from, to){
-      try{
-        const dt = new DataTransfer();
-        if(from.files && from.files[0]){
-          dt.items.add(from.files[0]);
-          to.files = dt.files;
-        }
-      } catch(e){}
-    }
-
-    function centerCurrent(){
-      const s = state[state.currentSide];
-      s.x = 50;
-      s.y = 50;
-      s.scale = 100;
-      s.rotation = 0;
-      updateEditorValues();
-      applyAllStates();
-    }
-
-    function setPresetChest(){
-      state.currentSide = "front";
-      state.front.x = 38;
-      state.front.y = 27;
-      state.front.scale = 26;
-      state.front.rotation = 0;
-      state.front.hasImage = !!state.imageDataUrl;
-      switchSide("front");
-      showStatus(texts[currentLang()].editorLoaded);
-    }
-
-    function setPresetCenter(){
-      const s = state[state.currentSide];
-      s.x = 50;
-      s.y = 42;
-      s.scale = 48;
-      s.rotation = 0;
-      s.hasImage = !!state.imageDataUrl || s.hasImage;
-      updateEditorValues();
-      applyAllStates();
-      showStatus(texts[currentLang()].editorLoaded);
-    }
-
-    function setPresetFullFront(){
-      state.front.x = 50;
-      state.front.y = 52;
-      state.front.scale = 92;
-      state.front.rotation = 0;
-      state.front.hasImage = !!state.imageDataUrl || state.front.hasImage;
-      switchSide("front");
-      showStatus(texts[currentLang()].editorLoaded);
-    }
-
-    function setPresetFullBack(){
-      state.back.x = 50;
-      state.back.y = 52;
-      state.back.scale = 92;
-      state.back.rotation = 0;
-      state.back.hasImage = !!state.imageDataUrl || state.back.hasImage;
-      switchSide("back");
-      showStatus(texts[currentLang()].editorLoaded);
-    }
-
-    presetChestBtn.addEventListener("click", setPresetChest);
-    presetCenterBtn.addEventListener("click", setPresetCenter);
-    presetFullFrontBtn.addEventListener("click", setPresetFullFront);
-    presetFullBackBtn.addEventListener("click", setPresetFullBack);
-
-    centerBtn.addEventListener("click", centerCurrent);
+      selected.x = 50;
+      selected.y = 50;
+      selected.scale = 100;
+      selected.rotation = 0;
+      renderDesigns();
+      updateEditorControls();
+    });
 
     copyBtn.addEventListener("click", () => {
-      if(!state.imageDataUrl){
+      const selected = getSelectedItem();
+      if(!selected){
         showStatus(texts[currentLang()].noImageToCopy);
         return;
       }
 
-      const from = state.currentSide;
-      const to = from === "front" ? "back" : "front";
+      const targetSide = state.currentSide === "front" ? "back" : "front";
+      state[targetSide].push({
+        id: state.nextId++,
+        src: selected.src,
+        x: selected.x,
+        y: selected.y,
+        scale: selected.scale,
+        rotation: selected.rotation
+      });
 
-      state[to] = {
-        x: state[from].x,
-        y: state[from].y,
-        scale: state[from].scale,
-        rotation: state[from].rotation,
-        hasImage: state[from].hasImage
-      };
-
-      applyAllStates();
+      renderDesigns();
       showStatus(texts[currentLang()].editorCopied);
     });
 
     clearBtn.addEventListener("click", () => {
-      const s = state[state.currentSide];
-      s.hasImage = false;
-      applyAllStates();
+      const items = getCurrentItems();
+      const index = items.findIndex(item => item.id === state.selectedId);
+
+      if(index === -1){
+        showStatus(texts[currentLang()].noImageSelected);
+        return;
+      }
+
+      items.splice(index, 1);
+      state.selectedId = items.length ? items[items.length - 1].id : null;
+
+      renderDesigns();
+      updateEditorControls();
       showStatus(texts[currentLang()].editorCleared);
     });
 
     sizeRange.addEventListener("input", () => {
-      state[state.currentSide].scale = Number(sizeRange.value);
-      sizeValue.textContent = `${sizeRange.value}%`;
-      applyAllStates();
+      const selected = getSelectedItem();
+      if(!selected) return;
+
+      selected.scale = Number(sizeRange.value);
+      sizeValue.textContent = `${selected.scale}%`;
+      renderDesigns();
     });
 
     rotateRange.addEventListener("input", () => {
-      state[state.currentSide].rotation = Number(rotateRange.value);
-      rotateValue.textContent = `${rotateRange.value}°`;
-      applyAllStates();
+      const selected = getSelectedItem();
+      if(!selected) return;
+
+      selected.rotation = Number(rotateRange.value);
+      rotateValue.textContent = `${selected.rotation}°`;
+      renderDesigns();
     });
 
-    function makeDraggable(item, side){
+    function applyPreset(x, y, scale, rotation = 0, side = null){
+      if(side && state.currentSide !== side){
+        switchSide(side);
+      }
+
+      const selected = getSelectedItem();
+      if(!selected){
+        showStatus(texts[currentLang()].noImageSelected);
+        return;
+      }
+
+      selected.x = x;
+      selected.y = y;
+      selected.scale = scale;
+      selected.rotation = rotation;
+      renderDesigns();
+      updateEditorControls();
+      showStatus(texts[currentLang()].editorLoaded);
+    }
+
+    presetChestBtn.addEventListener("click", () => applyPreset(38, 27, 26, 0, "front"));
+    presetCenterBtn.addEventListener("click", () => applyPreset(50, 42, 48, 0));
+    presetFullFrontBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "front"));
+    presetFullBackBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "back"));
+
+    function makeDraggable(node, side, id){
       let dragging = false;
       let surfaceRect = null;
 
       const start = (clientX, clientY) => {
-        if((side === "front" && !state.front.hasImage) || (side === "back" && !state.back.hasImage)) return;
         dragging = true;
         state.currentSide = side;
+        state.selectedId = id;
         switchSide(side);
         surfaceRect = (side === "front" ? frontSurface : backSurface).getBoundingClientRect();
-        item.classList.add("dragging");
+        node.classList.add("dragging");
       };
 
       const move = (clientX, clientY) => {
         if(!dragging || !surfaceRect) return;
-        const s = state[side];
+
+        const item = getSideItems(side).find(x => x.id === id);
+        if(!item) return;
+
         const x = ((clientX - surfaceRect.left) / surfaceRect.width) * 100;
         const y = ((clientY - surfaceRect.top) / surfaceRect.height) * 100;
-        s.x = Math.max(0, Math.min(100, x));
-        s.y = Math.max(0, Math.min(100, y));
-        applyAllStates();
+
+        item.x = Math.max(0, Math.min(100, x));
+        item.y = Math.max(0, Math.min(100, y));
+
+        renderDesigns();
+        updateEditorControls();
       };
 
       const end = () => {
         dragging = false;
-        item.classList.remove("dragging");
+        node.classList.remove("dragging");
       };
 
-      item.addEventListener("mousedown", (e) => {
+      node.addEventListener("mousedown", (e) => {
         e.preventDefault();
         start(e.clientX, e.clientY);
       });
@@ -1835,7 +1797,7 @@
       window.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
       window.addEventListener("mouseup", end);
 
-      item.addEventListener("touchstart", (e) => {
+      node.addEventListener("touchstart", (e) => {
         const t = e.touches[0];
         start(t.clientX, t.clientY);
       }, { passive: true });
@@ -1848,9 +1810,6 @@
 
       window.addEventListener("touchend", end);
     }
-
-    makeDraggable(frontItem, "front");
-    makeDraggable(backItem, "back");
 
     function updatePrice(){
       const base = 55;
@@ -1873,6 +1832,7 @@
       if(optFront.checked) options.push(lang === "ro" ? "Print față" : "Első nyomás");
       if(optBack.checked) options.push(lang === "ro" ? "Print spate" : "Hátsó nyomás");
       if(optPremium.checked) options.push(lang === "ro" ? "Print premium" : "Prémium nyomás");
+
       document.getElementById("hiddenOptions").value = options.join(", ");
     }
 
@@ -1881,86 +1841,81 @@
     optPremium.addEventListener("change", updatePrice);
 
     function updateHiddenFields(){
-      document.getElementById("hiddenSide").value = state.currentSide;
-      document.getElementById("hiddenFrontX").value = state.front.x.toFixed(2);
-      document.getElementById("hiddenFrontY").value = state.front.y.toFixed(2);
-      document.getElementById("hiddenFrontScale").value = state.front.scale;
-      document.getElementById("hiddenFrontRotation").value = state.front.rotation;
-      document.getElementById("hiddenBackX").value = state.back.x.toFixed(2);
-      document.getElementById("hiddenBackY").value = state.back.y.toFixed(2);
-      document.getElementById("hiddenBackScale").value = state.back.scale;
-      document.getElementById("hiddenBackRotation").value = state.back.rotation;
+      const payload = {
+        lang: currentLang(),
+        currentSide: state.currentSide,
+        front: state.front,
+        back: state.back,
+        options: document.getElementById("hiddenOptions").value,
+        estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
+      };
+      document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
       updatePrice();
     }
 
-    offerForm.addEventListener("submit", async function(e){
-      e.preventDefault();
-
+    sendBtn.addEventListener("click", async () => {
       clearFormMessage();
       updateHiddenFields();
 
       const lang = currentLang();
       const t = texts[lang];
-      const formData = new FormData(offerForm);
+
+      const name = document.getElementById("nameField").value.trim();
+      const email = document.getElementById("emailField").value.trim();
+
+      if(!name || !email){
+        setFormMessage("error", t.errorMessage);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("phone", document.getElementById("phoneField").value.trim());
+      formData.append("message", document.getElementById("messageField").value.trim());
+      formData.append("editor_data", document.getElementById("hiddenEditorData").value);
+      formData.append("selected_options", document.getElementById("hiddenOptions").value);
+      formData.append("estimated_total", document.getElementById("hiddenEstimatedTotal").value);
+      formData.append("_subject", "Új érdeklődés - Nextgen Digital Design");
+      formData.append("_captcha", "false");
+      formData.append("_template", "table");
+
+      const files = formDesignFile.files;
+      for(let i = 0; i < files.length; i++){
+        formData.append("design_file_" + (i + 1), files[i]);
+      }
 
       sendBtn.disabled = true;
       setFormMessage("info", t.sendingMessage);
 
       try{
-        const response = await fetch(offerForm.action, {
+        const response = await fetch(FORMSUBMIT_ENDPOINT, {
           method: "POST",
-          body: formData,
           headers: {
             "Accept": "application/json"
-          }
+          },
+          body: formData
         });
+
+        const data = await response.json().catch(() => null);
 
         if(response.ok){
           setFormMessage("success", t.successMessage);
-
-          const savedDesignUploadFiles = designUpload.files;
-          const savedFormDesignFiles = formDesignFile.files;
-
-          offerForm.reset();
-
-          try{
-            if(savedDesignUploadFiles && savedDesignUploadFiles.length){
-              const dt1 = new DataTransfer();
-              dt1.items.add(savedDesignUploadFiles[0]);
-              designUpload.files = dt1.files;
-            }
-            if(savedFormDesignFiles && savedFormDesignFiles.length){
-              const dt2 = new DataTransfer();
-              dt2.items.add(savedFormDesignFiles[0]);
-              formDesignFile.files = dt2.files;
-            }
-          } catch(err){}
-
-          optFront.checked = true;
-          optBack.checked = false;
-          optPremium.checked = false;
-          updateHiddenFields();
-          updatePrice();
         } else {
-          let data = null;
-          try{
-            data = await response.json();
-          } catch(err){}
-
           if(data && data.message && data.message.toLowerCase().includes("activate")){
             setFormMessage("error", t.activationMessage);
           } else {
             setFormMessage("error", t.errorMessage);
           }
         }
-      } catch(error){
+      } catch (err){
         setFormMessage("error", t.errorMessage);
       } finally{
         sendBtn.disabled = false;
       }
     });
 
-    window.addEventListener("resize", applyAllStates);
+    window.addEventListener("resize", renderDesigns);
 
     switchSide("front");
     setLang("hu");
