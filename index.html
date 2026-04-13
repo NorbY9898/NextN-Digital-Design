@@ -59,6 +59,24 @@
 
     .brand-wrap{
       display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand-logo{
+      width:54px;
+      height:54px;
+      object-fit:contain;
+      display:block;
+      border-radius:12px;
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(212,175,55,.16);
+      padding:6px;
+      box-shadow:0 8px 20px rgba(0,0,0,.25);
+    }
+
+    .brand-text{
+      display:flex;
       flex-direction:column;
       gap:4px;
     }
@@ -312,7 +330,7 @@
       height:100%;
       object-fit:contain;
       display:block;
-      z-index:2;
+      z-index:1;
       pointer-events:none;
       user-select:none;
       filter:drop-shadow(0 18px 30px rgba(0,0,0,.40));
@@ -322,7 +340,7 @@
       position:absolute;
       left:50%;
       transform:translateX(-50%);
-      z-index:1;
+      z-index:3;
       overflow:hidden;
     }
 
@@ -424,7 +442,7 @@
       padding:5px 10px;
       border-radius:999px;
       pointer-events:none;
-      z-index:9;
+      z-index:12;
       white-space:nowrap;
     }
 
@@ -436,7 +454,7 @@
       cursor:grab;
       touch-action:none;
       user-select:none;
-      z-index:5;
+      z-index:10;
     }
 
     .design-item.dragging{
@@ -451,11 +469,11 @@
       pointer-events:none;
       user-select:none;
       mix-blend-mode:multiply;
-      opacity:.92;
+      opacity:.96;
       filter:
-        contrast(1.03)
-        saturate(1.02)
-        drop-shadow(0 1px 2px rgba(0,0,0,.08));
+        contrast(1.08)
+        saturate(1.04)
+        drop-shadow(0 1px 2px rgba(0,0,0,.06));
     }
 
     .design-item::after{
@@ -680,7 +698,6 @@
       height:320px;
       border-radius:18px;
       overflow:hidden;
-      margin-bottom:16px;
       background:
         radial-gradient(circle at center, rgba(212,175,55,.12), transparent 40%),
         linear-gradient(180deg, #181818 0%, #090909 100%);
@@ -748,17 +765,6 @@
     .slider-dot.active{
       background:var(--gold2);
       transform:scale(1.15);
-    }
-
-    .showcase-card h3{
-      margin:0;
-      font-size:24px;
-    }
-
-    .showcase-card p{
-      margin:12px 0 0;
-      color:var(--muted);
-      line-height:1.7;
     }
 
     .feature-grid{
@@ -915,6 +921,15 @@
       .preset-grid{
         grid-template-columns:1fr;
       }
+
+      .brand{
+        font-size:22px;
+      }
+
+      .brand-logo{
+        width:46px;
+        height:46px;
+      }
     }
   </style>
 </head>
@@ -922,8 +937,11 @@
 
   <header class="container top">
     <div class="brand-wrap">
-      <div class="brand">NEXTGEN</div>
-      <div class="brand-sub">Digital Design</div>
+      <img src="logo.png" alt="NextN Digital logo" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand">NEXTGEN</div>
+        <div class="brand-sub">Digital Design</div>
+      </div>
     </div>
 
     <div class="top-right">
@@ -1104,8 +1122,6 @@
             <button class="slider-arrow right" onclick="nextSlide('left')">›</button>
             <div class="slider-dots" id="dots-left"></div>
           </div>
-          <h3 id="show1Title">Prémium modell 1</h3>
-          <p id="show1Text">Tiszta, erős megjelenés a kiemelt termékedhez.</p>
         </div>
 
         <div class="showcase-card">
@@ -1115,8 +1131,6 @@
             <button class="slider-arrow right" onclick="nextSlide('center')">›</button>
             <div class="slider-dots" id="dots-center"></div>
           </div>
-          <h3 id="show2Title">Prémium modell 2</h3>
-          <p id="show2Text">Modern bemutatás különböző színekhez és stílusokhoz.</p>
         </div>
 
         <div class="showcase-card">
@@ -1126,8 +1140,6 @@
             <button class="slider-arrow right" onclick="nextSlide('right')">›</button>
             <div class="slider-dots" id="dots-right"></div>
           </div>
-          <h3 id="show3Title">Prémium modell 3</h3>
-          <p id="show3Text">Tökéletes hely referenciáknak vagy új kollekciónak.</p>
         </div>
       </div>
     </section>
@@ -1219,12 +1231,6 @@
         showcaseTag: "Bemutató",
         showcaseTitle: "Mutasd meg stílusosan",
         showcaseText: "Tölts fel mintát, helyezd el a pólón, és a vevő azonnal látja az előnézetet elöl vagy hátul.",
-        show1Title: "Prémium modell 1",
-        show1Text: "Tiszta, erős megjelenés a kiemelt termékedhez.",
-        show2Title: "Prémium modell 2",
-        show2Text: "Modern bemutatás különböző színekhez és stílusokhoz.",
-        show3Title: "Prémium modell 3",
-        show3Text: "Tökéletes hely referenciáknak vagy új kollekciónak.",
         collectionTag: "Kollekció",
         collectionTitle: "Találd meg a saját stílusod",
         collectionText: "Egyedi pólók, modern megjelenés és prémium vizuális élmény.",
@@ -1292,12 +1298,6 @@
         showcaseTag: "Prezentare",
         showcaseTitle: "Arată totul cu stil",
         showcaseText: "Încarcă designul, așază-l pe tricou și clientul vede instant previzualizarea față sau spate.",
-        show1Title: "Model premium 1",
-        show1Text: "Aspect curat și puternic pentru produsul tău principal.",
-        show2Title: "Model premium 2",
-        show2Text: "Prezentare modernă pentru culori și stiluri diferite.",
-        show3Title: "Model premium 3",
-        show3Text: "Loc perfect pentru referințe sau o colecție nouă.",
         collectionTag: "Colecție",
         collectionTitle: "Găsește-ți propriul stil",
         collectionText: "Tricouri personalizate, aspect modern și experiență vizuală premium.",
@@ -1841,4 +1841,4 @@
     showStatus(texts[currentLang()].editorReady);
   </script>
 </body>
-</html>
+</html> kérlek a javitással együtt ird meg מחדש მთ
