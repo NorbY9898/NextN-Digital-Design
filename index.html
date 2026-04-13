@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nextgen Digital Design</title>
-  <meta name="description" content="Nextgen Digital Design - egyedi pólók prémium fekete-arany megjelenéssel.">
+  <meta name="description" content="Nextgen Digital Design - egyedi pólók prémium fekete-arany megjelenéssel." />
 
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
@@ -266,13 +266,13 @@
     .model-fallback{
       position:absolute;
       inset:0;
-      display:none;
+      display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       padding:20px;
       color:var(--muted);
-      background:linear-gradient(180deg, rgba(17,17,17,.92), rgba(10,10,10,.92));
+      pointer-events:none;
     }
 
     .design-switch{
@@ -302,8 +302,39 @@
       background:rgba(212,175,55,.08);
     }
 
+    .texture-status{
+      margin-top:12px;
+      min-height:20px;
+      color:var(--gold2);
+      font-size:14px;
+    }
+
+    .swatches{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .swatch{
+      border:1px solid #383838;
+      background:#121212;
+      color:#efefef;
+      padding:12px;
+      border-radius:14px;
+      text-align:center;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .swatch.active{
+      border-color:var(--line-strong);
+      color:var(--gold2);
+      background:rgba(212,175,55,.08);
+    }
+
     .section{
-      padding:32px 0 12px;
+      padding:28px 0 10px;
     }
 
     .section-head{
@@ -345,6 +376,86 @@
       border-radius:24px;
       padding:22px;
       box-shadow:var(--shadow);
+    }
+
+    .image-frame{
+      position:relative;
+      height:320px;
+      border-radius:18px;
+      overflow:hidden;
+      margin-bottom:16px;
+      background:
+        radial-gradient(circle at center, rgba(212,175,55,.12), transparent 40%),
+        linear-gradient(180deg, #181818 0%, #090909 100%);
+      border:1px solid rgba(255,255,255,.04);
+    }
+
+    .slider-image{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      opacity:1;
+      transition:opacity .45s ease;
+      user-select:none;
+    }
+
+    .slider-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:999px;
+      cursor:pointer;
+      background:rgba(0,0,0,.55);
+      color:#fff;
+      font-size:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:.2s ease;
+      z-index:2;
+    }
+
+    .slider-arrow:hover{
+      background:rgba(212,175,55,.9);
+      color:#000;
+    }
+
+    .slider-arrow.left{
+      left:12px;
+    }
+
+    .slider-arrow.right{
+      right:12px;
+    }
+
+    .slider-dots{
+      position:absolute;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+      z-index:2;
+    }
+
+    .slider-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      background:rgba(255,255,255,.35);
+      transition:.2s ease;
+      padding:0;
+    }
+
+    .slider-dot.active{
+      background:var(--gold2);
+      transform:scale(1.15);
     }
 
     .showcase-card h3{
@@ -443,13 +554,6 @@
       resize:vertical;
     }
 
-    .status{
-      margin-top:12px;
-      color:var(--gold2);
-      font-size:14px;
-      min-height:20px;
-    }
-
     .footer{
       border-top:1px solid #222;
       padding:22px 0 34px;
@@ -478,6 +582,7 @@
         width:min(calc(100% - 22px), var(--max));
       }
 
+      .swatches,
       .design-switch{
         grid-template-columns:1fr;
       }
@@ -489,6 +594,15 @@
 
       .model-wrap{
         height:340px;
+      }
+
+      .image-frame{
+        height:260px;
+      }
+
+      .slider-arrow{
+        width:38px;
+        height:38px;
       }
     }
   </style>
@@ -544,12 +658,14 @@
             src="polo.glb"
             alt="3D póló modell"
             camera-controls
+            touch-action="pan-y"
             auto-rotate
-            rotation-per-second="18deg"
+            rotation-per-second="20deg"
+            min-camera-orbit="auto auto 70%"
+            max-camera-orbit="auto auto 220%"
             shadow-intensity="1"
             exposure="1"
             environment-image="neutral"
-            touch-action="pan-y"
             interaction-prompt="auto">
           </model-viewer>
 
@@ -568,7 +684,13 @@
           <button class="design-btn" id="designBtn3" onclick="setTexture('design3.jpg', this)">Design 3</button>
         </div>
 
-        <div class="status" id="textureStatus"></div>
+        <div class="texture-status" id="textureStatus"></div>
+
+        <div class="swatches">
+          <div class="swatch" id="color1">Fekete</div>
+          <div class="swatch active" id="color2">Arany</div>
+          <div class="swatch" id="color3">Fehér</div>
+        </div>
       </div>
     </section>
 
@@ -576,23 +698,41 @@
       <div class="section-head">
         <div class="section-tag" id="showcaseTag">Bemutató</div>
         <h2 class="section-title" id="showcaseTitle">Mutasd meg stílusosan</h2>
-        <p class="section-text" id="showcaseText">Forgatható 3D póló és gyors design váltás egy modern, prémium megjelenéshez.</p>
+        <p class="section-text" id="showcaseText">Kiemelt pólómodellek, erős vizuális elemek és prémium hangulat.</p>
       </div>
 
       <div class="grid">
         <div class="showcase-card">
-          <h3 id="show1Title">Forgatható modell</h3>
-          <p id="show1Text">A látogató jobbra-balra húzva megnézheti a pólót különböző szögekből.</p>
+          <div class="image-frame">
+            <button class="slider-arrow left" onclick="prevSlide('left')">‹</button>
+            <img id="slider-left" class="slider-image" src="bal1.jpg" alt="Bal oldali póló">
+            <button class="slider-arrow right" onclick="nextSlide('left')">›</button>
+            <div class="slider-dots" id="dots-left"></div>
+          </div>
+          <h3 id="show1Title">Prémium modell 1</h3>
+          <p id="show1Text">Tiszta, erős megjelenés a kiemelt termékedhez.</p>
         </div>
 
         <div class="showcase-card">
-          <h3 id="show2Title">Design váltás</h3>
-          <p id="show2Text">A gombokra kattintva a meglévő minták automatikusan lecserélhetők a modellen.</p>
+          <div class="image-frame">
+            <button class="slider-arrow left" onclick="prevSlide('center')">‹</button>
+            <img id="slider-center" class="slider-image" src="kozep1.jpg" alt="Középső póló">
+            <button class="slider-arrow right" onclick="nextSlide('center')">›</button>
+            <div class="slider-dots" id="dots-center"></div>
+          </div>
+          <h3 id="show2Title">Prémium modell 2</h3>
+          <p id="show2Text">Modern bemutatás különböző színekhez és stílusokhoz.</p>
         </div>
 
         <div class="showcase-card">
-          <h3 id="show3Title">Prémium hatás</h3>
-          <p id="show3Text">Modern megjelenés, ami sokkal látványosabbá teszi az egyedi pólóid bemutatását.</p>
+          <div class="image-frame">
+            <button class="slider-arrow left" onclick="prevSlide('right')">‹</button>
+            <img id="slider-right" class="slider-image" src="jobb1.jpg" alt="Jobb oldali póló">
+            <button class="slider-arrow right" onclick="nextSlide('right')">›</button>
+            <div class="slider-dots" id="dots-right"></div>
+          </div>
+          <h3 id="show3Title">Prémium modell 3</h3>
+          <p id="show3Text">Tökéletes hely referenciáknak vagy új kollekciónak.</p>
         </div>
       </div>
     </section>
@@ -664,17 +804,20 @@
         preview: "3D póló nézet",
         soon: "Forgasd",
         viewerTitle: "3D póló forgatható nézet",
-        viewerText: "Tedd az oldal mellé a polo.glb, design1.jpg, design2.jpg és design3.jpg fájlokat.",
+        viewerText: "Tedd az oldal mellé a polo.glb fájlt, és forgatható lesz jobbra-balra.",
+        color1: "Fekete",
+        color2: "Arany",
+        color3: "Fehér",
 
         showcaseTag: "Bemutató",
         showcaseTitle: "Mutasd meg stílusosan",
-        showcaseText: "Forgatható 3D póló és gyors design váltás egy modern, prémium megjelenéshez.",
-        show1Title: "Forgatható modell",
-        show1Text: "A látogató jobbra-balra húzva megnézheti a pólót különböző szögekből.",
-        show2Title: "Design váltás",
-        show2Text: "A gombokra kattintva a meglévő minták automatikusan lecserélhetők a modellen.",
-        show3Title: "Prémium hatás",
-        show3Text: "Modern megjelenés, ami sokkal látványosabbá teszi az egyedi pólóid bemutatását.",
+        showcaseText: "Kiemelt pólómodellek, erős vizuális elemek és prémium hangulat.",
+        show1Title: "Prémium modell 1",
+        show1Text: "Tiszta, erős megjelenés a kiemelt termékedhez.",
+        show2Title: "Prémium modell 2",
+        show2Text: "Modern bemutatás különböző színekhez és stílusokhoz.",
+        show3Title: "Prémium modell 3",
+        show3Text: "Tökéletes hely referenciáknak vagy új kollekciónak.",
 
         collectionTag: "Kollekció",
         collectionTitle: "Találd meg a saját stílusod",
@@ -697,8 +840,11 @@
         sendBtn: "Ajánlatkérés elküldése",
         footer1: "© 2026 Nextgen Digital Design. Minden jog fenntartva.",
         footer2: "Prémium megjelenés egyedi pólókhoz.",
-        textureApplied: "A design rákerült a pólóra.",
-        textureFailed: "A design nem került rá. Valószínűleg a modell UV/material része még javítást igényel."
+        designBtn1: "Design 1",
+        designBtn2: "Design 2",
+        designBtn3: "Design 3",
+        textureOk: "A design rákerült a pólóra.",
+        textureFail: "A design nem került rá. Valószínűleg a polo.glb nincs még jól előkészítve textúrához."
       },
 
       ro: {
@@ -714,17 +860,20 @@
         preview: "Vizualizare tricou 3D",
         soon: "Rotește",
         viewerTitle: "Vizualizare 3D rotativă",
-        viewerText: "Pune fișierele polo.glb, design1.jpg, design2.jpg și design3.jpg lângă pagină.",
+        viewerText: "Pune fișierul polo.glb lângă pagină și modelul va putea fi rotit stânga-dreapta.",
+        color1: "Negru",
+        color2: "Auriu",
+        color3: "Alb",
 
         showcaseTag: "Prezentare",
         showcaseTitle: "Arată totul cu stil",
-        showcaseText: "Tricou 3D rotativ și schimbare rapidă de design pentru un aspect premium.",
-        show1Title: "Model rotativ",
-        show1Text: "Vizitatorul poate roti tricoul stânga-dreapta și îl poate vedea din mai multe unghiuri.",
-        show2Title: "Schimbare design",
-        show2Text: "La apăsarea butoanelor, modelele existente se schimbă automat pe tricou.",
-        show3Title: "Efect premium",
-        show3Text: "Un aspect modern care face prezentarea tricourilor mult mai puternică.",
+        showcaseText: "Modele evidențiate, elemente vizuale puternice și atmosferă premium.",
+        show1Title: "Model premium 1",
+        show1Text: "Aspect curat și puternic pentru produsul tău principal.",
+        show2Title: "Model premium 2",
+        show2Text: "Prezentare modernă pentru culori și stiluri diferite.",
+        show3Title: "Model premium 3",
+        show3Text: "Loc perfect pentru referințe sau o colecție nouă.",
 
         collectionTag: "Colecție",
         collectionTitle: "Găsește-ți propriul stil",
@@ -747,14 +896,13 @@
         sendBtn: "Trimite cererea",
         footer1: "© 2026 Nextgen Digital Design. Toate drepturile rezervate.",
         footer2: "Aspect premium pentru tricouri personalizate.",
-        textureApplied: "Designul a fost aplicat pe tricou.",
-        textureFailed: "Designul nu a fost aplicat. Probabil modelul are nevoie de UV/material corect."
+        designBtn1: "Design 1",
+        designBtn2: "Design 2",
+        designBtn3: "Design 3",
+        textureOk: "Designul a fost aplicat pe tricou.",
+        textureFail: "Designul nu a fost aplicat. Probabil polo.glb nu este încă pregătit corect pentru textură."
       }
     };
-
-    function currentLang() {
-      return document.documentElement.lang === "ro" ? "ro" : "hu";
-    }
 
     function setLang(lang){
       const t = texts[lang];
@@ -782,47 +930,105 @@
       document.getElementById("roBtn").classList.toggle("active", lang === "ro");
     }
 
-    function setActiveDesignButton(buttonEl){
-      document.querySelectorAll(".design-btn").forEach(btn => btn.classList.remove("active"));
-      if(buttonEl) buttonEl.classList.add("active");
-    }
-
-    async function setTexture(imagePath, buttonEl = null){
-      const model = document.getElementById("shirtModel");
-      const status = document.getElementById("textureStatus");
-      const lang = currentLang();
-
-      try{
-        await model.updateComplete;
-
-        if(!model.model || !model.model.materials || model.model.materials.length === 0){
-          throw new Error("No materials found in model.");
-        }
-
-        const material = model.model.materials[0];
-
-        if(!material.pbrMetallicRoughness){
-          throw new Error("Material does not support pbrMetallicRoughness.");
-        }
-
-        const texture = await model.createTexture(imagePath);
-
-        if(!material.pbrMetallicRoughness.baseColorTexture){
-          material.pbrMetallicRoughness.setBaseColorFactor([1,1,1,1]);
-        }
-
-        material.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
-
-        status.textContent = texts[lang].textureApplied;
-        setActiveDesignButton(buttonEl);
-      } catch (error){
-        console.error("Texture apply error:", error);
-        status.textContent = texts[lang].textureFailed;
+    const sliders = {
+      left: {
+        imgId: "slider-left",
+        dotsId: "dots-left",
+        images: ["bal1.jpg", "bal2.jpg", "bal3.jpg"],
+        index: 0,
+        timer: null
+      },
+      center: {
+        imgId: "slider-center",
+        dotsId: "dots-center",
+        images: ["kozep1.jpg", "kozep2.jpg", "kozep3.jpg"],
+        index: 0,
+        timer: null
+      },
+      right: {
+        imgId: "slider-right",
+        dotsId: "dots-right",
+        images: ["jobb1.jpg", "jobb2.jpg", "jobb3.jpg"],
+        index: 0,
+        timer: null
       }
+    };
+
+    function renderDots(name){
+      const slider = sliders[name];
+      const dotsWrap = document.getElementById(slider.dotsId);
+      dotsWrap.innerHTML = "";
+
+      slider.images.forEach((_, i) => {
+        const dot = document.createElement("button");
+        dot.className = "slider-dot" + (i === slider.index ? " active" : "");
+        dot.onclick = () => goToSlide(name, i, true);
+        dotsWrap.appendChild(dot);
+      });
     }
+
+    function updateSlide(name){
+      const slider = sliders[name];
+      const img = document.getElementById(slider.imgId);
+      img.style.opacity = "0";
+
+      setTimeout(() => {
+        img.src = slider.images[slider.index];
+        img.style.opacity = "1";
+        renderDots(name);
+      }, 180);
+    }
+
+    function goToSlide(name, index, resetAuto = false){
+      const slider = sliders[name];
+      slider.index = index;
+      updateSlide(name);
+      if(resetAuto) restartAuto(name);
+    }
+
+    function nextSlide(name){
+      const slider = sliders[name];
+      slider.index = (slider.index + 1) % slider.images.length;
+      updateSlide(name);
+      restartAuto(name);
+    }
+
+    function prevSlide(name){
+      const slider = sliders[name];
+      slider.index = (slider.index - 1 + slider.images.length) % slider.images.length;
+      updateSlide(name);
+      restartAuto(name);
+    }
+
+    function startAuto(name){
+      const slider = sliders[name];
+      slider.timer = setInterval(() => {
+        slider.index = (slider.index + 1) % slider.images.length;
+        updateSlide(name);
+      }, 3000);
+    }
+
+    function restartAuto(name){
+      const slider = sliders[name];
+      clearInterval(slider.timer);
+      startAuto(name);
+    }
+
+    function initSlider(name){
+      const slider = sliders[name];
+      const img = document.getElementById(slider.imgId);
+      img.src = slider.images[0];
+      renderDots(name);
+      startAuto(name);
+    }
+
+    initSlider("left");
+    initSlider("center");
+    initSlider("right");
 
     const model = document.getElementById("shirtModel");
     const fallback = document.getElementById("modelFallback");
+    const textureStatus = document.getElementById("textureStatus");
 
     model.addEventListener("load", () => {
       fallback.style.display = "none";
@@ -832,14 +1038,46 @@
       fallback.style.display = "flex";
     });
 
-    window.addEventListener("load", async () => {
+    function currentLang(){
+      return document.documentElement.lang === "ro" ? "ro" : "hu";
+    }
+
+    function setActiveDesignButton(buttonEl){
+      document.querySelectorAll(".design-btn").forEach(btn => btn.classList.remove("active"));
+      if(buttonEl) buttonEl.classList.add("active");
+    }
+
+    async function setTexture(imagePath, buttonEl){
+      const lang = currentLang();
+
       try{
         await model.updateComplete;
-      } catch(e){}
 
-      fallback.style.display = "none";
-    });
+        if(!model.model || !model.model.materials || model.model.materials.length === 0){
+          throw new Error("No materials found");
+        }
+
+        const material = model.model.materials[0];
+
+        if(!material.pbrMetallicRoughness){
+          throw new Error("No PBR material");
+        }
+
+        const texture = await model.createTexture(imagePath);
+
+        if(material.pbrMetallicRoughness.baseColorTexture){
+          material.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
+        } else {
+          material.pbrMetallicRoughness.setBaseColorFactor([1,1,1,1]);
+        }
+
+        textureStatus.textContent = texts[lang].textureOk;
+        setActiveDesignButton(buttonEl);
+      } catch (err){
+        console.error(err);
+        textureStatus.textContent = texts[lang].textureFail;
+      }
+    }
   </script>
-
 </body>
-</html>
+</html> ez az amit most használok és jó is de ebbe ird bele légyszives a kért modositásokat hogy továbbra is jó legyen.
