@@ -872,6 +872,14 @@
       flex-wrap:wrap;
     }
 
+    .hidden-file-inputs{
+      display:none;
+    }
+
+    iframe[name="hiddenSubmitFrame"]{
+      display:none;
+    }
+
     @media(max-width:1180px){
       .builder-layout{
         grid-template-columns:1fr;
@@ -944,6 +952,8 @@
   </style>
 </head>
 <body>
+
+  <iframe name="hiddenSubmitFrame" id="hiddenSubmitFrame"></iframe>
 
   <header class="container top">
     <div class="brand-wrap">
@@ -1183,18 +1193,34 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form" id="offerForm">
+      <form
+        class="contact-form"
+        id="offerForm"
+        action="https://formsubmit.co/norbertnagy9898@yahoo.com"
+        method="POST"
+        enctype="multipart/form-data"
+        target="hiddenSubmitFrame"
+      >
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
-        <input type="hidden" id="hiddenEditorData">
-        <input type="hidden" id="hiddenOptions">
-        <input type="hidden" id="hiddenEstimatedTotal">
+        <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_url" value="https://yourdomain.com/">
+        <input type="hidden" name="editor_data" id="hiddenEditorData">
+        <input type="hidden" name="selected_options" id="hiddenOptions">
+        <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
+
+        <div class="hidden-file-inputs">
+          <input type="file" id="frontFilesInput" name="front_designs" multiple>
+          <input type="file" id="backFilesInput" name="back_designs" multiple>
+        </div>
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
         <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
-        <button class="btn gold" type="button" id="sendBtn">Ajánlatkérés elküldése</button>
+        <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
 
         <div id="formMessage" class="form-message"></div>
       </form>
@@ -1208,8 +1234,6 @@
   </footer>
 
   <script>
-    const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/norbertnagy9898@yahoo.com";
-
     const texts = {
       hu: {
         nav1: "Bemutató",
@@ -1368,7 +1392,8 @@
       selectedId: null,
       nextId: 1,
       front: [],
-      back: []
+      back: [],
+      isSubmitting: false
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1404,6 +1429,10 @@
     const offerForm = document.getElementById("offerForm");
     const sendBtn = document.getElementById("sendBtn");
     const formMessage = document.getElementById("formMessage");
+    const hiddenSubmitFrame = document.getElementById("hiddenSubmitFrame");
+    const frontFilesInput = document.getElementById("frontFilesInput");
+    const backFilesInput = document.getElementById("backFilesInput");
+    const hiddenSubject = document.getElementById("hiddenSubject");
 
     function currentLang(){
       return document.documentElement.lang === "ro" ? "ro" : "hu";
@@ -1442,6 +1471,9 @@
 
       document.getElementById("surfaceLabelFront").textContent = t.surfaceLabel;
       document.getElementById("surfaceLabelBack").textContent = t.surfaceLabel;
+      hiddenSubject.value = lang === "ro"
+        ? "Cerere nouă - Nextgen Digital Design"
+        : "Új érdeklődés - Nextgen Digital Design";
 
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
@@ -1539,6 +1571,22 @@
       return getCurrentItems().find(item => item.id === state.selectedId) || null;
     }
 
+    function syncAttachmentInputs(){
+      const frontDT = new DataTransfer();
+      const backDT = new DataTransfer();
+
+      state.front.forEach(item => {
+        if(item.file) frontDT.items.add(item.file);
+      });
+
+      state.back.forEach(item => {
+        if(item.file) backDT.items.add(item.file);
+      });
+
+      frontFilesInput.files = frontDT.files;
+      backFilesInput.files = backDT.files;
+    }
+
     function switchSide(side){
       state.currentSide = side;
       sceneFront.classList.toggle("hidden", side !== "front");
@@ -1618,6 +1666,7 @@
     function renderDesigns(){
       renderSide("front", frontSurface);
       renderSide("back", backSurface);
+      syncAttachmentInputs();
       updateHiddenFields();
     }
 
@@ -1708,7 +1757,7 @@
       }
 
       items.splice(index, 1);
-      state.selectedId = items.length ? items[Math.max(0, index - 1)]?.id || items[items.length - 1].id : null;
+      state.selectedId = items.length ? (items[Math.max(0, index - 1)]?.id || items[items.length - 1].id) : null;
 
       renderDesigns();
       updateEditorControls();
@@ -1779,7 +1828,7 @@
         if(!item) return;
 
         const x = ((clientX - surfaceRect.left) / surfaceRect.width) * 100;
-        const y = ((clientY - surfaceRect.top) / surfaceRect.height) * 100;
+        const y = ((clientX - surfaceRect.top) / surfaceRect.height) * 100;
 
         item.x = Math.max(0, Math.min(100, x));
         item.y = Math.max(0, Math.min(100, y));
@@ -1850,19 +1899,19 @@
         currentSide: state.currentSide,
         front: state.front.map(item => ({
           id: item.id,
+          name: item.file ? item.file.name : "",
           x: item.x,
           y: item.y,
           scale: item.scale,
-          rotation: item.rotation,
-          hasFile: !!item.file
+          rotation: item.rotation
         })),
         back: state.back.map(item => ({
           id: item.id,
+          name: item.file ? item.file.name : "",
           x: item.x,
           y: item.y,
           scale: item.scale,
-          rotation: item.rotation,
-          hasFile: !!item.file
+          rotation: item.rotation
         })),
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
@@ -1870,78 +1919,36 @@
 
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
       updatePrice();
+      syncAttachmentInputs();
     }
 
-    sendBtn.addEventListener("click", async () => {
+    offerForm.addEventListener("submit", () => {
+      const lang = currentLang();
+      const t = texts[lang];
+
       clearFormMessage();
       updateHiddenFields();
+
+      if(state.front.length === 0 && state.back.length === 0){
+        setFormMessage("error", t.noImageSelected);
+        event.preventDefault();
+        return;
+      }
+
+      state.isSubmitting = true;
+      sendBtn.disabled = true;
+      setFormMessage("info", t.sendingMessage);
+    });
+
+    hiddenSubmitFrame.addEventListener("load", () => {
+      if(!state.isSubmitting) return;
 
       const lang = currentLang();
       const t = texts[lang];
 
-      const name = document.getElementById("nameField").value.trim();
-      const email = document.getElementById("emailField").value.trim();
-
-      if(!name || !email){
-        setFormMessage("error", t.errorMessage);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("phone", document.getElementById("phoneField").value.trim());
-      formData.append("message", document.getElementById("messageField").value.trim());
-      formData.append("editor_data", document.getElementById("hiddenEditorData").value);
-      formData.append("selected_options", document.getElementById("hiddenOptions").value);
-      formData.append("estimated_total", document.getElementById("hiddenEstimatedTotal").value);
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
-      formData.append("_subject", lang === "ro"
-        ? "Cerere nouă - Nextgen Digital Design"
-        : "Új érdeklődés - Nextgen Digital Design"
-      );
-
-      state.front.forEach((item, index) => {
-        if(item.file){
-          formData.append(`front_design_${index + 1}`, item.file, item.file.name);
-        }
-      });
-
-      state.back.forEach((item, index) => {
-        if(item.file){
-          formData.append(`back_design_${index + 1}`, item.file, item.file.name);
-        }
-      });
-
-      sendBtn.disabled = true;
-      setFormMessage("info", t.sendingMessage);
-
-      try{
-        const response = await fetch(FORMSUBMIT_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Accept": "application/json"
-          },
-          body: formData
-        });
-
-        const data = await response.json().catch(() => null);
-
-        if(response.ok){
-          setFormMessage("success", t.successMessage);
-        } else {
-          if(data && data.message && data.message.toLowerCase().includes("activate")){
-            setFormMessage("error", t.activationMessage);
-          } else {
-            setFormMessage("error", t.errorMessage);
-          }
-        }
-      } catch (err){
-        setFormMessage("error", t.errorMessage);
-      } finally{
-        sendBtn.disabled = false;
-      }
+      state.isSubmitting = false;
+      sendBtn.disabled = false;
+      setFormMessage("success", t.successMessage);
     });
 
     window.addEventListener("resize", renderDesigns);
