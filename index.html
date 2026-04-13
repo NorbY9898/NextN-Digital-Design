@@ -1206,14 +1206,13 @@
         <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_url" value="https://yourdomain.com/">
         <input type="hidden" name="editor_data" id="hiddenEditorData">
         <input type="hidden" name="selected_options" id="hiddenOptions">
         <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
 
         <div class="hidden-file-inputs">
-          <input type="file" id="frontFilesInput" name="front_designs" multiple>
-          <input type="file" id="backFilesInput" name="back_designs" multiple>
+          <input type="file" id="frontFilesInput" name="front_designs[]" multiple>
+          <input type="file" id="backFilesInput" name="back_designs[]" multiple>
         </div>
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
@@ -1284,6 +1283,7 @@
         editorCopied: "A kijelölt design átmásolva a másik oldalra.",
         noImageToCopy: "Nincs kijelölt design a másoláshoz.",
         noImageSelected: "Nincs kijelölt design.",
+        noDesignUploaded: "Nincs feltöltött design.",
         uploadTitle: "Design feltöltése",
         adjustTitle: "Pozíció és méret",
         presetTitle: "Gyors elhelyezés",
@@ -1356,6 +1356,7 @@
         editorCopied: "Designul selectat a fost copiat pe cealaltă parte.",
         noImageToCopy: "Nu există un design selectat pentru copiere.",
         noImageSelected: "Nu există un design selectat.",
+        noDesignUploaded: "Nu există design încărcat.",
         uploadTitle: "Încarcă designul",
         adjustTitle: "Poziție și mărime",
         presetTitle: "Poziții rapide",
@@ -1438,6 +1439,10 @@
       return document.documentElement.lang === "ro" ? "ro" : "hu";
     }
 
+    function t(key){
+      return texts[currentLang()][key];
+    }
+
     function setFormMessage(type, text){
       formMessage.className = "form-message show " + type;
       formMessage.textContent = text;
@@ -1449,28 +1454,29 @@
     }
 
     function setLang(lang){
-      const t = texts[lang];
+      const tx = texts[lang];
 
-      for(let key in t){
+      for(let key in tx){
         const el = document.getElementById(key);
         if(!el) continue;
 
         if(key === "title"){
-          el.innerHTML = t[key];
+          el.innerHTML = tx[key];
         } else if(
           key === "nameField" ||
           key === "emailField" ||
           key === "phoneField" ||
           key === "messageField"
         ){
-          el.placeholder = t[key];
+          el.placeholder = tx[key];
         } else {
-          el.textContent = t[key];
+          el.textContent = tx[key];
         }
       }
 
-      document.getElementById("surfaceLabelFront").textContent = t.surfaceLabel;
-      document.getElementById("surfaceLabelBack").textContent = t.surfaceLabel;
+      document.getElementById("surfaceLabelFront").textContent = tx.surfaceLabel;
+      document.getElementById("surfaceLabelBack").textContent = tx.surfaceLabel;
+
       hiddenSubject.value = lang === "ro"
         ? "Cerere nouă - Nextgen Digital Design"
         : "Új érdeklődés - Nextgen Digital Design";
@@ -1481,7 +1487,7 @@
 
       updatePrice();
       updateEditorControls();
-      textureStatus.textContent = getCurrentItems().length ? t.editorLoaded : t.editorReady;
+      textureStatus.textContent = getCurrentItems().length ? tx.editorLoaded : tx.editorReady;
     }
 
     document.getElementById("huBtn").addEventListener("click", () => setLang("hu"));
@@ -1587,6 +1593,15 @@
       backFilesInput.files = backDT.files;
     }
 
+    function updateNodePosition(node, item, surface){
+      const base = Math.min(surface.clientWidth, surface.clientHeight) * 0.9 * (item.scale / 100);
+      node.style.width = `${base}px`;
+      node.style.height = `${base}px`;
+      node.style.left = `${item.x}%`;
+      node.style.top = `${item.y}%`;
+      node.style.transform = `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+    }
+
     function switchSide(side){
       state.currentSide = side;
       sceneFront.classList.toggle("hidden", side !== "front");
@@ -1601,7 +1616,7 @@
 
       renderDesigns();
       updateEditorControls();
-      textureStatus.textContent = items.length ? texts[currentLang()].editorLoaded : texts[currentLang()].editorReady;
+      textureStatus.textContent = items.length ? t("editorLoaded") : t("editorReady");
     }
 
     frontBtn.addEventListener("click", () => switchSide("front"));
@@ -1631,16 +1646,11 @@
       node.className = "design-item" + (item.id === state.selectedId ? " selected" : "");
       node.dataset.id = item.id;
 
-      const base = Math.min(surface.clientWidth, surface.clientHeight) * 0.9 * (item.scale / 100);
-      node.style.width = `${base}px`;
-      node.style.height = `${base}px`;
-      node.style.left = `${item.x}%`;
-      node.style.top = `${item.y}%`;
-      node.style.transform = `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+      updateNodePosition(node, item, surface);
 
       const img = document.createElement("img");
       img.src = item.src;
-      img.alt = "design";
+      img.alt = item.file ? item.file.name : "design";
       node.appendChild(img);
 
       node.addEventListener("click", (e) => {
@@ -1650,7 +1660,7 @@
         switchSide(side);
       });
 
-      makeDraggable(node, side, item.id);
+      makeDraggable(node, side, item.id, surface);
       return node;
     }
 
@@ -1697,7 +1707,7 @@
         const reader = new FileReader();
         reader.onload = function(ev){
           addDesignToCurrentSide(ev.target.result, file);
-          showStatus(texts[currentLang()].editorLoaded);
+          showStatus(t("editorLoaded"));
         };
         reader.readAsDataURL(file);
       });
@@ -1711,7 +1721,7 @@
     centerBtn.addEventListener("click", () => {
       const selected = getSelectedItem();
       if(!selected){
-        showStatus(texts[currentLang()].noImageSelected);
+        showStatus(t("noImageSelected"));
         return;
       }
 
@@ -1727,7 +1737,7 @@
     copyBtn.addEventListener("click", () => {
       const selected = getSelectedItem();
       if(!selected){
-        showStatus(texts[currentLang()].noImageToCopy);
+        showStatus(t("noImageToCopy"));
         return;
       }
 
@@ -1744,7 +1754,7 @@
       });
 
       renderDesigns();
-      showStatus(texts[currentLang()].editorCopied);
+      showStatus(t("editorCopied"));
     });
 
     clearBtn.addEventListener("click", () => {
@@ -1752,7 +1762,7 @@
       const index = items.findIndex(item => item.id === state.selectedId);
 
       if(index === -1){
-        showStatus(texts[currentLang()].noImageSelected);
+        showStatus(t("noImageSelected"));
         return;
       }
 
@@ -1761,7 +1771,7 @@
 
       renderDesigns();
       updateEditorControls();
-      showStatus(texts[currentLang()].editorCleared);
+      showStatus(t("editorCleared"));
     });
 
     sizeRange.addEventListener("input", () => {
@@ -1789,7 +1799,7 @@
 
       const selected = getSelectedItem();
       if(!selected){
-        showStatus(texts[currentLang()].noImageSelected);
+        showStatus(t("noImageSelected"));
         return;
       }
 
@@ -1800,7 +1810,7 @@
 
       renderDesigns();
       updateEditorControls();
-      showStatus(texts[currentLang()].editorLoaded);
+      showStatus(t("editorLoaded"));
     }
 
     presetChestBtn.addEventListener("click", () => applyPreset(38, 27, 26, 0, "front"));
@@ -1808,38 +1818,41 @@
     presetFullFrontBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "front"));
     presetFullBackBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "back"));
 
-    function makeDraggable(node, side, id){
+    function makeDraggable(node, side, id, surface){
       let dragging = false;
-      let surfaceRect = null;
 
       const start = (clientX, clientY) => {
         dragging = true;
         state.currentSide = side;
         state.selectedId = id;
         switchSide(side);
-        surfaceRect = (side === "front" ? frontSurface : backSurface).getBoundingClientRect();
         node.classList.add("dragging");
+        move(clientX, clientY);
       };
 
       const move = (clientX, clientY) => {
-        if(!dragging || !surfaceRect) return;
+        if(!dragging) return;
 
+        const rect = surface.getBoundingClientRect();
         const item = getSideItems(side).find(x => x.id === id);
         if(!item) return;
 
-        const x = ((clientX - surfaceRect.left) / surfaceRect.width) * 100;
-        const y = ((clientX - surfaceRect.top) / surfaceRect.height) * 100;
+        const x = ((clientX - rect.left) / rect.width) * 100;
+        const y = ((clientY - rect.top) / rect.height) * 100;
 
         item.x = Math.max(0, Math.min(100, x));
         item.y = Math.max(0, Math.min(100, y));
 
-        renderDesigns();
-        updateEditorControls();
+        updateNodePosition(node, item, surface);
+        updateHiddenFields();
       };
 
       const end = () => {
+        if(!dragging) return;
         dragging = false;
         node.classList.remove("dragging");
+        renderDesigns();
+        updateEditorControls();
       };
 
       node.addEventListener("mousedown", (e) => {
@@ -1851,14 +1864,14 @@
       window.addEventListener("mouseup", end);
 
       node.addEventListener("touchstart", (e) => {
-        const t = e.touches[0];
-        start(t.clientX, t.clientY);
+        const tch = e.touches[0];
+        start(tch.clientX, tch.clientY);
       }, { passive: true });
 
       window.addEventListener("touchmove", (e) => {
         if(!dragging) return;
-        const t = e.touches[0];
-        move(t.clientX, t.clientY);
+        const tch = e.touches[0];
+        move(tch.clientX, tch.clientY);
       }, { passive: true });
 
       window.addEventListener("touchend", end);
@@ -1894,6 +1907,8 @@
     optPremium.addEventListener("change", updatePrice);
 
     function updateHiddenFields(){
+      updatePrice();
+
       const payload = {
         lang: currentLang(),
         currentSide: state.currentSide,
@@ -1918,37 +1933,30 @@
       };
 
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
-      updatePrice();
       syncAttachmentInputs();
     }
 
-    offerForm.addEventListener("submit", () => {
-      const lang = currentLang();
-      const t = texts[lang];
-
+    offerForm.addEventListener("submit", function(e){
       clearFormMessage();
       updateHiddenFields();
 
       if(state.front.length === 0 && state.back.length === 0){
-        setFormMessage("error", t.noImageSelected);
-        event.preventDefault();
+        e.preventDefault();
+        setFormMessage("error", t("noDesignUploaded"));
         return;
       }
 
       state.isSubmitting = true;
       sendBtn.disabled = true;
-      setFormMessage("info", t.sendingMessage);
+      setFormMessage("info", t("sendingMessage"));
     });
 
     hiddenSubmitFrame.addEventListener("load", () => {
       if(!state.isSubmitting) return;
 
-      const lang = currentLang();
-      const t = texts[lang];
-
       state.isSubmitting = false;
       sendBtn.disabled = false;
-      setFormMessage("success", t.successMessage);
+      setFormMessage("success", t("successMessage"));
     });
 
     window.addEventListener("resize", renderDesigns);
@@ -1956,7 +1964,7 @@
     switchSide("front");
     setLang("hu");
     updatePrice();
-    showStatus(texts[currentLang()].editorReady);
+    showStatus(t("editorReady"));
   </script>
 </body>
 </html>
