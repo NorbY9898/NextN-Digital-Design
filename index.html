@@ -489,20 +489,6 @@
       color:#8e8e8e;
     }
 
-    .upload-line{
-      display:grid;
-      gap:10px;
-    }
-
-    .file-input{
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid #333;
-      background:#0b0b0b;
-      color:#ddd;
-    }
-
     .upload-split{
       display:grid;
       gap:12px;
@@ -527,6 +513,15 @@
       margin-top:6px;
       color:#8d8d8d;
       line-height:1.4;
+    }
+
+    .file-input{
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #333;
+      background:#0b0b0b;
+      color:#ddd;
     }
 
     .control-row{
@@ -1056,10 +1051,8 @@
                     class="file-input"
                     type="file"
                     id="frontDesignInput"
-                    name="front_designs[]"
                     accept="image/png,image/jpeg,image/webp"
                     multiple
-                    form="offerForm"
                   >
                   <small id="frontUploadHelp">Az elejére kerülő képek.</small>
                 </div>
@@ -1070,10 +1063,8 @@
                     class="file-input"
                     type="file"
                     id="backDesignInput"
-                    name="back_designs[]"
                     accept="image/png,image/jpeg,image/webp"
                     multiple
-                    form="offerForm"
                   >
                   <small id="backUploadHelp">A hátuljára kerülő képek.</small>
                 </div>
@@ -1237,22 +1228,13 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form
-        class="contact-form"
-        id="offerForm"
-        action="https://formsubmit.co/norbertnagy9898@yahoo.com"
-        method="POST"
-        enctype="multipart/form-data"
-      >
+      <form class="contact-form" id="offerForm" onsubmit="return false;">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
-        <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_next" id="hiddenNext" value="">
-        <input type="hidden" name="editor_data" id="hiddenEditorData">
-        <input type="hidden" name="selected_options" id="hiddenOptions">
-        <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
+        <input type="hidden" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
+        <input type="hidden" id="hiddenEditorData">
+        <input type="hidden" id="hiddenOptions">
+        <input type="hidden" id="hiddenEstimatedTotal">
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
@@ -1272,6 +1254,8 @@
   </footer>
 
   <script>
+    const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/norbertnagy9898@yahoo.com";
+
     const texts = {
       hu: {
         nav1: "Bemutató",
@@ -1344,6 +1328,7 @@
         sendingMessage: "Ajánlatkérés küldése folyamatban...",
         successMessage: "Az ajánlatkérés sikeresen elküldve.",
         errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
+        activationMessage: "A FormSubmit még nincs aktiválva. Nézd meg az aktiváló e-mailt.",
         frontUploadLabel: "Első designok",
         backUploadLabel: "Hátsó designok",
         frontUploadHelp: "Az elejére kerülő képek.",
@@ -1420,6 +1405,7 @@
         sendingMessage: "Cererea se trimite...",
         successMessage: "Cererea a fost trimisă cu succes.",
         errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
+        activationMessage: "Formularul FormSubmit nu este încă activat. Verifică emailul de activare.",
         frontUploadLabel: "Designuri față",
         backUploadLabel: "Designuri spate",
         frontUploadHelp: "Imaginile care merg pe partea din față.",
@@ -1438,7 +1424,8 @@
       selectedId: null,
       nextId: 1,
       front: [],
-      back: []
+      back: [],
+      sending: false
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1468,7 +1455,6 @@
     const sendBtn = document.getElementById("sendBtn");
     const formMessage = document.getElementById("formMessage");
     const hiddenSubject = document.getElementById("hiddenSubject");
-    const hiddenNext = document.getElementById("hiddenNext");
     const textureStatus = document.getElementById("textureStatus");
     const frontDesignInput = document.getElementById("frontDesignInput");
     const backDesignInput = document.getElementById("backDesignInput");
@@ -1613,20 +1599,12 @@
       return getCurrentItems().find(item => item.id === state.selectedId) || null;
     }
 
-    function mergeFilesIntoInput(input, filesToAdd){
-      const dt = new DataTransfer();
-      Array.from(input.files || []).forEach(file => dt.items.add(file));
-      Array.from(filesToAdd || []).forEach(file => dt.items.add(file));
-      input.files = dt.files;
+    function getAllItems(){
+      return [...state.front, ...state.back];
     }
 
-    function rebuildInputFromState(side){
-      const input = side === "front" ? frontDesignInput : backDesignInput;
-      const dt = new DataTransfer();
-      state[side].forEach(item => {
-        if(item.file) dt.items.add(item.file);
-      });
-      input.files = dt.files;
+    function getOriginalBySourceId(sourceId){
+      return getAllItems().find(item => item.id === sourceId && item.file);
     }
 
     function updateNodePosition(node, item, surface){
@@ -1684,7 +1662,7 @@
 
       const img = document.createElement("img");
       img.src = item.src;
-      img.alt = item.file ? item.file.name : "design";
+      img.alt = item.fileName || "design";
       node.appendChild(img);
 
       node.addEventListener("click", (e) => {
@@ -1712,40 +1690,54 @@
       updateHiddenFields();
     }
 
-    function addDesignToSide(side, src, file){
-      const newItem = {
-        id: state.nextId++,
+    function addOriginalItem(side, file, src){
+      const id = state.nextId++;
+      state[side].push({
+        id,
+        sourceId: id,
         src,
         file,
+        fileName: file.name,
         x: 50,
         y: 50,
         scale: 100,
         rotation: 0
-      };
-
-      state[side].push(newItem);
+      });
 
       if(state.currentSide === side){
-        state.selectedId = newItem.id;
+        state.selectedId = id;
       }
+    }
+
+    function addCopiedItem(targetSide, selected){
+      state[targetSide].push({
+        id: state.nextId++,
+        sourceId: selected.sourceId,
+        src: selected.src,
+        file: null,
+        fileName: selected.fileName || "",
+        x: selected.x,
+        y: selected.y,
+        scale: selected.scale,
+        rotation: selected.rotation
+      });
     }
 
     function processFilesForSide(side, files){
       if(!files || !files.length) return;
 
-      const input = side === "front" ? frontDesignInput : backDesignInput;
-      mergeFilesIntoInput(input, files);
-
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(ev){
-          addDesignToSide(side, ev.target.result, file);
+          addOriginalItem(side, file, ev.target.result);
+
           if(state.currentSide === side){
             renderDesigns();
             updateEditorControls();
           } else {
             updateHiddenFields();
           }
+
           showStatus(t("editorLoaded"));
         };
         reader.readAsDataURL(file);
@@ -1753,17 +1745,13 @@
     }
 
     frontDesignInput.addEventListener("change", (e) => {
-      const newFiles = Array.from(e.target.files).slice(state.front.length);
-      if(newFiles.length){
-        processFilesForSide("front", newFiles);
-      }
+      processFilesForSide("front", e.target.files);
+      e.target.value = "";
     });
 
     backDesignInput.addEventListener("change", (e) => {
-      const newFiles = Array.from(e.target.files).slice(state.back.length);
-      if(newFiles.length){
-        processFilesForSide("back", newFiles);
-      }
+      processFilesForSide("back", e.target.files);
+      e.target.value = "";
     });
 
     centerBtn.addEventListener("click", () => {
@@ -1790,39 +1778,32 @@
       }
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
-      const targetInput = targetSide === "front" ? frontDesignInput : backDesignInput;
-
-      if(selected.file){
-        mergeFilesIntoInput(targetInput, [selected.file]);
-      }
-
-      state[targetSide].push({
-        id: state.nextId++,
-        src: selected.src,
-        file: selected.file || null,
-        x: selected.x,
-        y: selected.y,
-        scale: selected.scale,
-        rotation: selected.rotation
-      });
-
+      addCopiedItem(targetSide, selected);
       renderDesigns();
       showStatus(t("editorCopied"));
     });
 
     clearBtn.addEventListener("click", () => {
       const items = getCurrentItems();
-      const index = items.findIndex(item => item.id === state.selectedId);
+      const selected = getSelectedItem();
 
-      if(index === -1){
+      if(!selected){
         showStatus(t("noImageSelected"));
         return;
       }
 
-      items.splice(index, 1);
-      rebuildInputFromState(state.currentSide);
+      if(selected.file){
+        state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
+        state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
+      } else {
+        const index = items.findIndex(item => item.id === selected.id);
+        if(index !== -1){
+          items.splice(index, 1);
+        }
+      }
 
-      state.selectedId = items.length ? (items[Math.max(0, index - 1)]?.id || items[items.length - 1].id) : null;
+      const currentItems = getCurrentItems();
+      state.selectedId = currentItems.length ? currentItems[currentItems.length - 1].id : null;
 
       renderDesigns();
       updateEditorControls();
@@ -1967,7 +1948,9 @@
         currentSide: state.currentSide,
         front: state.front.map(item => ({
           id: item.id,
-          name: item.file ? item.file.name : "",
+          sourceId: item.sourceId,
+          name: item.fileName || "",
+          hasRealFile: !!item.file,
           x: item.x,
           y: item.y,
           scale: item.scale,
@@ -1975,12 +1958,16 @@
         })),
         back: state.back.map(item => ({
           id: item.id,
-          name: item.file ? item.file.name : "",
+          sourceId: item.sourceId,
+          name: item.fileName || "",
+          hasRealFile: !!item.file,
           x: item.x,
           y: item.y,
           scale: item.scale,
           rotation: item.rotation
         })),
+        original_front_files: state.front.filter(item => item.file).map(item => item.fileName),
+        original_back_files: state.back.filter(item => item.file).map(item => item.fileName),
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
@@ -1988,43 +1975,94 @@
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
     }
 
-    offerForm.addEventListener("submit", function(e){
+    async function submitOffer(){
       clearFormMessage();
       updateHiddenFields();
 
-      if(state.front.length === 0 && state.back.length === 0){
-        e.preventDefault();
+      const name = document.getElementById("nameField").value.trim();
+      const email = document.getElementById("emailField").value.trim();
+      const phone = document.getElementById("phoneField").value.trim();
+      const message = document.getElementById("messageField").value.trim();
+
+      const originalFrontFiles = state.front.filter(item => item.file);
+      const originalBackFiles = state.back.filter(item => item.file);
+
+      if(!name || !email){
+        setFormMessage("error", t("errorMessage"));
+        return;
+      }
+
+      if(originalFrontFiles.length === 0 && originalBackFiles.length === 0){
         setFormMessage("error", t("noDesignUploaded"));
         return;
       }
 
-      hiddenNext.value = `${window.location.origin}${window.location.pathname}?sent=1&lang=${currentLang()}`;
-
+      if(state.sending) return;
+      state.sending = true;
       sendBtn.disabled = true;
       setFormMessage("info", t("sendingMessage"));
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("message", message);
+      formData.append("editor_data", document.getElementById("hiddenEditorData").value);
+      formData.append("selected_options", document.getElementById("hiddenOptions").value);
+      formData.append("estimated_total", document.getElementById("hiddenEstimatedTotal").value);
+      formData.append("_subject", hiddenSubject.value);
+      formData.append("_captcha", "false");
+      formData.append("_template", "table");
+
+      originalFrontFiles.forEach((item, index) => {
+        formData.append(`front_design_${index + 1}`, item.file, item.file.name);
+      });
+
+      originalBackFiles.forEach((item, index) => {
+        formData.append(`back_design_${index + 1}`, item.file, item.file.name);
+      });
+
+      try{
+        const response = await fetch(FORMSUBMIT_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json"
+          },
+          body: formData
+        });
+
+        let data = null;
+        try{
+          data = await response.json();
+        } catch(err){}
+
+        if(response.ok){
+          setFormMessage("success", t("successMessage"));
+        } else {
+          const msg = (data && data.message ? String(data.message).toLowerCase() : "");
+          if(msg.includes("activate")){
+            setFormMessage("error", t("activationMessage"));
+          } else {
+            setFormMessage("error", t("errorMessage"));
+          }
+        }
+      } catch(err){
+        setFormMessage("error", t("errorMessage"));
+      } finally{
+        state.sending = false;
+        sendBtn.disabled = false;
+      }
+    }
+
+    offerForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      submitOffer();
     });
-
-    (function handleReturn(){
-      const params = new URLSearchParams(window.location.search);
-      const sent = params.get("sent");
-      const lang = params.get("lang");
-
-      if(lang === "hu" || lang === "ro"){
-        setLang(lang);
-      } else {
-        setLang("hu");
-      }
-
-      if(sent === "1"){
-        setFormMessage("success", t("successMessage"));
-        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
-        window.history.replaceState({}, document.title, cleanUrl);
-      }
-    })();
 
     window.addEventListener("resize", renderDesigns);
 
     switchSide("front");
+    setLang("hu");
     updatePrice();
     showStatus(t("editorReady"));
   </script>
