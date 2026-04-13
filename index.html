@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nextgen Digital Design</title>
-  <meta name="description" content="Nextgen Digital Design - egyedi pólók prémium fekete-arany megjelenéssel." />
-
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <meta name="description" content="Nextgen Digital Design - egyedi pólótervező fekete-arany prémium stílusban." />
 
   <style>
     :root{
@@ -19,7 +17,7 @@
       --line:rgba(212,175,55,.20);
       --line-strong:rgba(212,175,55,.38);
       --shadow:0 20px 50px rgba(0,0,0,.45);
-      --max:1200px;
+      --max:1320px;
     }
 
     *{box-sizing:border-box}
@@ -29,7 +27,7 @@
       margin:0;
       font-family:Arial, Helvetica, sans-serif;
       background:
-        radial-gradient(circle at top, rgba(212,175,55,.12), transparent 30%),
+        radial-gradient(circle at top, rgba(212,175,55,.10), transparent 28%),
         linear-gradient(180deg, #050505 0%, #090909 100%);
       color:var(--text);
     }
@@ -55,7 +53,7 @@
       padding:18px 0;
       border-bottom:1px solid var(--line);
       background:#050505cc;
-      backdrop-filter:blur(8px);
+      backdrop-filter:blur(10px);
       flex-wrap:wrap;
     }
 
@@ -126,11 +124,11 @@
     }
 
     .hero{
-      padding:70px 0 50px;
+      padding:56px 0 42px;
       display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:34px;
-      align-items:center;
+      grid-template-columns:0.88fr 1.12fr;
+      gap:28px;
+      align-items:start;
     }
 
     .badge{
@@ -148,7 +146,7 @@
 
     .hero h1{
       margin:0;
-      font-size:clamp(38px, 7vw, 70px);
+      font-size:clamp(34px, 6vw, 64px);
       line-height:1.02;
       font-weight:900;
     }
@@ -209,8 +207,15 @@
       background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
       border:1px solid var(--line);
       border-radius:24px;
-      padding:24px;
+      padding:22px;
       box-shadow:var(--shadow);
+    }
+
+    .builder-layout{
+      display:grid;
+      grid-template-columns:1.04fr .96fr;
+      gap:18px;
+      align-items:start;
     }
 
     .preview-head{
@@ -218,7 +223,7 @@
       justify-content:space-between;
       align-items:center;
       gap:12px;
-      margin-bottom:16px;
+      margin-bottom:12px;
       flex-wrap:wrap;
     }
 
@@ -245,49 +250,314 @@
       background:rgba(212,175,55,.08);
     }
 
-    .model-wrap{
-      height:420px;
-      border:1px dashed var(--line-strong);
-      border-radius:18px;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at center, rgba(212,175,55,.08), transparent 45%),
-        linear-gradient(180deg, #151515, #090909);
-      position:relative;
-    }
-
-    model-viewer{
-      width:100%;
-      height:100%;
-      background:transparent;
-      --poster-color: transparent;
-    }
-
-    .model-fallback{
-      position:absolute;
-      inset:0;
+    .editor-topbar{
       display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:20px;
-      color:var(--muted);
-      pointer-events:none;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
     }
 
-    .design-switch{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .design-btn{
+    .tab-btn{
       border:1px solid #383838;
       background:#121212;
       color:#efefef;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover{
+      border-color:var(--line-strong);
+      color:var(--gold2);
+      background:rgba(212,175,55,.08);
+    }
+
+    .editor-stage{
+      position:relative;
+      height:680px;
+      border:1px dashed var(--line-strong);
+      border-radius:20px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at center, rgba(212,175,55,.07), transparent 46%),
+        linear-gradient(180deg, #161616, #090909);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .shirt-scene{
+      position:relative;
+      width:100%;
+      max-width:520px;
+      aspect-ratio:1 / 1.14;
+      user-select:none;
+    }
+
+    .mockup-wrap{
+      position:relative;
+      width:100%;
+      height:100%;
+    }
+
+    .shirt-photo{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      z-index:2;
+      pointer-events:none;
+      user-select:none;
+      filter:drop-shadow(0 18px 30px rgba(0,0,0,.40));
+    }
+
+    .design-surface{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:1;
+      overflow:hidden;
+    }
+
+    .design-surface.front{
+      top:9%;
+      width:72%;
+      height:82%;
+      clip-path:polygon(
+        17% 7%,
+        31% 0%,
+        43% 6%,
+        57% 6%,
+        69% 0%,
+        83% 7%,
+        100% 20%,
+        90% 35%,
+        81% 31%,
+        78% 100%,
+        22% 100%,
+        19% 31%,
+        10% 35%,
+        0% 20%
+      );
+      -webkit-clip-path:polygon(
+        17% 7%,
+        31% 0%,
+        43% 6%,
+        57% 6%,
+        69% 0%,
+        83% 7%,
+        100% 20%,
+        90% 35%,
+        81% 31%,
+        78% 100%,
+        22% 100%,
+        19% 31%,
+        10% 35%,
+        0% 20%
+      );
+    }
+
+    .design-surface.back{
+      top:9%;
+      width:72%;
+      height:82%;
+      clip-path:polygon(
+        17% 7%,
+        31% 0%,
+        43% 6%,
+        57% 6%,
+        69% 0%,
+        83% 7%,
+        100% 20%,
+        90% 35%,
+        81% 31%,
+        78% 100%,
+        22% 100%,
+        19% 31%,
+        10% 35%,
+        0% 20%
+      );
+      -webkit-clip-path:polygon(
+        17% 7%,
+        31% 0%,
+        43% 6%,
+        57% 6%,
+        69% 0%,
+        83% 7%,
+        100% 20%,
+        90% 35%,
+        81% 31%,
+        78% 100%,
+        22% 100%,
+        19% 31%,
+        10% 35%,
+        0% 20%
+      );
+    }
+
+    .design-surface::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border:2px dashed rgba(212,175,55,.42);
+      pointer-events:none;
+      z-index:8;
+      clip-path:inherit;
+      -webkit-clip-path:inherit;
+    }
+
+    .surface-label{
+      position:absolute;
+      top:10%;
+      left:50%;
+      transform:translateX(-50%);
+      font-size:11px;
+      color:var(--gold2);
+      background:rgba(0,0,0,.55);
+      padding:5px 10px;
+      border-radius:999px;
+      pointer-events:none;
+      z-index:9;
+      white-space:nowrap;
+    }
+
+    .design-item{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform-origin:center center;
+      cursor:grab;
+      touch-action:none;
+      user-select:none;
+      z-index:5;
+    }
+
+    .design-item.dragging{
+      cursor:grabbing;
+    }
+
+    .design-item img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      pointer-events:none;
+      user-select:none;
+      mix-blend-mode:multiply;
+      opacity:.92;
+      filter:
+        contrast(1.03)
+        saturate(1.02)
+        drop-shadow(0 1px 2px rgba(0,0,0,.08));
+    }
+
+    .design-item::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.10), transparent 35%),
+        linear-gradient(180deg, rgba(0,0,0,.08), transparent 30%, rgba(0,0,0,.10) 100%);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    .editor-controls{
+      display:grid;
+      gap:12px;
+    }
+
+    .sub-card{
+      background:linear-gradient(180deg, rgba(20,20,20,.98), rgba(10,10,10,.98));
+      border:1px solid rgba(212,175,55,.12);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .sub-title{
+      margin:0 0 12px;
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:#8e8e8e;
+    }
+
+    .upload-line{
+      display:grid;
+      gap:10px;
+    }
+
+    .file-input{
+      width:100%;
       padding:12px;
-      border-radius:14px;
+      border-radius:12px;
+      border:1px solid #333;
+      background:#0b0b0b;
+      color:#ddd;
+    }
+
+    .control-row{
+      display:grid;
+      grid-template-columns:112px 1fr 64px;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    .control-row:first-of-type{
+      margin-top:0;
+    }
+
+    .control-row label{
+      color:#ddd;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .control-row input[type="range"]{
+      width:100%;
+      accent-color:#d4af37;
+    }
+
+    .control-value{
+      text-align:right;
+      color:var(--gold2);
+      font-size:13px;
+    }
+
+    .editor-actions,
+    .preset-grid,
+    .option-grid{
+      display:grid;
+      gap:10px;
+    }
+
+    .editor-actions{
+      grid-template-columns:repeat(3,1fr);
+    }
+
+    .preset-grid{
+      grid-template-columns:repeat(2,1fr);
+    }
+
+    .small-btn,
+    .preset-btn{
+      border:1px solid #383838;
+      background:#121212;
+      color:#efefef;
+      padding:11px 14px;
+      border-radius:12px;
       text-align:center;
       font-size:14px;
       font-weight:700;
@@ -295,22 +565,73 @@
       transition:.2s ease;
     }
 
-    .design-btn:hover,
-    .design-btn.active{
+    .small-btn:hover,
+    .preset-btn:hover{
       border-color:var(--line-strong);
       color:var(--gold2);
       background:rgba(212,175,55,.08);
     }
 
-    .texture-status{
-      margin-top:12px;
-      min-height:20px;
-      color:var(--gold2);
+    .price-box{
+      display:grid;
+      gap:10px;
+    }
+
+    .price-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:#ddd;
       font-size:14px;
     }
 
+    .price-line strong{
+      color:var(--gold2);
+      font-size:18px;
+    }
+
+    .checkbox-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid #292929;
+      border-radius:12px;
+      background:#0f0f0f;
+    }
+
+    .checkbox-line label{
+      color:#ddd;
+      font-size:14px;
+      font-weight:700;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .checkbox-line small{
+      color:#8a8a8a;
+      font-weight:400;
+    }
+
+    .checkbox-line input{
+      width:18px;
+      height:18px;
+      accent-color:#d4af37;
+      flex:0 0 auto;
+    }
+
+    .texture-status{
+      min-height:20px;
+      color:var(--gold2);
+      font-size:14px;
+      line-height:1.5;
+    }
+
     .section{
-      padding:28px 0 10px;
+      padding:24px 0 10px;
     }
 
     .section-head{
@@ -400,13 +721,8 @@
       color:#000;
     }
 
-    .slider-arrow.left{
-      left:12px;
-    }
-
-    .slider-arrow.right{
-      right:12px;
-    }
+    .slider-arrow.left{ left:12px; }
+    .slider-arrow.right{ right:12px; }
 
     .slider-dots{
       position:absolute;
@@ -487,7 +803,7 @@
     }
 
     .contact-wrap{
-      padding:60px 0 70px;
+      padding:56px 0 70px;
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:22px;
@@ -540,6 +856,12 @@
       flex-wrap:wrap;
     }
 
+    @media(max-width:1180px){
+      .builder-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
     @media(max-width:980px){
       .hero,
       .grid,
@@ -551,6 +873,10 @@
       .top{
         align-items:flex-start;
       }
+
+      .editor-stage{
+        height:600px;
+      }
     }
 
     @media(max-width:640px){
@@ -558,17 +884,14 @@
         width:min(calc(100% - 22px), var(--max));
       }
 
-      .design-switch{
-        grid-template-columns:1fr;
-      }
-
       .hero p,
       .section-text{
         font-size:16px;
       }
 
-      .model-wrap{
-        height:340px;
+      .editor-stage{
+        height:500px;
+        padding:12px;
       }
 
       .image-frame{
@@ -578,6 +901,19 @@
       .slider-arrow{
         width:38px;
         height:38px;
+      }
+
+      .control-row{
+        grid-template-columns:1fr;
+      }
+
+      .control-value{
+        text-align:left;
+      }
+
+      .editor-actions,
+      .preset-grid{
+        grid-template-columns:1fr;
       }
     }
   </style>
@@ -598,8 +934,8 @@
       </nav>
 
       <div class="lang-switch">
-        <button class="lang-btn active" id="huBtn" onclick="setLang('hu')">HU</button>
-        <button class="lang-btn" id="roBtn" onclick="setLang('ro')">RO</button>
+        <button class="lang-btn active" id="huBtn" type="button" onclick="setLang('hu')">HU</button>
+        <button class="lang-btn" id="roBtn" type="button" onclick="setLang('ro')">RO</button>
       </div>
     </div>
   </header>
@@ -613,8 +949,8 @@
         <p id="subtitle">Modern dizájn. Prémium hatás. Azonnali figyelem.</p>
 
         <div class="hero-actions">
-          <a class="btn gold" href="#bemutato" id="btn1">Megnézem</a>
-          <a class="btn ghost" href="#kapcsolat" id="btn2">Ajánlatot kérek</a>
+          <a class="btn gold" href="#kapcsolat" id="btn1">Ajánlatot kérek</a>
+          <a class="btn ghost" href="#bemutato" id="btn2">Kollekció</a>
         </div>
       </div>
 
@@ -622,44 +958,134 @@
         <div class="preview-head">
           <div>
             <div class="preview-label" id="previewMini">Preview</div>
-            <h3 class="preview-title" id="preview">3D póló nézet</h3>
+            <h3 class="preview-title" id="preview">Pólótervező</h3>
           </div>
-          <div class="pill" id="soon">Forgasd</div>
+          <div class="pill" id="soon">Photo mockup editor</div>
         </div>
 
-        <div class="model-wrap">
-          <model-viewer
-            id="shirtModel"
-            src="polo.glb"
-            alt="3D póló modell"
-            camera-controls
-            touch-action="pan-y"
-            auto-rotate
-            rotation-per-second="20deg"
-            min-camera-orbit="auto auto 70%"
-            max-camera-orbit="auto auto 220%"
-            shadow-intensity="1"
-            exposure="1"
-            environment-image="neutral"
-            interaction-prompt="auto">
-          </model-viewer>
+        <div class="builder-layout">
+          <div>
+            <div class="editor-topbar">
+              <button class="tab-btn active" id="frontBtn" type="button">Elöl</button>
+              <button class="tab-btn" id="backBtn" type="button">Hátul</button>
+            </div>
 
-          <div class="model-fallback" id="modelFallback">
-            <div>
-              <div style="font-size:52px; margin-bottom:12px;">👕</div>
-              <div id="viewerTitle" style="font-size:24px; color:#fff; font-weight:700;">3D póló forgatható nézet</div>
-              <div id="viewerText" style="margin-top:10px;">Tedd az oldal mellé a <strong>polo.glb</strong>, <strong>design1.png</strong>, <strong>design2.png</strong> és <strong>design3.png</strong> fájlokat.</div>
+            <div class="editor-stage">
+              <div class="shirt-scene" id="sceneFront">
+                <div class="mockup-wrap">
+                  <div class="design-surface front" id="surfaceFront">
+                    <div class="surface-label" id="surfaceLabelFront">Teljes póló felület</div>
+                    <div class="design-item hidden" id="designFront">
+                      <img id="designFrontImg" alt="front design">
+                    </div>
+                  </div>
+                  <img class="shirt-photo" src="front-shirt.png" alt="Póló eleje">
+                </div>
+              </div>
+
+              <div class="shirt-scene hidden" id="sceneBack">
+                <div class="mockup-wrap">
+                  <div class="design-surface back" id="surfaceBack">
+                    <div class="surface-label" id="surfaceLabelBack">Teljes póló felület</div>
+                    <div class="design-item hidden" id="designBack">
+                      <img id="designBackImg" alt="back design">
+                    </div>
+                  </div>
+                  <img class="shirt-photo" src="back-shirt.png" alt="Póló háta">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="editor-controls">
+            <div class="sub-card">
+              <h4 class="sub-title" id="uploadTitle">Design feltöltése</h4>
+              <div class="upload-line">
+                <input class="file-input" type="file" id="designUpload" accept="image/png,image/jpeg,image/webp">
+              </div>
+              <div class="texture-status" id="textureStatus"></div>
+            </div>
+
+            <div class="sub-card">
+              <h4 class="sub-title" id="adjustTitle">Pozíció és méret</h4>
+
+              <div class="control-row">
+                <label for="sizeRange" id="sizeLabel">Méret</label>
+                <input type="range" id="sizeRange" min="20" max="260" value="100">
+                <div class="control-value" id="sizeValue">100%</div>
+              </div>
+
+              <div class="control-row">
+                <label for="rotateRange" id="rotateLabel">Forgatás</label>
+                <input type="range" id="rotateRange" min="-180" max="180" value="0">
+                <div class="control-value" id="rotateValue">0°</div>
+              </div>
+
+              <div class="editor-actions" style="margin-top:14px;">
+                <button class="small-btn" type="button" id="centerBtn">Középre</button>
+                <button class="small-btn" type="button" id="copyBtn">Másolás másik oldalra</button>
+                <button class="small-btn" type="button" id="clearBtn">Minta törlése</button>
+              </div>
+            </div>
+
+            <div class="sub-card">
+              <h4 class="sub-title" id="presetTitle">Gyors elhelyezés</h4>
+              <div class="preset-grid">
+                <button class="preset-btn" type="button" id="presetChestBtn">Bal mellkas</button>
+                <button class="preset-btn" type="button" id="presetCenterBtn">Közép</button>
+                <button class="preset-btn" type="button" id="presetFullFrontBtn">Teljes eleje</button>
+                <button class="preset-btn" type="button" id="presetFullBackBtn">Teljes hátulja</button>
+              </div>
+            </div>
+
+            <div class="sub-card">
+              <h4 class="sub-title" id="optionsTitle">Opciók</h4>
+              <div class="option-grid">
+                <div class="checkbox-line">
+                  <label for="optFront">
+                    <span id="optFrontText">Első nyomás</span>
+                    <small id="optFrontSub">Póló elejére</small>
+                  </label>
+                  <input type="checkbox" id="optFront" checked>
+                </div>
+
+                <div class="checkbox-line">
+                  <label for="optBack">
+                    <span id="optBackText">Hátsó nyomás</span>
+                    <small id="optBackSub">Póló hátára</small>
+                  </label>
+                  <input type="checkbox" id="optBack">
+                </div>
+
+                <div class="checkbox-line">
+                  <label for="optPremium">
+                    <span id="optPremiumText">Prémium nyomás</span>
+                    <small id="optPremiumSub">Erősebb anyag / jobb fedés</small>
+                  </label>
+                  <input type="checkbox" id="optPremium">
+                </div>
+              </div>
+            </div>
+
+            <div class="sub-card">
+              <h4 class="sub-title" id="priceTitle">Becsült ár</h4>
+              <div class="price-box">
+                <div class="price-line">
+                  <span id="basePriceText">Alap póló</span>
+                  <span id="basePriceValue">55 RON</span>
+                </div>
+                <div class="price-line">
+                  <span id="extraPriceText">Nyomás / extra</span>
+                  <span id="extraPriceValue">0 RON</span>
+                </div>
+                <div class="price-line">
+                  <span id="totalPriceText">Végösszeg</span>
+                  <strong id="totalPriceValue">55 RON</strong>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="design-switch">
-          <button class="design-btn active" id="designBtn1" onclick="setTexture('design1.png', this)">Design 1</button>
-          <button class="design-btn" id="designBtn2" onclick="setTexture('design2.png', this)">Design 2</button>
-          <button class="design-btn" id="designBtn3" onclick="setTexture('design3.png', this)">Design 3</button>
-        </div>
-
-        <div class="texture-status" id="textureStatus"></div>
       </div>
     </section>
 
@@ -667,7 +1093,7 @@
       <div class="section-head">
         <div class="section-tag" id="showcaseTag">Bemutató</div>
         <h2 class="section-title" id="showcaseTitle">Mutasd meg stílusosan</h2>
-        <p class="section-text" id="showcaseText">Kiemelt pólómodellek, erős vizuális elemek és prémium hangulat.</p>
+        <p class="section-text" id="showcaseText">Tölts fel mintát, helyezd el a pólón, és a vevő azonnal látja az előnézetet elöl vagy hátul.</p>
       </div>
 
       <div class="grid">
@@ -741,16 +1167,29 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST">
+      <form class="contact-form" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST" enctype="multipart/form-data">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
         <input type="hidden" name="_subject" value="Új érdeklődés - Nextgen Digital Design">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="table">
 
-        <input class="field" type="text" id="nameField" name="name" placeholder="Név">
-        <input class="field" type="email" id="emailField" name="email" placeholder="E-mail">
+        <input type="hidden" name="editor_side" id="hiddenSide">
+        <input type="hidden" name="front_x" id="hiddenFrontX">
+        <input type="hidden" name="front_y" id="hiddenFrontY">
+        <input type="hidden" name="front_scale" id="hiddenFrontScale">
+        <input type="hidden" name="front_rotation" id="hiddenFrontRotation">
+        <input type="hidden" name="back_x" id="hiddenBackX">
+        <input type="hidden" name="back_y" id="hiddenBackY">
+        <input type="hidden" name="back_scale" id="hiddenBackScale">
+        <input type="hidden" name="back_rotation" id="hiddenBackRotation">
+        <input type="hidden" name="selected_options" id="hiddenOptions">
+        <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
+
+        <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
+        <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
         <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
+        <input class="field" type="file" id="formDesignFile" name="design_file" accept="image/png,image/jpeg,image/webp">
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
         <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
       </form>
@@ -772,16 +1211,14 @@
         badge: "Next-N stílus • fekete & arany",
         title: 'Egyedi pólók. <span>Erős megjelenés.</span>',
         subtitle: "Modern dizájn. Prémium hatás. Azonnali figyelem.",
-        btn1: "Megnézem",
-        btn2: "Ajánlatot kérek",
+        btn1: "Ajánlatot kérek",
+        btn2: "Kollekció",
         previewMini: "Preview",
-        preview: "3D póló nézet",
-        soon: "Forgasd",
-        viewerTitle: "3D póló forgatható nézet",
-        viewerText: "Tedd az oldal mellé a polo.glb, design1.png, design2.png és design3.png fájlokat.",
+        preview: "Pólótervező",
+        soon: "Photo mockup editor",
         showcaseTag: "Bemutató",
         showcaseTitle: "Mutasd meg stílusosan",
-        showcaseText: "Kiemelt pólómodellek, erős vizuális elemek és prémium hangulat.",
+        showcaseText: "Tölts fel mintát, helyezd el a pólón, és a vevő azonnal látja az előnézetet elöl vagy hátul.",
         show1Title: "Prémium modell 1",
         show1Text: "Tiszta, erős megjelenés a kiemelt termékedhez.",
         show2Title: "Prémium modell 2",
@@ -808,13 +1245,38 @@
         sendBtn: "Ajánlatkérés elküldése",
         footer1: "© 2026 Nextgen Digital Design. Minden jog fenntartva.",
         footer2: "Prémium megjelenés egyedi pólókhoz.",
-        designBtn1: "Design 1",
-        designBtn2: "Design 2",
-        designBtn3: "Design 3",
-        textureOk: "A design rákerült a pólóra.",
-        textureFail: "A design nem került rá. Valószínűleg a polo.glb nincs még jól előkészítve textúrához."
+        frontBtn: "Elöl",
+        backBtn: "Hátul",
+        sizeLabel: "Méret",
+        rotateLabel: "Forgatás",
+        centerBtn: "Középre",
+        copyBtn: "Másolás másik oldalra",
+        clearBtn: "Minta törlése",
+        surfaceLabel: "Teljes póló felület",
+        editorReady: "Tölts fel egy képet, majd húzd a pólóra.",
+        editorLoaded: "A minta betöltve. Húzhatod, méretezheted és forgathatod.",
+        editorCleared: "A minta törölve erről az oldalról.",
+        editorCopied: "A minta átmásolva a másik oldalra.",
+        noImageToCopy: "Nincs feltöltött minta, amit másolni lehetne.",
+        uploadTitle: "Design feltöltése",
+        adjustTitle: "Pozíció és méret",
+        presetTitle: "Gyors elhelyezés",
+        optionsTitle: "Opciók",
+        priceTitle: "Becsült ár",
+        presetChestBtn: "Bal mellkas",
+        presetCenterBtn: "Közép",
+        presetFullFrontBtn: "Teljes eleje",
+        presetFullBackBtn: "Teljes hátulja",
+        optFrontText: "Első nyomás",
+        optFrontSub: "Póló elejére",
+        optBackText: "Hátsó nyomás",
+        optBackSub: "Póló hátára",
+        optPremiumText: "Prémium nyomás",
+        optPremiumSub: "Erősebb anyag / jobb fedés",
+        basePriceText: "Alap póló",
+        extraPriceText: "Nyomás / extra",
+        totalPriceText: "Végösszeg"
       },
-
       ro: {
         nav1: "Prezentare",
         nav2: "Colecție",
@@ -822,16 +1284,14 @@
         badge: "Stil Next-N • negru & auriu",
         title: 'Tricouri personalizate. <span>Impact vizual puternic.</span>',
         subtitle: "Design modern. Aspect premium. Atenție instantă.",
-        btn1: "Vezi",
-        btn2: "Cere ofertă",
+        btn1: "Cere ofertă",
+        btn2: "Colecție",
         previewMini: "Preview",
-        preview: "Vizualizare tricou 3D",
-        soon: "Rotește",
-        viewerTitle: "Vizualizare 3D rotativă",
-        viewerText: "Pune fișierele polo.glb, design1.png, design2.png și design3.png lângă pagină.",
+        preview: "Configurator tricou",
+        soon: "Editor mockup foto",
         showcaseTag: "Prezentare",
         showcaseTitle: "Arată totul cu stil",
-        showcaseText: "Modele evidențiate, elemente vizuale puternice și atmosferă premium.",
+        showcaseText: "Încarcă designul, așază-l pe tricou și clientul vede instant previzualizarea față sau spate.",
         show1Title: "Model premium 1",
         show1Text: "Aspect curat și puternic pentru produsul tău principal.",
         show2Title: "Model premium 2",
@@ -858,13 +1318,43 @@
         sendBtn: "Trimite cererea",
         footer1: "© 2026 Nextgen Digital Design. Toate drepturile rezervate.",
         footer2: "Aspect premium pentru tricouri personalizate.",
-        designBtn1: "Design 1",
-        designBtn2: "Design 2",
-        designBtn3: "Design 3",
-        textureOk: "Designul a fost aplicat pe tricou.",
-        textureFail: "Designul nu a fost aplicat. Probabil polo.glb nu este încă pregătit corect pentru textură."
+        frontBtn: "Față",
+        backBtn: "Spate",
+        sizeLabel: "Mărime",
+        rotateLabel: "Rotire",
+        centerBtn: "Centrează",
+        copyBtn: "Copiază pe cealaltă parte",
+        clearBtn: "Șterge designul",
+        surfaceLabel: "Toată suprafața tricoului",
+        editorReady: "Încarcă o imagine, apoi mut-o pe tricou.",
+        editorLoaded: "Designul a fost încărcat. Îl poți muta, redimensiona și roti.",
+        editorCleared: "Designul a fost șters de pe această parte.",
+        editorCopied: "Designul a fost copiat pe cealaltă parte.",
+        noImageToCopy: "Nu există un design încărcat pentru copiere.",
+        uploadTitle: "Încarcă designul",
+        adjustTitle: "Poziție și mărime",
+        presetTitle: "Poziții rapide",
+        optionsTitle: "Opțiuni",
+        priceTitle: "Preț estimat",
+        presetChestBtn: "Piept stânga",
+        presetCenterBtn: "Centru",
+        presetFullFrontBtn: "Față completă",
+        presetFullBackBtn: "Spate complet",
+        optFrontText: "Print față",
+        optFrontSub: "Pe partea din față",
+        optBackText: "Print spate",
+        optBackSub: "Pe partea din spate",
+        optPremiumText: "Print premium",
+        optPremiumSub: "Material mai bun / acoperire mai bună",
+        basePriceText: "Tricou de bază",
+        extraPriceText: "Print / extra",
+        totalPriceText: "Total"
       }
     };
+
+    function currentLang(){
+      return document.documentElement.lang === "ro" ? "ro" : "hu";
+    }
 
     function setLang(lang){
       const t = texts[lang];
@@ -887,9 +1377,14 @@
         }
       }
 
+      document.getElementById("surfaceLabelFront").textContent = t.surfaceLabel;
+      document.getElementById("surfaceLabelBack").textContent = t.surfaceLabel;
+      document.getElementById("textureStatus").textContent = state.imageDataUrl ? t.editorLoaded : t.editorReady;
+
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
       document.getElementById("roBtn").classList.toggle("active", lang === "ro");
+      updatePrice();
     }
 
     const sliders = {
@@ -920,7 +1415,6 @@
       const slider = sliders[name];
       const dotsWrap = document.getElementById(slider.dotsId);
       dotsWrap.innerHTML = "";
-
       slider.images.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "slider-dot" + (i === slider.index ? " active" : "");
@@ -933,7 +1427,6 @@
       const slider = sliders[name];
       const img = document.getElementById(slider.imgId);
       img.style.opacity = "0";
-
       setTimeout(() => {
         img.src = slider.images[slider.index];
         img.style.opacity = "1";
@@ -988,58 +1481,364 @@
     initSlider("center");
     initSlider("right");
 
-    const model = document.getElementById("shirtModel");
-    const fallback = document.getElementById("modelFallback");
+    const state = {
+      currentSide: "front",
+      imageDataUrl: "",
+      front: { x: 50, y: 50, scale: 100, rotation: 0, hasImage: false },
+      back:  { x: 50, y: 50, scale: 100, rotation: 0, hasImage: false }
+    };
+
+    const sceneFront = document.getElementById("sceneFront");
+    const sceneBack = document.getElementById("sceneBack");
+    const frontBtn = document.getElementById("frontBtn");
+    const backBtn = document.getElementById("backBtn");
+    const sizeRange = document.getElementById("sizeRange");
+    const rotateRange = document.getElementById("rotateRange");
+    const sizeValue = document.getElementById("sizeValue");
+    const rotateValue = document.getElementById("rotateValue");
+    const designUpload = document.getElementById("designUpload");
+    const formDesignFile = document.getElementById("formDesignFile");
     const textureStatus = document.getElementById("textureStatus");
+    const centerBtn = document.getElementById("centerBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const clearBtn = document.getElementById("clearBtn");
 
-    model.addEventListener("load", () => {
-      fallback.style.display = "none";
-    });
+    const presetChestBtn = document.getElementById("presetChestBtn");
+    const presetCenterBtn = document.getElementById("presetCenterBtn");
+    const presetFullFrontBtn = document.getElementById("presetFullFrontBtn");
+    const presetFullBackBtn = document.getElementById("presetFullBackBtn");
 
-    model.addEventListener("error", () => {
-      fallback.style.display = "flex";
-    });
+    const optFront = document.getElementById("optFront");
+    const optBack = document.getElementById("optBack");
+    const optPremium = document.getElementById("optPremium");
 
-    function currentLang(){
-      return document.documentElement.lang === "ro" ? "ro" : "hu";
+    const basePriceValue = document.getElementById("basePriceValue");
+    const extraPriceValue = document.getElementById("extraPriceValue");
+    const totalPriceValue = document.getElementById("totalPriceValue");
+
+    const frontSurface = document.getElementById("surfaceFront");
+    const backSurface = document.getElementById("surfaceBack");
+    const frontItem = document.getElementById("designFront");
+    const backItem = document.getElementById("designBack");
+    const frontImg = document.getElementById("designFrontImg");
+    const backImg = document.getElementById("designBackImg");
+
+    function updateEditorValues(){
+      const s = state[state.currentSide];
+      sizeRange.value = s.scale;
+      rotateRange.value = s.rotation;
+      sizeValue.textContent = `${s.scale}%`;
+      rotateValue.textContent = `${s.rotation}°`;
     }
 
-    function setActiveDesignButton(buttonEl){
-      document.querySelectorAll(".design-btn").forEach(btn => btn.classList.remove("active"));
-      if(buttonEl) buttonEl.classList.add("active");
-    }
+    function applyStateToSide(side){
+      const s = state[side];
+      const item = side === "front" ? frontItem : backItem;
+      const img = side === "front" ? frontImg : backImg;
+      const surface = side === "front" ? frontSurface : backSurface;
 
-    async function setTexture(imagePath, buttonEl){
-      const lang = currentLang();
-
-      try{
-        await model.updateComplete;
-
-        if(!model.model || !model.model.materials || model.model.materials.length === 0){
-          throw new Error("No materials found");
-        }
-
-        const material = model.model.materials[0];
-
-        if(!material.pbrMetallicRoughness){
-          throw new Error("No PBR material");
-        }
-
-        const texture = await model.createTexture(imagePath);
-
-        if(material.pbrMetallicRoughness.baseColorTexture){
-          material.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
-        } else {
-          material.pbrMetallicRoughness.setBaseColorFactor([1,1,1,1]);
-        }
-
-        textureStatus.textContent = texts[lang].textureOk;
-        setActiveDesignButton(buttonEl);
-      } catch (err){
-        console.error(err);
-        textureStatus.textContent = texts[lang].textureFail;
+      if(s.hasImage && state.imageDataUrl){
+        img.src = state.imageDataUrl;
+        item.classList.remove("hidden");
+      } else {
+        item.classList.add("hidden");
       }
+
+      const surfaceW = surface.clientWidth;
+      const surfaceH = surface.clientHeight;
+      const base = Math.min(surfaceW, surfaceH) * 0.9 * (s.scale / 100);
+
+      item.style.width = `${base}px`;
+      item.style.height = `${base}px`;
+      item.style.left = `${s.x}%`;
+      item.style.top = `${s.y}%`;
+      item.style.transform = `translate(-50%, -50%) rotate(${s.rotation}deg)`;
     }
+
+    function applyAllStates(){
+      applyStateToSide("front");
+      applyStateToSide("back");
+      updateHiddenFields();
+    }
+
+    function switchSide(side){
+      state.currentSide = side;
+      sceneFront.classList.toggle("hidden", side !== "front");
+      sceneBack.classList.toggle("hidden", side !== "back");
+      frontBtn.classList.toggle("active", side === "front");
+      backBtn.classList.toggle("active", side === "back");
+      updateEditorValues();
+      applyAllStates();
+    }
+
+    frontBtn.addEventListener("click", () => switchSide("front"));
+    backBtn.addEventListener("click", () => switchSide("back"));
+
+    function showStatus(text){
+      textureStatus.textContent = text;
+    }
+
+    designUpload.addEventListener("change", handleFileInput);
+    formDesignFile.addEventListener("change", syncFromFormFile);
+
+    function handleFileInput(e){
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      if(formDesignFile.files.length === 0){
+        trySyncFileInput(designUpload, formDesignFile);
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        state.imageDataUrl = ev.target.result;
+        state.front.hasImage = true;
+        state.back.hasImage = false;
+        frontImg.src = state.imageDataUrl;
+        backImg.src = state.imageDataUrl;
+        centerCurrent();
+        switchSide("front");
+        showStatus(texts[currentLang()].editorLoaded);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function syncFromFormFile(e){
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      if(designUpload.files.length === 0){
+        trySyncFileInput(formDesignFile, designUpload);
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        state.imageDataUrl = ev.target.result;
+        state.front.hasImage = true;
+        state.back.hasImage = false;
+        frontImg.src = state.imageDataUrl;
+        backImg.src = state.imageDataUrl;
+        centerCurrent();
+        switchSide("front");
+        showStatus(texts[currentLang()].editorLoaded);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function trySyncFileInput(from, to){
+      try{
+        const dt = new DataTransfer();
+        if(from.files && from.files[0]){
+          dt.items.add(from.files[0]);
+          to.files = dt.files;
+        }
+      } catch(e){}
+    }
+
+    function centerCurrent(){
+      const s = state[state.currentSide];
+      s.x = 50;
+      s.y = 50;
+      s.scale = 100;
+      s.rotation = 0;
+      updateEditorValues();
+      applyAllStates();
+    }
+
+    function setPresetChest(){
+      state.currentSide = "front";
+      state.front.x = 38;
+      state.front.y = 27;
+      state.front.scale = 26;
+      state.front.rotation = 0;
+      state.front.hasImage = !!state.imageDataUrl;
+      switchSide("front");
+      showStatus(texts[currentLang()].editorLoaded);
+    }
+
+    function setPresetCenter(){
+      const s = state[state.currentSide];
+      s.x = 50;
+      s.y = 42;
+      s.scale = 48;
+      s.rotation = 0;
+      s.hasImage = !!state.imageDataUrl || s.hasImage;
+      updateEditorValues();
+      applyAllStates();
+      showStatus(texts[currentLang()].editorLoaded);
+    }
+
+    function setPresetFullFront(){
+      state.front.x = 50;
+      state.front.y = 52;
+      state.front.scale = 92;
+      state.front.rotation = 0;
+      state.front.hasImage = !!state.imageDataUrl || state.front.hasImage;
+      switchSide("front");
+      showStatus(texts[currentLang()].editorLoaded);
+    }
+
+    function setPresetFullBack(){
+      state.back.x = 50;
+      state.back.y = 52;
+      state.back.scale = 92;
+      state.back.rotation = 0;
+      state.back.hasImage = !!state.imageDataUrl || state.back.hasImage;
+      switchSide("back");
+      showStatus(texts[currentLang()].editorLoaded);
+    }
+
+    presetChestBtn.addEventListener("click", setPresetChest);
+    presetCenterBtn.addEventListener("click", setPresetCenter);
+    presetFullFrontBtn.addEventListener("click", setPresetFullFront);
+    presetFullBackBtn.addEventListener("click", setPresetFullBack);
+
+    centerBtn.addEventListener("click", centerCurrent);
+
+    copyBtn.addEventListener("click", () => {
+      if(!state.imageDataUrl){
+        showStatus(texts[currentLang()].noImageToCopy);
+        return;
+      }
+
+      const from = state.currentSide;
+      const to = from === "front" ? "back" : "front";
+
+      state[to] = {
+        x: state[from].x,
+        y: state[from].y,
+        scale: state[from].scale,
+        rotation: state[from].rotation,
+        hasImage: state[from].hasImage
+      };
+
+      applyAllStates();
+      showStatus(texts[currentLang()].editorCopied);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      const s = state[state.currentSide];
+      s.hasImage = false;
+      applyAllStates();
+      showStatus(texts[currentLang()].editorCleared);
+    });
+
+    sizeRange.addEventListener("input", () => {
+      state[state.currentSide].scale = Number(sizeRange.value);
+      sizeValue.textContent = `${sizeRange.value}%`;
+      applyAllStates();
+    });
+
+    rotateRange.addEventListener("input", () => {
+      state[state.currentSide].rotation = Number(rotateRange.value);
+      rotateValue.textContent = `${rotateRange.value}°`;
+      applyAllStates();
+    });
+
+    function makeDraggable(item, side){
+      let dragging = false;
+      let surfaceRect = null;
+
+      const start = (clientX, clientY) => {
+        if((side === "front" && !state.front.hasImage) || (side === "back" && !state.back.hasImage)) return;
+        dragging = true;
+        state.currentSide = side;
+        switchSide(side);
+        surfaceRect = (side === "front" ? frontSurface : backSurface).getBoundingClientRect();
+        item.classList.add("dragging");
+      };
+
+      const move = (clientX, clientY) => {
+        if(!dragging || !surfaceRect) return;
+        const s = state[side];
+        const x = ((clientX - surfaceRect.left) / surfaceRect.width) * 100;
+        const y = ((clientY - surfaceRect.top) / surfaceRect.height) * 100;
+        s.x = Math.max(0, Math.min(100, x));
+        s.y = Math.max(0, Math.min(100, y));
+        applyAllStates();
+      };
+
+      const end = () => {
+        dragging = false;
+        item.classList.remove("dragging");
+      };
+
+      item.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        start(e.clientX, e.clientY);
+      });
+
+      window.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
+      window.addEventListener("mouseup", end);
+
+      item.addEventListener("touchstart", (e) => {
+        const t = e.touches[0];
+        start(t.clientX, t.clientY);
+      }, { passive: true });
+
+      window.addEventListener("touchmove", (e) => {
+        if(!dragging) return;
+        const t = e.touches[0];
+        move(t.clientX, t.clientY);
+      }, { passive: true });
+
+      window.addEventListener("touchend", end);
+    }
+
+    makeDraggable(frontItem, "front");
+    makeDraggable(backItem, "back");
+
+    function updatePrice(){
+      const base = 55;
+      let extra = 0;
+
+      if(optFront.checked) extra += 20;
+      if(optBack.checked) extra += 20;
+      if(optPremium.checked) extra += 18;
+
+      const total = base + extra;
+
+      basePriceValue.textContent = `${base} RON`;
+      extraPriceValue.textContent = `${extra} RON`;
+      totalPriceValue.textContent = `${total} RON`;
+
+      document.getElementById("hiddenEstimatedTotal").value = `${total} RON`;
+
+      const lang = currentLang();
+      const options = [];
+      if(optFront.checked) options.push(lang === "ro" ? "Print față" : "Első nyomás");
+      if(optBack.checked) options.push(lang === "ro" ? "Print spate" : "Hátsó nyomás");
+      if(optPremium.checked) options.push(lang === "ro" ? "Print premium" : "Prémium nyomás");
+      document.getElementById("hiddenOptions").value = options.join(", ");
+    }
+
+    optFront.addEventListener("change", updatePrice);
+    optBack.addEventListener("change", updatePrice);
+    optPremium.addEventListener("change", updatePrice);
+
+    function updateHiddenFields(){
+      document.getElementById("hiddenSide").value = state.currentSide;
+      document.getElementById("hiddenFrontX").value = state.front.x.toFixed(2);
+      document.getElementById("hiddenFrontY").value = state.front.y.toFixed(2);
+      document.getElementById("hiddenFrontScale").value = state.front.scale;
+      document.getElementById("hiddenFrontRotation").value = state.front.rotation;
+      document.getElementById("hiddenBackX").value = state.back.x.toFixed(2);
+      document.getElementById("hiddenBackY").value = state.back.y.toFixed(2);
+      document.getElementById("hiddenBackScale").value = state.back.scale;
+      document.getElementById("hiddenBackRotation").value = state.back.rotation;
+      updatePrice();
+    }
+
+    window.addEventListener("resize", applyAllStates);
+
+    document.querySelector(".contact-form").addEventListener("submit", () => {
+      updateHiddenFields();
+    });
+
+    switchSide("front");
+    setLang("hu");
+    updatePrice();
+    showStatus(texts[currentLang()].editorReady);
   </script>
 </body>
 </html>
