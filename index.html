@@ -503,6 +503,32 @@
       color:#ddd;
     }
 
+    .upload-split{
+      display:grid;
+      gap:12px;
+    }
+
+    .upload-mini{
+      padding:12px;
+      border:1px solid rgba(212,175,55,.12);
+      border-radius:14px;
+      background:#0d0d0d;
+    }
+
+    .upload-mini-title{
+      font-size:13px;
+      font-weight:700;
+      color:#fff;
+      margin-bottom:8px;
+    }
+
+    .upload-mini small{
+      display:block;
+      margin-top:6px;
+      color:#8d8d8d;
+      line-height:1.4;
+    }
+
     .control-row{
       display:grid;
       grid-template-columns:112px 1fr 64px;
@@ -872,14 +898,6 @@
       flex-wrap:wrap;
     }
 
-    .hidden-file-inputs{
-      display:none;
-    }
-
-    iframe[name="hiddenSubmitFrame"]{
-      display:none;
-    }
-
     @media(max-width:1180px){
       .builder-layout{
         grid-template-columns:1fr;
@@ -952,8 +970,6 @@
   </style>
 </head>
 <body>
-
-  <iframe name="hiddenSubmitFrame" id="hiddenSubmitFrame"></iframe>
 
   <header class="container top">
     <div class="brand-wrap">
@@ -1032,9 +1048,37 @@
           <div class="editor-controls">
             <div class="sub-card">
               <h4 class="sub-title" id="uploadTitle">Design feltöltése</h4>
-              <div class="upload-line">
-                <input class="file-input" type="file" id="designUpload" accept="image/png,image/jpeg,image/webp" multiple>
+
+              <div class="upload-split">
+                <div class="upload-mini">
+                  <div class="upload-mini-title" id="frontUploadLabel">Első designok</div>
+                  <input
+                    class="file-input"
+                    type="file"
+                    id="frontDesignInput"
+                    name="front_designs[]"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    form="offerForm"
+                  >
+                  <small id="frontUploadHelp">Az elejére kerülő képek.</small>
+                </div>
+
+                <div class="upload-mini">
+                  <div class="upload-mini-title" id="backUploadLabel">Hátsó designok</div>
+                  <input
+                    class="file-input"
+                    type="file"
+                    id="backDesignInput"
+                    name="back_designs[]"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    form="offerForm"
+                  >
+                  <small id="backUploadHelp">A hátuljára kerülő képek.</small>
+                </div>
               </div>
+
               <div class="texture-status" id="textureStatus"></div>
             </div>
 
@@ -1199,21 +1243,16 @@
         action="https://formsubmit.co/norbertnagy9898@yahoo.com"
         method="POST"
         enctype="multipart/form-data"
-        target="hiddenSubmitFrame"
       >
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
         <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" id="hiddenNext" value="">
         <input type="hidden" name="editor_data" id="hiddenEditorData">
         <input type="hidden" name="selected_options" id="hiddenOptions">
         <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
-
-        <div class="hidden-file-inputs">
-          <input type="file" id="frontFilesInput" name="front_designs[]" multiple>
-          <input type="file" id="backFilesInput" name="back_designs[]" multiple>
-        </div>
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
@@ -1277,8 +1316,8 @@
         copyBtn: "Másolás másik oldalra",
         clearBtn: "Kijelölt törlése",
         surfaceLabel: "Teljes póló felület",
-        editorReady: "Válassz oldalt, majd tölts fel egy vagy több képet.",
-        editorLoaded: "A design feltöltve az aktuális oldalra.",
+        editorReady: "Tölts fel első vagy hátsó designokat, majd válaszd ki és helyezd el őket.",
+        editorLoaded: "A design feltöltve.",
         editorCleared: "A kijelölt design törölve.",
         editorCopied: "A kijelölt design átmásolva a másik oldalra.",
         noImageToCopy: "Nincs kijelölt design a másoláshoz.",
@@ -1305,7 +1344,10 @@
         sendingMessage: "Ajánlatkérés küldése folyamatban...",
         successMessage: "Az ajánlatkérés sikeresen elküldve.",
         errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
-        activationMessage: "A form még nincs aktiválva. Nézd meg a FormSubmit e-mailt, és aktiváld az űrlapot."
+        frontUploadLabel: "Első designok",
+        backUploadLabel: "Hátsó designok",
+        frontUploadHelp: "Az elejére kerülő képek.",
+        backUploadHelp: "A hátuljára kerülő képek."
       },
       ro: {
         nav1: "Prezentare",
@@ -1350,8 +1392,8 @@
         copyBtn: "Copiază pe cealaltă parte",
         clearBtn: "Șterge selectatul",
         surfaceLabel: "Toată suprafața tricoului",
-        editorReady: "Alege partea, apoi încarcă una sau mai multe imagini.",
-        editorLoaded: "Designul a fost încărcat pe partea curentă.",
+        editorReady: "Încarcă designuri pentru față sau spate, apoi selectează și poziționează.",
+        editorLoaded: "Designul a fost încărcat.",
         editorCleared: "Designul selectat a fost șters.",
         editorCopied: "Designul selectat a fost copiat pe cealaltă parte.",
         noImageToCopy: "Nu există un design selectat pentru copiere.",
@@ -1378,12 +1420,15 @@
         sendingMessage: "Cererea se trimite...",
         successMessage: "Cererea a fost trimisă cu succes.",
         errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
-        activationMessage: "Formularul nu este încă activat. Verifică emailul primit de la FormSubmit și activează formularul."
+        frontUploadLabel: "Designuri față",
+        backUploadLabel: "Designuri spate",
+        frontUploadHelp: "Imaginile care merg pe partea din față.",
+        backUploadHelp: "Imaginile care merg pe partea din spate."
       }
     };
 
     const sliders = {
-      left: { imgId: "slider-left", dotsId: "dots-left", images: ["bal1.jpg", "bal2.jpg", "bal3.jpg", "bal4.jpg"], index: 0, timer: null },
+      left: { imgId: "slider-left", dotsId: "dots-left", images: ["bal1.jpg", "bal2.jpg", "bal3.jpg"], index: 0, timer: null },
       center: { imgId: "slider-center", dotsId: "dots-center", images: ["kozep1.jpg", "kozep2.jpg", "kozep3.jpg"], index: 0, timer: null },
       right: { imgId: "slider-right", dotsId: "dots-right", images: ["jobb1.jpg", "jobb2.jpg", "jobb3.jpg"], index: 0, timer: null }
     };
@@ -1393,8 +1438,7 @@
       selectedId: null,
       nextId: 1,
       front: [],
-      back: [],
-      isSubmitting: false
+      back: []
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1405,35 +1449,29 @@
     const rotateRange = document.getElementById("rotateRange");
     const sizeValue = document.getElementById("sizeValue");
     const rotateValue = document.getElementById("rotateValue");
-    const designUpload = document.getElementById("designUpload");
-    const textureStatus = document.getElementById("textureStatus");
     const centerBtn = document.getElementById("centerBtn");
     const copyBtn = document.getElementById("copyBtn");
     const clearBtn = document.getElementById("clearBtn");
-
     const presetChestBtn = document.getElementById("presetChestBtn");
     const presetCenterBtn = document.getElementById("presetCenterBtn");
     const presetFullFrontBtn = document.getElementById("presetFullFrontBtn");
     const presetFullBackBtn = document.getElementById("presetFullBackBtn");
-
     const optFront = document.getElementById("optFront");
     const optBack = document.getElementById("optBack");
     const optPremium = document.getElementById("optPremium");
-
     const basePriceValue = document.getElementById("basePriceValue");
     const extraPriceValue = document.getElementById("extraPriceValue");
     const totalPriceValue = document.getElementById("totalPriceValue");
-
     const frontSurface = document.getElementById("surfaceFront");
     const backSurface = document.getElementById("surfaceBack");
-
     const offerForm = document.getElementById("offerForm");
     const sendBtn = document.getElementById("sendBtn");
     const formMessage = document.getElementById("formMessage");
-    const hiddenSubmitFrame = document.getElementById("hiddenSubmitFrame");
-    const frontFilesInput = document.getElementById("frontFilesInput");
-    const backFilesInput = document.getElementById("backFilesInput");
     const hiddenSubject = document.getElementById("hiddenSubject");
+    const hiddenNext = document.getElementById("hiddenNext");
+    const textureStatus = document.getElementById("textureStatus");
+    const frontDesignInput = document.getElementById("frontDesignInput");
+    const backDesignInput = document.getElementById("backDesignInput");
 
     function currentLang(){
       return document.documentElement.lang === "ro" ? "ro" : "hu";
@@ -1487,7 +1525,7 @@
 
       updatePrice();
       updateEditorControls();
-      textureStatus.textContent = getCurrentItems().length ? tx.editorLoaded : tx.editorReady;
+      textureStatus.textContent = (state.front.length || state.back.length) ? tx.editorLoaded : tx.editorReady;
     }
 
     document.getElementById("huBtn").addEventListener("click", () => setLang("hu"));
@@ -1497,7 +1535,6 @@
       const slider = sliders[name];
       const dotsWrap = document.getElementById(slider.dotsId);
       dotsWrap.innerHTML = "";
-
       slider.images.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "slider-dot" + (i === slider.index ? " active" : "");
@@ -1510,7 +1547,6 @@
       const slider = sliders[name];
       const img = document.getElementById(slider.imgId);
       img.style.opacity = "0";
-
       setTimeout(() => {
         img.src = slider.images[slider.index];
         img.style.opacity = "1";
@@ -1577,20 +1613,20 @@
       return getCurrentItems().find(item => item.id === state.selectedId) || null;
     }
 
-    function syncAttachmentInputs(){
-      const frontDT = new DataTransfer();
-      const backDT = new DataTransfer();
+    function mergeFilesIntoInput(input, filesToAdd){
+      const dt = new DataTransfer();
+      Array.from(input.files || []).forEach(file => dt.items.add(file));
+      Array.from(filesToAdd || []).forEach(file => dt.items.add(file));
+      input.files = dt.files;
+    }
 
-      state.front.forEach(item => {
-        if(item.file) frontDT.items.add(item.file);
+    function rebuildInputFromState(side){
+      const input = side === "front" ? frontDesignInput : backDesignInput;
+      const dt = new DataTransfer();
+      state[side].forEach(item => {
+        if(item.file) dt.items.add(item.file);
       });
-
-      state.back.forEach(item => {
-        if(item.file) backDT.items.add(item.file);
-      });
-
-      frontFilesInput.files = frontDT.files;
-      backFilesInput.files = backDT.files;
+      input.files = dt.files;
     }
 
     function updateNodePosition(node, item, surface){
@@ -1624,13 +1660,11 @@
 
     function updateEditorControls(){
       const selected = getSelectedItem();
-
       if(!selected){
         sizeValue.textContent = "--";
         rotateValue.textContent = "--";
         return;
       }
-
       sizeRange.value = selected.scale;
       rotateRange.value = selected.rotation;
       sizeValue.textContent = `${selected.scale}%`;
@@ -1666,7 +1700,6 @@
 
     function renderSide(side, surface){
       surface.querySelectorAll(".design-item").forEach(el => el.remove());
-
       getSideItems(side).forEach(item => {
         const node = createDesignNode(item, side, surface);
         surface.appendChild(node);
@@ -1676,13 +1709,10 @@
     function renderDesigns(){
       renderSide("front", frontSurface);
       renderSide("back", backSurface);
-      syncAttachmentInputs();
       updateHiddenFields();
     }
 
-    function addDesignToCurrentSide(src, file){
-      const items = getCurrentItems();
-
+    function addDesignToSide(side, src, file){
       const newItem = {
         id: state.nextId++,
         src,
@@ -1693,29 +1723,47 @@
         rotation: 0
       };
 
-      items.push(newItem);
-      state.selectedId = newItem.id;
+      state[side].push(newItem);
 
-      renderDesigns();
-      updateEditorControls();
+      if(state.currentSide === side){
+        state.selectedId = newItem.id;
+      }
     }
 
-    function readFilesToCurrentSide(fileList){
-      if(!fileList || !fileList.length) return;
+    function processFilesForSide(side, files){
+      if(!files || !files.length) return;
 
-      Array.from(fileList).forEach(file => {
+      const input = side === "front" ? frontDesignInput : backDesignInput;
+      mergeFilesIntoInput(input, files);
+
+      Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(ev){
-          addDesignToCurrentSide(ev.target.result, file);
+          addDesignToSide(side, ev.target.result, file);
+          if(state.currentSide === side){
+            renderDesigns();
+            updateEditorControls();
+          } else {
+            updateHiddenFields();
+          }
           showStatus(t("editorLoaded"));
         };
         reader.readAsDataURL(file);
       });
     }
 
-    designUpload.addEventListener("change", (e) => {
-      readFilesToCurrentSide(e.target.files);
-      e.target.value = "";
+    frontDesignInput.addEventListener("change", (e) => {
+      const newFiles = Array.from(e.target.files).slice(state.front.length);
+      if(newFiles.length){
+        processFilesForSide("front", newFiles);
+      }
+    });
+
+    backDesignInput.addEventListener("change", (e) => {
+      const newFiles = Array.from(e.target.files).slice(state.back.length);
+      if(newFiles.length){
+        processFilesForSide("back", newFiles);
+      }
     });
 
     centerBtn.addEventListener("click", () => {
@@ -1742,6 +1790,11 @@
       }
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
+      const targetInput = targetSide === "front" ? frontDesignInput : backDesignInput;
+
+      if(selected.file){
+        mergeFilesIntoInput(targetInput, [selected.file]);
+      }
 
       state[targetSide].push({
         id: state.nextId++,
@@ -1767,6 +1820,8 @@
       }
 
       items.splice(index, 1);
+      rebuildInputFromState(state.currentSide);
+
       state.selectedId = items.length ? (items[Math.max(0, index - 1)]?.id || items[items.length - 1].id) : null;
 
       renderDesigns();
@@ -1777,7 +1832,6 @@
     sizeRange.addEventListener("input", () => {
       const selected = getSelectedItem();
       if(!selected) return;
-
       selected.scale = Number(sizeRange.value);
       sizeValue.textContent = `${selected.scale}%`;
       renderDesigns();
@@ -1786,7 +1840,6 @@
     rotateRange.addEventListener("input", () => {
       const selected = getSelectedItem();
       if(!selected) return;
-
       selected.rotation = Number(rotateRange.value);
       rotateValue.textContent = `${selected.rotation}°`;
       renderDesigns();
@@ -1933,7 +1986,6 @@
       };
 
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
-      syncAttachmentInputs();
     }
 
     offerForm.addEventListener("submit", function(e){
@@ -1946,23 +1998,33 @@
         return;
       }
 
-      state.isSubmitting = true;
+      hiddenNext.value = `${window.location.origin}${window.location.pathname}?sent=1&lang=${currentLang()}`;
+
       sendBtn.disabled = true;
       setFormMessage("info", t("sendingMessage"));
     });
 
-    hiddenSubmitFrame.addEventListener("load", () => {
-      if(!state.isSubmitting) return;
+    (function handleReturn(){
+      const params = new URLSearchParams(window.location.search);
+      const sent = params.get("sent");
+      const lang = params.get("lang");
 
-      state.isSubmitting = false;
-      sendBtn.disabled = false;
-      setFormMessage("success", t("successMessage"));
-    });
+      if(lang === "hu" || lang === "ro"){
+        setLang(lang);
+      } else {
+        setLang("hu");
+      }
+
+      if(sent === "1"){
+        setFormMessage("success", t("successMessage"));
+        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    })();
 
     window.addEventListener("resize", renderDesigns);
 
     switchSide("front");
-    setLang("hu");
     updatePrice();
     showStatus(t("editorReady"));
   </script>
