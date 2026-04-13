@@ -309,30 +309,6 @@
       font-size:14px;
     }
 
-    .swatches{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .swatch{
-      border:1px solid #383838;
-      background:#121212;
-      color:#efefef;
-      padding:12px;
-      border-radius:14px;
-      text-align:center;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .swatch.active{
-      border-color:var(--line-strong);
-      color:var(--gold2);
-      background:rgba(212,175,55,.08);
-    }
-
     .section{
       padding:28px 0 10px;
     }
@@ -582,7 +558,6 @@
         width:min(calc(100% - 22px), var(--max));
       }
 
-      .swatches,
       .design-switch{
         grid-template-columns:1fr;
       }
@@ -673,24 +648,18 @@
             <div>
               <div style="font-size:52px; margin-bottom:12px;">👕</div>
               <div id="viewerTitle" style="font-size:24px; color:#fff; font-weight:700;">3D póló forgatható nézet</div>
-              <div id="viewerText" style="margin-top:10px;">Tedd az oldal mellé a <strong>polo.glb</strong>, <strong>design1.jpg</strong>, <strong>design2.jpg</strong> és <strong>design3.jpg</strong> fájlokat.</div>
+              <div id="viewerText" style="margin-top:10px;">Tedd az oldal mellé a <strong>polo.glb</strong>, <strong>design1.png</strong>, <strong>design2.png</strong> és <strong>design3.png</strong> fájlokat.</div>
             </div>
           </div>
         </div>
 
         <div class="design-switch">
-          <button class="design-btn active" id="designBtn1" onclick="setTexture('design1.jpg', this)">Design 1</button>
-          <button class="design-btn" id="designBtn2" onclick="setTexture('design2.jpg', this)">Design 2</button>
-          <button class="design-btn" id="designBtn3" onclick="setTexture('design3.jpg', this)">Design 3</button>
+          <button class="design-btn active" id="designBtn1" onclick="setTexture('design1.png', this)">Design 1</button>
+          <button class="design-btn" id="designBtn2" onclick="setTexture('design2.png', this)">Design 2</button>
+          <button class="design-btn" id="designBtn3" onclick="setTexture('design3.png', this)">Design 3</button>
         </div>
 
         <div class="texture-status" id="textureStatus"></div>
-
-        <div class="swatches">
-          <div class="swatch" id="color1">Fekete</div>
-          <div class="swatch active" id="color2">Arany</div>
-          <div class="swatch" id="color3">Fehér</div>
-        </div>
       </div>
     </section>
 
@@ -804,11 +773,7 @@
         preview: "3D póló nézet",
         soon: "Forgasd",
         viewerTitle: "3D póló forgatható nézet",
-        viewerText: "Tedd az oldal mellé a polo.glb fájlt, és forgatható lesz jobbra-balra.",
-        color1: "Fekete",
-        color2: "Arany",
-        color3: "Fehér",
-
+        viewerText: "Tedd az oldal mellé a polo.glb, design1.png, design2.png és design3.png fájlokat.",
         showcaseTag: "Bemutató",
         showcaseTitle: "Mutasd meg stílusosan",
         showcaseText: "Kiemelt pólómodellek, erős vizuális elemek és prémium hangulat.",
@@ -818,7 +783,6 @@
         show2Text: "Modern bemutatás különböző színekhez és stílusokhoz.",
         show3Title: "Prémium modell 3",
         show3Text: "Tökéletes hely referenciáknak vagy új kollekciónak.",
-
         collectionTag: "Kollekció",
         collectionTitle: "Találd meg a saját stílusod",
         collectionText: "Egyedi pólók, modern megjelenés és prémium vizuális élmény.",
@@ -828,7 +792,6 @@
         f2text: "Letisztult stílus, prémium hatás, egyedi megoldások.",
         f3: "Egyedi nyomtatás",
         f3text: "Saját feliratok, logók, grafikák és egyedi rendelés.",
-
         contactTag: "Kapcsolat",
         contactTitle: "Kérj ajánlatot most",
         contactText: "Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.",
@@ -860,11 +823,7 @@
         preview: "Vizualizare tricou 3D",
         soon: "Rotește",
         viewerTitle: "Vizualizare 3D rotativă",
-        viewerText: "Pune fișierul polo.glb lângă pagină și modelul va putea fi rotit stânga-dreapta.",
-        color1: "Negru",
-        color2: "Auriu",
-        color3: "Alb",
-
+        viewerText: "Pune fișierele polo.glb, design1.png, design2.png și design3.png lângă pagină.",
         showcaseTag: "Prezentare",
         showcaseTitle: "Arată totul cu stil",
         showcaseText: "Modele evidențiate, elemente vizuale puternice și atmosferă premium.",
@@ -874,7 +833,6 @@
         show2Text: "Prezentare modernă pentru culori și stiluri diferite.",
         show3Title: "Model premium 3",
         show3Text: "Loc perfect pentru referințe sau o colecție nouă.",
-
         collectionTag: "Colecție",
         collectionTitle: "Găsește-ți propriul stil",
         collectionText: "Tricouri personalizate, aspect modern și experiență vizuală premium.",
@@ -884,7 +842,6 @@
         f2text: "Stil curat, efect premium și soluții unice.",
         f3: "Print personalizat",
         f3text: "Texte proprii, logo-uri, grafică și comandă personalizată.",
-
         contactTag: "Contact",
         contactTitle: "Cere ofertă acum",
         contactText: "Scrie pe scurt ce tricou dorești și putem începe designul împreună.",
@@ -1080,4 +1037,4 @@
     }
   </script>
 </body>
-</html> ez az amit most használok és jó is de ebbe ird bele légyszives a kért modositásokat hogy továbbra is jó legyen.
+</html>
