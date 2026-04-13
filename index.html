@@ -18,6 +18,8 @@
       --line-strong:rgba(212,175,55,.38);
       --shadow:0 20px 50px rgba(0,0,0,.45);
       --max:1320px;
+      --success:#c8f7a7;
+      --error:#ff9a9a;
     }
 
     *{box-sizing:border-box}
@@ -197,11 +199,17 @@
       font-weight:700;
       cursor:pointer;
       border:none;
-      transition:transform .18s ease, border-color .18s ease;
+      transition:transform .18s ease, border-color .18s ease, opacity .18s ease;
     }
 
     .btn:hover{
       transform:translateY(-2px);
+    }
+
+    .btn:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      transform:none;
     }
 
     .gold{
@@ -646,6 +654,38 @@
       color:var(--gold2);
       font-size:14px;
       line-height:1.5;
+    }
+
+    .form-message{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      font-size:14px;
+      line-height:1.5;
+      display:none;
+      border:1px solid transparent;
+    }
+
+    .form-message.show{
+      display:block;
+    }
+
+    .form-message.success{
+      color:var(--success);
+      background:rgba(120,255,120,.06);
+      border-color:rgba(120,255,120,.18);
+    }
+
+    .form-message.error{
+      color:var(--error);
+      background:rgba(255,120,120,.06);
+      border-color:rgba(255,120,120,.18);
+    }
+
+    .form-message.info{
+      color:var(--gold2);
+      background:rgba(212,175,55,.06);
+      border-color:rgba(212,175,55,.18);
     }
 
     .section{
@@ -1179,7 +1219,7 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST" enctype="multipart/form-data">
+      <form class="contact-form" id="offerForm" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST" enctype="multipart/form-data">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
         <input type="hidden" name="_subject" value="Új érdeklődés - Nextgen Digital Design">
@@ -1204,6 +1244,8 @@
         <input class="field" type="file" id="formDesignFile" name="design_file" accept="image/png,image/jpeg,image/webp">
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
         <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
+
+        <div id="formMessage" class="form-message"></div>
       </form>
     </section>
 
@@ -1281,7 +1323,11 @@
         optPremiumSub: "Erősebb anyag / jobb fedés",
         basePriceText: "Alap póló",
         extraPriceText: "Nyomás / extra",
-        totalPriceText: "Végösszeg"
+        totalPriceText: "Végösszeg",
+        sendingMessage: "Ajánlatkérés küldése folyamatban...",
+        successMessage: "Az ajánlatkérés sikeresen elküldve.",
+        errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
+        activationMessage: "A form még nincs aktiválva. Nézd meg a FormSubmit e-mailt, és aktiváld az űrlapot."
       },
       ro: {
         nav1: "Prezentare",
@@ -1348,7 +1394,11 @@
         optPremiumSub: "Material mai bun / acoperire mai bună",
         basePriceText: "Tricou de bază",
         extraPriceText: "Print / extra",
-        totalPriceText: "Total"
+        totalPriceText: "Total",
+        sendingMessage: "Cererea se trimite...",
+        successMessage: "Cererea a fost trimisă cu succes.",
+        errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
+        activationMessage: "Formularul nu este încă activat. Verifică emailul primit de la FormSubmit și activează formularul."
       }
     };
 
@@ -1522,6 +1572,20 @@
     const backItem = document.getElementById("designBack");
     const frontImg = document.getElementById("designFrontImg");
     const backImg = document.getElementById("designBackImg");
+
+    const offerForm = document.getElementById("offerForm");
+    const sendBtn = document.getElementById("sendBtn");
+    const formMessage = document.getElementById("formMessage");
+
+    function setFormMessage(type, text){
+      formMessage.className = "form-message show " + type;
+      formMessage.textContent = text;
+    }
+
+    function clearFormMessage(){
+      formMessage.className = "form-message";
+      formMessage.textContent = "";
+    }
 
     function updateEditorValues(){
       const s = state[state.currentSide];
@@ -1829,11 +1893,74 @@
       updatePrice();
     }
 
-    window.addEventListener("resize", applyAllStates);
+    offerForm.addEventListener("submit", async function(e){
+      e.preventDefault();
 
-    document.querySelector(".contact-form").addEventListener("submit", () => {
+      clearFormMessage();
       updateHiddenFields();
+
+      const lang = currentLang();
+      const t = texts[lang];
+      const formData = new FormData(offerForm);
+
+      sendBtn.disabled = true;
+      setFormMessage("info", t.sendingMessage);
+
+      try{
+        const response = await fetch(offerForm.action, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if(response.ok){
+          setFormMessage("success", t.successMessage);
+
+          const savedDesignUploadFiles = designUpload.files;
+          const savedFormDesignFiles = formDesignFile.files;
+
+          offerForm.reset();
+
+          try{
+            if(savedDesignUploadFiles && savedDesignUploadFiles.length){
+              const dt1 = new DataTransfer();
+              dt1.items.add(savedDesignUploadFiles[0]);
+              designUpload.files = dt1.files;
+            }
+            if(savedFormDesignFiles && savedFormDesignFiles.length){
+              const dt2 = new DataTransfer();
+              dt2.items.add(savedFormDesignFiles[0]);
+              formDesignFile.files = dt2.files;
+            }
+          } catch(err){}
+
+          optFront.checked = true;
+          optBack.checked = false;
+          optPremium.checked = false;
+          updateHiddenFields();
+          updatePrice();
+        } else {
+          let data = null;
+          try{
+            data = await response.json();
+          } catch(err){}
+
+          if(data && data.message && data.message.toLowerCase().includes("activate")){
+            setFormMessage("error", t.activationMessage);
+          } else {
+            setFormMessage("error", t.errorMessage);
+          }
+        }
+      } catch(error){
+        setFormMessage("error", t.errorMessage);
+      } finally{
+        sendBtn.disabled = false;
+      }
     });
+
+    window.addEventListener("resize", applyAllStates);
 
     switchSide("front");
     setLang("hu");
@@ -1841,4 +1968,4 @@
     showStatus(texts[currentLang()].editorReady);
   </script>
 </body>
-</html> kérlek a javitással együtt ird meg מחדש მთ
+</html>
