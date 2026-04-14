@@ -515,13 +515,29 @@
       line-height:1.4;
     }
 
-    .file-input{
+    .file-input,.field,select{
       width:100%;
-      padding:12px;
+      padding:12px 14px;
       border-radius:12px;
       border:1px solid #333;
-      background:#0b0b0b;
+      background:#090909;
       color:#ddd;
+      outline:none;
+    }
+
+    .field{
+      margin-bottom:14px;
+      font-size:15px;
+    }
+
+    .field:focus,.file-input:focus,select:focus{
+      border-color:var(--line-strong);
+      box-shadow:0 0 0 3px rgba(212,175,55,.08);
+    }
+
+    textarea.field{
+      min-height:150px;
+      resize:vertical;
     }
 
     .file-list{
@@ -577,7 +593,8 @@
 
     .editor-actions,
     .preset-grid,
-    .option-grid{
+    .option-grid,
+    .catalog-actions{
       display:grid;
       gap:10px;
     }
@@ -669,7 +686,8 @@
       line-height:1.5;
     }
 
-    .form-message{
+    .form-message,
+    .catalog-message{
       margin-top:12px;
       padding:12px 14px;
       border-radius:12px;
@@ -679,23 +697,27 @@
       border:1px solid transparent;
     }
 
-    .form-message.show{
+    .form-message.show,
+    .catalog-message.show{
       display:block;
     }
 
-    .form-message.success{
+    .form-message.success,
+    .catalog-message.success{
       color:var(--success);
       background:rgba(120,255,120,.06);
       border-color:rgba(120,255,120,.18);
     }
 
-    .form-message.error{
+    .form-message.error,
+    .catalog-message.error{
       color:var(--error);
       background:rgba(255,120,120,.06);
       border-color:rgba(255,120,120,.18);
     }
 
-    .form-message.info{
+    .form-message.info,
+    .catalog-message.info{
       color:var(--info);
       background:rgba(212,175,55,.06);
       border-color:rgba(212,175,55,.18);
@@ -883,28 +905,6 @@
       max-width:520px;
     }
 
-    .field{
-      width:100%;
-      padding:14px 16px;
-      border-radius:14px;
-      border:1px solid #333;
-      background:#090909;
-      color:var(--text);
-      margin-bottom:14px;
-      font-size:15px;
-      outline:none;
-    }
-
-    .field:focus{
-      border-color:var(--line-strong);
-      box-shadow:0 0 0 3px rgba(212,175,55,.08);
-    }
-
-    textarea.field{
-      min-height:150px;
-      resize:vertical;
-    }
-
     .footer{
       border-top:1px solid #222;
       padding:22px 0 34px;
@@ -915,9 +915,281 @@
       flex-wrap:wrap;
     }
 
+    .catalog-toolbar{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:14px;
+      align-items:center;
+      margin-top:26px;
+      margin-bottom:18px;
+    }
+
+    .catalog-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:20px;
+    }
+
+    .catalog-card{
+      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .catalog-card-image{
+      height:300px;
+      background:#0f0f0f;
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+
+    .catalog-card-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .catalog-card-body{
+      padding:18px;
+      display:grid;
+      gap:10px;
+    }
+
+    .catalog-card-code{
+      color:var(--gold2);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .catalog-card-title{
+      margin:0;
+      font-size:20px;
+    }
+
+    .catalog-card-meta{
+      color:#ddd;
+      font-size:14px;
+    }
+
+    .catalog-card-meta strong{
+      color:var(--gold2);
+      font-size:17px;
+    }
+
+    .cart-box{
+      margin-top:26px;
+      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .cart-items{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .cart-item{
+      border:1px solid rgba(212,175,55,.12);
+      border-radius:16px;
+      padding:14px;
+      background:#0d0d0d;
+      display:grid;
+      gap:8px;
+    }
+
+    .cart-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .cart-code{
+      color:var(--gold2);
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .remove-btn{
+      border:1px solid #3a3a3a;
+      background:#111;
+      color:#fff;
+      border-radius:10px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .remove-btn:hover{
+      border-color:rgba(255,120,120,.35);
+      color:#ffb1b1;
+    }
+
+    .cart-empty{
+      color:#8b8b8b;
+      margin-top:16px;
+    }
+
+    .cart-total{
+      margin-top:16px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      color:#ddd;
+    }
+
+    .cart-total strong{
+      color:var(--gold2);
+      font-size:20px;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.78);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:9999;
+    }
+
+    .modal.show{
+      display:flex;
+    }
+
+    .modal-box{
+      width:min(860px, 100%);
+      max-height:90vh;
+      overflow:auto;
+      background:linear-gradient(180deg, rgba(17,17,17,.99), rgba(8,8,8,.99));
+      border:1px solid var(--line-strong);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .modal-title{
+      margin:0;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .modal-close{
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:999px;
+      background:#111;
+      color:#fff;
+      font-size:20px;
+      cursor:pointer;
+      border:1px solid #333;
+    }
+
+    .modal-close:hover{
+      border-color:var(--line-strong);
+      color:var(--gold2);
+    }
+
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .modal-preview{
+      border:1px solid rgba(212,175,55,.12);
+      border-radius:18px;
+      overflow:hidden;
+      background:#0f0f0f;
+      min-height:460px;
+    }
+
+    .modal-preview img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+    }
+
+    .modal-info{
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .modal-code{
+      color:var(--gold2);
+      font-size:13px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .size-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .size-box{
+      border:1px solid #2f2f2f;
+      border-radius:14px;
+      padding:10px;
+      background:#0c0c0c;
+    }
+
+    .size-box label{
+      display:block;
+      font-size:13px;
+      color:#ddd;
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .size-box input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #333;
+      background:#090909;
+      color:#fff;
+      outline:none;
+    }
+
+    .size-box input:focus{
+      border-color:var(--line-strong);
+    }
+
     @media(max-width:1180px){
       .builder-layout{
         grid-template-columns:1fr;
+      }
+      .catalog-grid{
+        grid-template-columns:repeat(3,1fr);
       }
     }
 
@@ -925,7 +1197,8 @@
       .hero,
       .grid,
       .feature-grid,
-      .contact-wrap{
+      .contact-wrap,
+      .modal-grid{
         grid-template-columns:1fr;
       }
 
@@ -935,6 +1208,14 @@
 
       .editor-stage{
         height:600px;
+      }
+
+      .catalog-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .catalog-toolbar{
+        grid-template-columns:1fr;
       }
     }
 
@@ -962,17 +1243,15 @@
         height:38px;
       }
 
-      .control-row{
+      .control-row,
+      .size-grid,
+      .editor-actions,
+      .preset-grid{
         grid-template-columns:1fr;
       }
 
       .control-value{
         text-align:left;
-      }
-
-      .editor-actions,
-      .preset-grid{
-        grid-template-columns:1fr;
       }
 
       .brand{
@@ -982,6 +1261,14 @@
       .brand-logo{
         width:46px;
         height:46px;
+      }
+
+      .catalog-grid{
+        grid-template-columns:1fr;
+      }
+
+      .modal-preview{
+        min-height:320px;
       }
     }
   </style>
@@ -1001,6 +1288,7 @@
       <nav class="nav">
         <a href="#bemutato" id="nav1">Bemutató</a>
         <a href="#kollekcio" id="nav2">Kollekció</a>
+        <a href="#keszmodellek" id="nav4">Kész modellek</a>
         <a href="#kapcsolat" id="nav3">Kapcsolat</a>
       </nav>
 
@@ -1021,7 +1309,7 @@
 
         <div class="hero-actions">
           <a class="btn gold" href="#kapcsolat" id="btn1">Ajánlatot kérek</a>
-          <a class="btn ghost" href="#bemutato" id="btn2">Kollekció</a>
+          <a class="btn ghost" href="#keszmodellek" id="btn2">Kollekció</a>
         </div>
       </div>
 
@@ -1249,6 +1537,67 @@
       </div>
     </section>
 
+    <section class="section" id="keszmodellek">
+      <div class="section-head">
+        <div class="section-tag" id="readyTag">Kész modellek</div>
+        <h2 class="section-title" id="readyTitle">Válassz a meglévő pólómodellek közül</h2>
+        <p class="section-text" id="readyText">Kereshető modellkatalógus, kosárszerű összeállítás, és rendezett rendelésküldés egy e-mailben.</p>
+      </div>
+
+      <div class="catalog-toolbar">
+        <input class="field" id="catalogSearch" type="text" placeholder="Keresés kód vagy név alapján" style="margin:0;">
+        <div class="pill" id="catalogCountPill">10 modell</div>
+      </div>
+
+      <div class="catalog-grid" id="catalogGrid"></div>
+
+      <div class="cart-box">
+        <div class="preview-head" style="margin-bottom:0;">
+          <div>
+            <div class="preview-label">Kosár</div>
+            <h3 class="preview-title" id="cartTitle">Kiválasztott kész modellek</h3>
+          </div>
+          <div class="pill" id="cartBadge">0 tétel</div>
+        </div>
+
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-empty" id="cartEmpty">Még nincs kiválasztott kész modell.</div>
+
+        <div class="cart-total">
+          <span id="cartTotalLabel">Becsült végösszeg</span>
+          <strong id="cartTotalValue">0 RON</strong>
+        </div>
+
+        <form id="catalogCheckoutForm" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" id="catalogCheckoutNext" value="">
+          <input type="hidden" name="_subject" id="catalogCheckoutSubject" value="Új kész póló rendelés - Nextgen Digital Design">
+
+          <input type="hidden" name="order_type" value="Kész modellek rendelés">
+          <input type="hidden" name="catalog_order_summary" id="catalogOrderSummary">
+          <input type="hidden" name="catalog_total_price" id="catalogTotalPrice">
+
+          <div class="contact-wrap" style="padding:22px 0 0; grid-template-columns:1fr 1fr;">
+            <div>
+              <input class="field" type="text" name="name" id="catalogCustomerName" placeholder="Név" required>
+              <input class="field" type="email" name="email" id="catalogCustomerEmail" placeholder="E-mail" required>
+              <input class="field" type="text" name="phone" id="catalogCustomerPhone" placeholder="Telefonszám">
+            </div>
+            <div>
+              <textarea class="field" name="message" id="catalogCustomerMessage" placeholder="Megjegyzés / külön kérés"></textarea>
+            </div>
+          </div>
+
+          <div class="catalog-actions">
+            <button class="btn gold" type="submit" id="catalogCheckoutBtn">Kész modellek rendelésének elküldése</button>
+          </div>
+
+          <div class="catalog-message" id="catalogCheckoutMessage"></div>
+        </form>
+      </div>
+    </section>
+
     <section class="contact-wrap" id="kapcsolat">
       <div class="contact-panel">
         <div class="section-tag" id="contactTag">Kapcsolat</div>
@@ -1290,12 +1639,68 @@
     <span id="footer2">Prémium megjelenés egyedi pólókhoz.</span>
   </footer>
 
+  <div class="modal" id="catalogModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h3 class="modal-title" id="modalModelTitle">Modell részletei</h3>
+        <button class="modal-close" type="button" id="closeCatalogModal">×</button>
+      </div>
+
+      <div class="modal-grid">
+        <div class="modal-preview">
+          <img id="catalogPreviewImage" src="" alt="Modell">
+        </div>
+
+        <div class="modal-info">
+          <div class="modal-code" id="catalogCodeText">ND-001</div>
+          <div class="price-line">
+            <span>Ár</span>
+            <strong id="catalogPriceText">0 RON</strong>
+          </div>
+
+          <div class="sub-card" style="padding:14px;">
+            <h4 class="sub-title" style="margin-bottom:10px;">Méret / darabszám</h4>
+
+            <div class="size-grid">
+              <div class="size-box"><label>XS</label><input type="number" id="qtyXS" min="0" value="0"></div>
+              <div class="size-box"><label>S</label><input type="number" id="qtyS" min="0" value="0"></div>
+              <div class="size-box"><label>M</label><input type="number" id="qtyM" min="0" value="0"></div>
+              <div class="size-box"><label>L</label><input type="number" id="qtyL" min="0" value="0"></div>
+              <div class="size-box"><label>XL</label><input type="number" id="qtyXL" min="0" value="0"></div>
+              <div class="size-box"><label>XXL</label><input type="number" id="qtyXXL" min="0" value="0"></div>
+            </div>
+          </div>
+
+          <div class="catalog-actions">
+            <button class="btn gold" type="button" id="addToCartBtn">Hozzáadás a kosárhoz</button>
+          </div>
+
+          <div class="catalog-message" id="catalogModalMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    const readyModels = [
+      { code:"ND-001", name:"Nextgen Model 1", price:89, image:"nd-001.jpg" },
+      { code:"ND-002", name:"Nextgen Model 2", price:89, image:"nd-002.jpg" },
+      { code:"ND-003", name:"Nextgen Model 3", price:92, image:"nd-003.jpg" },
+      { code:"ND-004", name:"Nextgen Model 4", price:92, image:"nd-004.jpg" },
+      { code:"ND-005", name:"Nextgen Model 5", price:95, image:"nd-005.jpg" },
+      { code:"ND-006", name:"Nextgen Model 6", price:95, image:"nd-006.jpg" },
+      { code:"ND-007", name:"Nextgen Model 7", price:99, image:"nd-007.jpg" },
+      { code:"ND-008", name:"Nextgen Model 8", price:99, image:"nd-008.jpg" },
+      { code:"ND-009", name:"Nextgen Model 9", price:105, image:"nd-009.jpg" },
+      { code:"ND-010", name:"Nextgen Model 10", price:105, image:"nd-010.jpg" }
+    ];
+
     const texts = {
       hu: {
         nav1: "Bemutató",
         nav2: "Kollekció",
         nav3: "Kapcsolat",
+        nav4: "Kész modellek",
         badge: "Next-N stílus • fekete & arany",
         title: 'Egyedi pólók. <span>Erős megjelenés.</span>',
         subtitle: "Modern dizájn. Prémium hatás. Azonnali figyelem.",
@@ -1310,6 +1715,9 @@
         collectionTag: "Kollekció",
         collectionTitle: "Találd meg a saját stílusod",
         collectionText: "Egyedi pólók, modern megjelenés és prémium vizuális élmény.",
+        readyTag: "Kész modellek",
+        readyTitle: "Válassz a meglévő pólómodellek közül",
+        readyText: "Kereshető modellkatalógus, kosárszerű összeállítás, és rendezett rendelésküldés egy e-mailben.",
         f1: "Férfi pólók",
         f1text: "Modern szabás, erős megjelenés, különleges dizájnok.",
         f2: "Női pólók",
@@ -1373,6 +1781,7 @@
         nav1: "Prezentare",
         nav2: "Colecție",
         nav3: "Contact",
+        nav4: "Modele gata",
         badge: "Stil Next-N • negru & auriu",
         title: 'Tricouri personalizate. <span>Impact vizual puternic.</span>',
         subtitle: "Design modern. Aspect premium. Atenție instantă.",
@@ -1387,6 +1796,9 @@
         collectionTag: "Colecție",
         collectionTitle: "Găsește-ți propriul stil",
         collectionText: "Tricouri personalizate, aspect modern și experiență vizuală premium.",
+        readyTag: "Modele gata",
+        readyTitle: "Alege din modelele deja existente",
+        readyText: "Catalog cu căutare, coș pentru mai multe modele și trimitere organizată într-un singur email.",
         f1: "Tricouri pentru bărbați",
         f1text: "Croială modernă, aspect puternic și designuri speciale.",
         f2: "Tricouri pentru femei",
@@ -1460,7 +1872,9 @@
       nextId: 1,
       front: [],
       back: [],
-      dragState: null
+      dragState: null,
+      catalogModalModel: null,
+      catalogCart: []
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1499,12 +1913,47 @@
     const frontFileEmpty = document.getElementById("frontFileEmpty");
     const backFileEmpty = document.getElementById("backFileEmpty");
 
+    const catalogGrid = document.getElementById("catalogGrid");
+    const catalogSearch = document.getElementById("catalogSearch");
+    const catalogCountPill = document.getElementById("catalogCountPill");
+    const cartItems = document.getElementById("cartItems");
+    const cartEmpty = document.getElementById("cartEmpty");
+    const cartBadge = document.getElementById("cartBadge");
+    const cartTotalValue = document.getElementById("cartTotalValue");
+    const cartTitle = document.getElementById("cartTitle");
+    const catalogCheckoutForm = document.getElementById("catalogCheckoutForm");
+    const catalogCheckoutMessage = document.getElementById("catalogCheckoutMessage");
+    const catalogOrderSummary = document.getElementById("catalogOrderSummary");
+    const catalogTotalPrice = document.getElementById("catalogTotalPrice");
+    const catalogCheckoutNext = document.getElementById("catalogCheckoutNext");
+    const catalogCheckoutSubject = document.getElementById("catalogCheckoutSubject");
+
+    const catalogModal = document.getElementById("catalogModal");
+    const closeCatalogModal = document.getElementById("closeCatalogModal");
+    const modalModelTitle = document.getElementById("modalModelTitle");
+    const catalogPreviewImage = document.getElementById("catalogPreviewImage");
+    const catalogCodeText = document.getElementById("catalogCodeText");
+    const catalogPriceText = document.getElementById("catalogPriceText");
+    const addToCartBtn = document.getElementById("addToCartBtn");
+    const catalogModalMessage = document.getElementById("catalogModalMessage");
+
+    const qtyXS = document.getElementById("qtyXS");
+    const qtyS = document.getElementById("qtyS");
+    const qtyM = document.getElementById("qtyM");
+    const qtyL = document.getElementById("qtyL");
+    const qtyXL = document.getElementById("qtyXL");
+    const qtyXXL = document.getElementById("qtyXXL");
+
     function currentLang(){
       return document.documentElement.lang === "ro" ? "ro" : "hu";
     }
 
     function t(key){
       return texts[currentLang()][key];
+    }
+
+    function formatRon(value){
+      return `${value} RON`;
     }
 
     function setFormMessage(type, text){
@@ -1515,6 +1964,26 @@
     function clearFormMessage(){
       formMessage.className = "form-message";
       formMessage.textContent = "";
+    }
+
+    function setCatalogCheckoutMessage(type, text){
+      catalogCheckoutMessage.className = "catalog-message show " + type;
+      catalogCheckoutMessage.textContent = text;
+    }
+
+    function clearCatalogCheckoutMessage(){
+      catalogCheckoutMessage.className = "catalog-message";
+      catalogCheckoutMessage.textContent = "";
+    }
+
+    function setCatalogModalMessage(type, text){
+      catalogModalMessage.className = "catalog-message show " + type;
+      catalogModalMessage.textContent = text;
+    }
+
+    function clearCatalogModalMessage(){
+      catalogModalMessage.className = "catalog-message";
+      catalogModalMessage.textContent = "";
     }
 
     function setLang(lang){
@@ -1543,9 +2012,20 @@
       frontFileEmpty.textContent = tx.noFilesChosen;
       backFileEmpty.textContent = tx.noFilesChosen;
 
+      document.getElementById("catalogCustomerName").placeholder = lang === "ro" ? "Nume" : "Név";
+      document.getElementById("catalogCustomerEmail").placeholder = lang === "ro" ? "E-mail" : "E-mail";
+      document.getElementById("catalogCustomerPhone").placeholder = lang === "ro" ? "Telefon" : "Telefonszám";
+      document.getElementById("catalogCustomerMessage").placeholder = lang === "ro" ? "Observații / cereri speciale" : "Megjegyzés / külön kérés";
+      document.getElementById("catalogCheckoutBtn").textContent = lang === "ro" ? "Trimite comanda modelelor gata" : "Kész modellek rendelésének elküldése";
+      catalogSearch.placeholder = lang === "ro" ? "Căutare după cod sau nume" : "Keresés kód vagy név alapján";
+
       hiddenSubject.value = lang === "ro"
         ? "Cerere nouă - Nextgen Digital Design"
         : "Új érdeklődés - Nextgen Digital Design";
+
+      catalogCheckoutSubject.value = lang === "ro"
+        ? "Comandă modele gata - Nextgen Digital Design"
+        : "Új kész póló rendelés - Nextgen Digital Design";
 
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
@@ -1554,11 +2034,224 @@
       updatePrice();
       updateEditorControls();
       renderFileLists();
+      renderCatalogGrid();
+      renderCatalogCart();
       textureStatus.textContent = (state.front.length || state.back.length) ? tx.editorLoaded : tx.editorReady;
     }
 
     document.getElementById("huBtn").addEventListener("click", () => setLang("hu"));
     document.getElementById("roBtn").addEventListener("click", () => setLang("ro"));
+
+    function renderCatalogGrid(){
+      const query = (catalogSearch.value || "").trim().toLowerCase();
+      const filtered = readyModels.filter(model => {
+        return model.code.toLowerCase().includes(query) || model.name.toLowerCase().includes(query);
+      });
+
+      catalogGrid.innerHTML = "";
+      filtered.forEach(model => {
+        const card = document.createElement("div");
+        card.className = "catalog-card";
+        card.innerHTML = `
+          <div class="catalog-card-image">
+            <img src="${model.image}" alt="${model.name}">
+          </div>
+          <div class="catalog-card-body">
+            <div class="catalog-card-code">${model.code}</div>
+            <h3 class="catalog-card-title">${model.name}</h3>
+            <div class="catalog-card-meta"><strong>${formatRon(model.price)}</strong></div>
+            <button class="btn gold" type="button">${currentLang() === "ro" ? "Detalii / comandă" : "Részletek / rendelés"}</button>
+          </div>
+        `;
+        card.querySelector("button").addEventListener("click", () => openCatalogModal(model));
+        catalogGrid.appendChild(card);
+      });
+
+      catalogCountPill.textContent = currentLang() === "ro"
+        ? `${filtered.length} modele`
+        : `${filtered.length} modell`;
+    }
+
+    catalogSearch.addEventListener("input", renderCatalogGrid);
+
+    function openCatalogModal(model){
+      state.catalogModalModel = model;
+      modalModelTitle.textContent = model.name;
+      catalogPreviewImage.src = model.image;
+      catalogPreviewImage.alt = model.name;
+      catalogCodeText.textContent = model.code;
+      catalogPriceText.textContent = formatRon(model.price);
+
+      qtyXS.value = 0;
+      qtyS.value = 0;
+      qtyM.value = 0;
+      qtyL.value = 0;
+      qtyXL.value = 0;
+      qtyXXL.value = 0;
+
+      clearCatalogModalMessage();
+      catalogModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCatalog(){
+      catalogModal.classList.remove("show");
+      document.body.style.overflow = "";
+      state.catalogModalModel = null;
+    }
+
+    closeCatalogModal.addEventListener("click", closeCatalog);
+    catalogModal.addEventListener("click", (e) => {
+      if(e.target === catalogModal) closeCatalog();
+    });
+
+    function getModalSizeMap(){
+      return {
+        XS: Number(qtyXS.value || 0),
+        S: Number(qtyS.value || 0),
+        M: Number(qtyM.value || 0),
+        L: Number(qtyL.value || 0),
+        XL: Number(qtyXL.value || 0),
+        XXL: Number(qtyXXL.value || 0)
+      };
+    }
+
+    function totalQtyFromSizes(sizes){
+      return Object.values(sizes).reduce((sum, n) => sum + Number(n || 0), 0);
+    }
+
+    function sizeSummaryText(sizes){
+      return Object.entries(sizes)
+        .filter(([, qty]) => qty > 0)
+        .map(([size, qty]) => `${size}: ${qty} db`)
+        .join(" | ");
+    }
+
+    addToCartBtn.addEventListener("click", () => {
+      if(!state.catalogModalModel) return;
+
+      const sizes = getModalSizeMap();
+      const qty = totalQtyFromSizes(sizes);
+
+      if(qty <= 0){
+        setCatalogModalMessage("error", currentLang() === "ro"
+          ? "Introdu cel puțin 1 bucată."
+          : "Adj meg legalább 1 darabot.");
+        return;
+      }
+
+      const existingIndex = state.catalogCart.findIndex(item => item.code === state.catalogModalModel.code);
+      const payload = {
+        code: state.catalogModalModel.code,
+        name: state.catalogModalModel.name,
+        price: state.catalogModalModel.price,
+        image: state.catalogModalModel.image,
+        sizes
+      };
+
+      if(existingIndex >= 0){
+        state.catalogCart[existingIndex] = payload;
+      } else {
+        state.catalogCart.push(payload);
+      }
+
+      renderCatalogCart();
+      setCatalogModalMessage("success", currentLang() === "ro"
+        ? "Modelul a fost adăugat în coș."
+        : "A modell hozzáadva a kosárhoz.");
+    });
+
+    function renderCatalogCart(){
+      cartItems.innerHTML = "";
+
+      if(!state.catalogCart.length){
+        cartEmpty.style.display = "block";
+      } else {
+        cartEmpty.style.display = "none";
+      }
+
+      let grandTotal = 0;
+      let itemCount = 0;
+
+      state.catalogCart.forEach(item => {
+        const qty = totalQtyFromSizes(item.sizes);
+        const subtotal = qty * item.price;
+        grandTotal += subtotal;
+        itemCount += 1;
+
+        const box = document.createElement("div");
+        box.className = "cart-item";
+        box.innerHTML = `
+          <div class="cart-top">
+            <div>
+              <div class="cart-code">${item.code}</div>
+              <strong>${item.name}</strong>
+            </div>
+            <button class="remove-btn" type="button">${currentLang() === "ro" ? "Șterge" : "Törlés"}</button>
+          </div>
+          <div>${sizeSummaryText(item.sizes)}</div>
+          <div class="price-line">
+            <span>${currentLang() === "ro" ? "Cantitate totală" : "Összes darab"}: <strong>${qty}</strong></span>
+            <span>${currentLang() === "ro" ? "Részösszeg" : "Részösszeg"}: <strong>${formatRon(subtotal)}</strong></span>
+          </div>
+        `;
+        box.querySelector("button").addEventListener("click", () => {
+          state.catalogCart = state.catalogCart.filter(x => x.code !== item.code);
+          renderCatalogCart();
+        });
+        cartItems.appendChild(box);
+      });
+
+      cartBadge.textContent = currentLang() === "ro"
+        ? `${itemCount} poziții`
+        : `${itemCount} tétel`;
+
+      cartTotalValue.textContent = formatRon(grandTotal);
+      catalogTotalPrice.value = formatRon(grandTotal);
+    }
+
+    catalogCheckoutForm.addEventListener("submit", function(e){
+      clearCatalogCheckoutMessage();
+
+      if(!state.catalogCart.length){
+        e.preventDefault();
+        setCatalogCheckoutMessage("error", currentLang() === "ro"
+          ? "Coșul este gol."
+          : "A kosár üres.");
+        return;
+      }
+
+      const name = document.getElementById("catalogCustomerName").value.trim();
+      const email = document.getElementById("catalogCustomerEmail").value.trim();
+
+      if(!name || !email){
+        e.preventDefault();
+        setCatalogCheckoutMessage("error", currentLang() === "ro"
+          ? "Completează numele și emailul."
+          : "Töltsd ki a nevet és az e-mail címet.");
+        return;
+      }
+
+      const summary = state.catalogCart.map(item => {
+        const qty = totalQtyFromSizes(item.sizes);
+        const subtotal = qty * item.price;
+        return [
+          `Kód: ${item.code}`,
+          `Név: ${item.name}`,
+          `Ár: ${formatRon(item.price)}`,
+          `Méreteloszlás: ${sizeSummaryText(item.sizes)}`,
+          `Összes darab: ${qty}`,
+          `Részösszeg: ${formatRon(subtotal)}`
+        ].join(" | ");
+      }).join("\n\n");
+
+      catalogOrderSummary.value = summary;
+      catalogCheckoutNext.value = `${window.location.origin}${window.location.pathname}?catalogsent=1&lang=${currentLang()}`;
+
+      setCatalogCheckoutMessage("info", currentLang() === "ro"
+        ? "Comanda se trimite..."
+        : "Rendelés küldése folyamatban...");
+    });
 
     function renderDots(name){
       const slider = sliders[name];
@@ -1839,10 +2532,6 @@
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
 
-      state[targetSide] = state[targetSide].filter(item => !item.file && item.sourceId !== selected.sourceId).concat(
-        state[targetSide].filter(item => item.file || item.sourceId !== selected.sourceId)
-      );
-
       state[targetSide] = state[targetSide].filter(item => !(item.sourceId === selected.sourceId && !item.file));
 
       state[targetSide].push({
@@ -2112,6 +2801,7 @@
     (function handleReturn(){
       const params = new URLSearchParams(window.location.search);
       const sent = params.get("sent");
+      const catalogsent = params.get("catalogsent");
       const lang = params.get("lang");
 
       if(lang === "hu" || lang === "ro"){
@@ -2122,6 +2812,18 @@
 
       if(sent === "1"){
         setFormMessage("success", t("successMessage"));
+      }
+
+      if(catalogsent === "1"){
+        setCatalogCheckoutMessage("success", currentLang() === "ro"
+          ? "Comanda pentru modelele gata a fost trimisă cu succes."
+          : "A kész modellek rendelése sikeresen elküldve.");
+        state.catalogCart = [];
+        renderCatalogCart();
+        catalogCheckoutForm.reset();
+      }
+
+      if(sent === "1" || catalogsent === "1"){
         const cleanUrl = `${window.location.origin}${window.location.pathname}`;
         window.history.replaceState({}, document.title, cleanUrl);
       }
@@ -2132,6 +2834,8 @@
     switchSide("front");
     updatePrice();
     renderFileLists();
+    renderCatalogGrid();
+    renderCatalogCart();
     showStatus(t("editorReady"));
   </script>
 </body>
