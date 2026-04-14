@@ -524,6 +524,28 @@
       color:#ddd;
     }
 
+    .file-list{
+      margin-top:8px;
+      display:grid;
+      gap:6px;
+    }
+
+    .file-pill{
+      font-size:12px;
+      color:#f1f1f1;
+      background:rgba(212,175,55,.08);
+      border:1px solid rgba(212,175,55,.18);
+      border-radius:10px;
+      padding:8px 10px;
+      word-break:break-word;
+    }
+
+    .file-empty{
+      font-size:12px;
+      color:#8d8d8d;
+      margin-top:8px;
+    }
+
     .control-row{
       display:grid;
       grid-template-columns:112px 1fr 64px;
@@ -1047,26 +1069,18 @@
               <div class="upload-split">
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="frontUploadLabel">Első designok</div>
-                  <input
-                    class="file-input"
-                    type="file"
-                    id="frontDesignInput"
-                    accept="image/png,image/jpeg,image/webp"
-                    multiple
-                  >
+                  <input class="file-input" type="file" id="frontDesignInput" accept="image/png,image/jpeg,image/webp" multiple>
                   <small id="frontUploadHelp">Az elejére kerülő képek.</small>
+                  <div class="file-list" id="frontFileList"></div>
+                  <div class="file-empty" id="frontFileEmpty">Nincs kiválasztott fájl.</div>
                 </div>
 
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="backUploadLabel">Hátsó designok</div>
-                  <input
-                    class="file-input"
-                    type="file"
-                    id="backDesignInput"
-                    accept="image/png,image/jpeg,image/webp"
-                    multiple
-                  >
+                  <input class="file-input" type="file" id="backDesignInput" accept="image/png,image/jpeg,image/webp" multiple>
                   <small id="backUploadHelp">A hátuljára kerülő képek.</small>
+                  <div class="file-list" id="backFileList"></div>
+                  <div class="file-empty" id="backFileEmpty">Nincs kiválasztott fájl.</div>
                 </div>
               </div>
 
@@ -1332,7 +1346,8 @@
         frontUploadLabel: "Első designok",
         backUploadLabel: "Hátsó designok",
         frontUploadHelp: "Az elejére kerülő képek.",
-        backUploadHelp: "A hátuljára kerülő képek."
+        backUploadHelp: "A hátuljára kerülő képek.",
+        noFilesChosen: "Nincs kiválasztott fájl."
       },
       ro: {
         nav1: "Prezentare",
@@ -1409,7 +1424,8 @@
         frontUploadLabel: "Designuri față",
         backUploadLabel: "Designuri spate",
         frontUploadHelp: "Imaginile care merg pe partea din față.",
-        backUploadHelp: "Imaginile care merg pe partea din spate."
+        backUploadHelp: "Imaginile care merg pe partea din spate.",
+        noFilesChosen: "Nu există fișiere selectate."
       }
     };
 
@@ -1425,7 +1441,8 @@
       nextId: 1,
       front: [],
       back: [],
-      sending: false
+      sending: false,
+      dragState: null
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1458,6 +1475,10 @@
     const textureStatus = document.getElementById("textureStatus");
     const frontDesignInput = document.getElementById("frontDesignInput");
     const backDesignInput = document.getElementById("backDesignInput");
+    const frontFileList = document.getElementById("frontFileList");
+    const backFileList = document.getElementById("backFileList");
+    const frontFileEmpty = document.getElementById("frontFileEmpty");
+    const backFileEmpty = document.getElementById("backFileEmpty");
 
     function currentLang(){
       return document.documentElement.lang === "ro" ? "ro" : "hu";
@@ -1505,12 +1526,16 @@
         ? "Cerere nouă - Nextgen Digital Design"
         : "Új érdeklődés - Nextgen Digital Design";
 
+      frontFileEmpty.textContent = tx.noFilesChosen;
+      backFileEmpty.textContent = tx.noFilesChosen;
+
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
       document.getElementById("roBtn").classList.toggle("active", lang === "ro");
 
       updatePrice();
       updateEditorControls();
+      renderFileLists();
       textureStatus.textContent = (state.front.length || state.back.length) ? tx.editorLoaded : tx.editorReady;
     }
 
@@ -1599,14 +1624,6 @@
       return getCurrentItems().find(item => item.id === state.selectedId) || null;
     }
 
-    function getAllItems(){
-      return [...state.front, ...state.back];
-    }
-
-    function getOriginalBySourceId(sourceId){
-      return getAllItems().find(item => item.id === sourceId && item.file);
-    }
-
     function updateNodePosition(node, item, surface){
       const base = Math.min(surface.clientWidth, surface.clientHeight) * 0.9 * (item.scale / 100);
       node.style.width = `${base}px`;
@@ -1653,6 +1670,30 @@
       textureStatus.textContent = text;
     }
 
+    function renderFileListForInput(input, listEl, emptyEl){
+      listEl.innerHTML = "";
+      const files = Array.from(input.files || []);
+
+      if(!files.length){
+        emptyEl.style.display = "block";
+        return;
+      }
+
+      emptyEl.style.display = "none";
+
+      files.forEach(file => {
+        const div = document.createElement("div");
+        div.className = "file-pill";
+        div.textContent = file.name;
+        listEl.appendChild(div);
+      });
+    }
+
+    function renderFileLists(){
+      renderFileListForInput(frontDesignInput, frontFileList, frontFileEmpty);
+      renderFileListForInput(backDesignInput, backFileList, backFileEmpty);
+    }
+
     function createDesignNode(item, side, surface){
       const node = document.createElement("div");
       node.className = "design-item" + (item.id === state.selectedId ? " selected" : "");
@@ -1690,68 +1731,86 @@
       updateHiddenFields();
     }
 
-    function addOriginalItem(side, file, src){
-      const id = state.nextId++;
-      state[side].push({
-        id,
-        sourceId: id,
-        src,
-        file,
-        fileName: file.name,
-        x: 50,
-        y: 50,
-        scale: 100,
-        rotation: 0
+    function rebuildSideFromInput(side, input){
+      const previous = state[side];
+      const previousMap = new Map();
+
+      previous.forEach(item => {
+        if(item.file && item.fileName){
+          previousMap.set(item.fileName, item);
+        }
       });
 
-      if(state.currentSide === side){
-        state.selectedId = id;
+      const nextItems = [];
+      Array.from(input.files || []).forEach(file => {
+        const existing = previousMap.get(file.name);
+        if(existing){
+          nextItems.push({
+            ...existing,
+            file
+          });
+        } else {
+          const id = state.nextId++;
+          nextItems.push({
+            id,
+            sourceId: id,
+            src: "",
+            file,
+            fileName: file.name,
+            x: 50,
+            y: 50,
+            scale: 100,
+            rotation: 0
+          });
+        }
+      });
+
+      const preservedCopies = previous.filter(item => !item.file);
+      state[side] = [...nextItems, ...preservedCopies.filter(copy => nextItems.some(orig => orig.sourceId === copy.sourceId))];
+    }
+
+    function readFilesForSide(side, input){
+      rebuildSideFromInput(side, input);
+
+      const originals = state[side].filter(item => item.file);
+      if(!originals.length){
+        renderDesigns();
+        renderFileLists();
+        return;
       }
-    }
 
-    function addCopiedItem(targetSide, selected){
-      state[targetSide].push({
-        id: state.nextId++,
-        sourceId: selected.sourceId,
-        src: selected.src,
-        file: null,
-        fileName: selected.fileName || "",
-        x: selected.x,
-        y: selected.y,
-        scale: selected.scale,
-        rotation: selected.rotation
-      });
-    }
+      let pending = originals.length;
 
-    function processFilesForSide(side, files){
-      if(!files || !files.length) return;
-
-      Array.from(files).forEach(file => {
+      originals.forEach(item => {
         const reader = new FileReader();
         reader.onload = function(ev){
-          addOriginalItem(side, file, ev.target.result);
+          item.src = ev.target.result;
+          pending -= 1;
 
-          if(state.currentSide === side){
+          if(pending === 0){
+            if(state.currentSide === side){
+              const current = getCurrentItems();
+              if(!current.find(x => x.id === state.selectedId) && current.length){
+                state.selectedId = current[current.length - 1].id;
+              }
+            }
+
             renderDesigns();
             updateEditorControls();
-          } else {
-            updateHiddenFields();
+            renderFileLists();
+            showStatus(t("editorLoaded"));
           }
-
-          showStatus(t("editorLoaded"));
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(item.file);
       });
     }
 
-    frontDesignInput.addEventListener("change", (e) => {
-      processFilesForSide("front", e.target.files);
-      e.target.value = "";
+    frontDesignInput.addEventListener("change", () => {
+      readFilesForSide("front", frontDesignInput);
     });
 
-    backDesignInput.addEventListener("change", (e) => {
-      processFilesForSide("back", e.target.files);
-      e.target.value = "";
+    backDesignInput.addEventListener("change", () => {
+      readFilesForSide("back", backDesignInput);
     });
 
     centerBtn.addEventListener("click", () => {
@@ -1778,13 +1837,24 @@
       }
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
-      addCopiedItem(targetSide, selected);
+
+      state[targetSide].push({
+        id: state.nextId++,
+        sourceId: selected.sourceId,
+        src: selected.src,
+        file: null,
+        fileName: selected.fileName || "",
+        x: selected.x,
+        y: selected.y,
+        scale: selected.scale,
+        rotation: selected.rotation
+      });
+
       renderDesigns();
       showStatus(t("editorCopied"));
     });
 
     clearBtn.addEventListener("click", () => {
-      const items = getCurrentItems();
       const selected = getSelectedItem();
 
       if(!selected){
@@ -1795,11 +1865,18 @@
       if(selected.file){
         state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
         state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
-      } else {
-        const index = items.findIndex(item => item.id === selected.id);
-        if(index !== -1){
-          items.splice(index, 1);
+
+        if(state.currentSide === "front"){
+          frontDesignInput.value = "";
+          rebuildInputFromRemaining("front");
+        } else {
+          backDesignInput.value = "";
+          rebuildInputFromRemaining("back");
         }
+
+        renderFileLists();
+      } else {
+        state[state.currentSide] = state[state.currentSide].filter(item => item.id !== selected.id);
       }
 
       const currentItems = getCurrentItems();
@@ -1809,6 +1886,17 @@
       updateEditorControls();
       showStatus(t("editorCleared"));
     });
+
+    function rebuildInputFromRemaining(side){
+      const input = side === "front" ? frontDesignInput : backDesignInput;
+      const dt = new DataTransfer();
+
+      state[side]
+        .filter(item => item.file)
+        .forEach(item => dt.items.add(item.file));
+
+      input.files = dt.files;
+    }
 
     sizeRange.addEventListener("input", () => {
       const selected = getSelectedItem();
@@ -1852,64 +1940,88 @@
     presetFullFrontBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "front"));
     presetFullBackBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "back"));
 
+    function beginDrag(side, id, surface, clientX, clientY){
+      state.currentSide = side;
+      state.selectedId = id;
+      switchSide(side);
+
+      const item = getSideItems(side).find(x => x.id === id);
+      if(!item) return;
+
+      const rect = surface.getBoundingClientRect();
+      const startXPercent = ((clientX - rect.left) / rect.width) * 100;
+      const startYPercent = ((clientY - rect.top) / rect.height) * 100;
+
+      state.dragState = {
+        side,
+        id,
+        surface,
+        startPointerX: startXPercent,
+        startPointerY: startYPercent,
+        startItemX: item.x,
+        startItemY: item.y
+      };
+    }
+
+    function moveDrag(clientX, clientY){
+      if(!state.dragState) return;
+
+      const { side, id, surface, startPointerX, startPointerY, startItemX, startItemY } = state.dragState;
+      const item = getSideItems(side).find(x => x.id === id);
+      if(!item) return;
+
+      const rect = surface.getBoundingClientRect();
+      const nowXPercent = ((clientX - rect.left) / rect.width) * 100;
+      const nowYPercent = ((clientY - rect.top) / rect.height) * 100;
+
+      const deltaX = nowXPercent - startPointerX;
+      const deltaY = nowYPercent - startPointerY;
+
+      item.x = Math.max(0, Math.min(100, startItemX + deltaX));
+      item.y = Math.max(0, Math.min(100, startItemY + deltaY));
+
+      renderDesigns();
+      updateEditorControls();
+    }
+
+    function endDrag(){
+      state.dragState = null;
+    }
+
     function makeDraggable(node, side, id, surface){
-      let dragging = false;
-
-      const start = (clientX, clientY) => {
-        dragging = true;
-        state.currentSide = side;
-        state.selectedId = id;
-        switchSide(side);
-        node.classList.add("dragging");
-        move(clientX, clientY);
-      };
-
-      const move = (clientX, clientY) => {
-        if(!dragging) return;
-
-        const rect = surface.getBoundingClientRect();
-        const item = getSideItems(side).find(x => x.id === id);
-        if(!item) return;
-
-        const x = ((clientX - rect.left) / rect.width) * 100;
-        const y = ((clientY - rect.top) / rect.height) * 100;
-
-        item.x = Math.max(0, Math.min(100, x));
-        item.y = Math.max(0, Math.min(100, y));
-
-        updateNodePosition(node, item, surface);
-        updateHiddenFields();
-      };
-
-      const end = () => {
-        if(!dragging) return;
-        dragging = false;
-        node.classList.remove("dragging");
-        renderDesigns();
-        updateEditorControls();
-      };
-
       node.addEventListener("mousedown", (e) => {
         e.preventDefault();
-        start(e.clientX, e.clientY);
+        node.classList.add("dragging");
+        beginDrag(side, id, surface, e.clientX, e.clientY);
       });
 
-      window.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
-      window.addEventListener("mouseup", end);
-
       node.addEventListener("touchstart", (e) => {
-        const tch = e.touches[0];
-        start(tch.clientX, tch.clientY);
+        const touch = e.touches[0];
+        node.classList.add("dragging");
+        beginDrag(side, id, surface, touch.clientX, touch.clientY);
       }, { passive: true });
-
-      window.addEventListener("touchmove", (e) => {
-        if(!dragging) return;
-        const tch = e.touches[0];
-        move(tch.clientX, tch.clientY);
-      }, { passive: true });
-
-      window.addEventListener("touchend", end);
     }
+
+    window.addEventListener("mousemove", (e) => {
+      if(!state.dragState) return;
+      moveDrag(e.clientX, e.clientY);
+    });
+
+    window.addEventListener("touchmove", (e) => {
+      if(!state.dragState) return;
+      const touch = e.touches[0];
+      moveDrag(touch.clientX, touch.clientY);
+    }, { passive: true });
+
+    window.addEventListener("mouseup", () => {
+      document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging"));
+      endDrag();
+    });
+
+    window.addEventListener("touchend", () => {
+      document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging"));
+      endDrag();
+    });
 
     function updatePrice(){
       const base = 55;
@@ -1966,8 +2078,8 @@
           scale: item.scale,
           rotation: item.rotation
         })),
-        original_front_files: state.front.filter(item => item.file).map(item => item.fileName),
-        original_back_files: state.back.filter(item => item.file).map(item => item.fileName),
+        original_front_files: Array.from(frontDesignInput.files || []).map(item => item.name),
+        original_back_files: Array.from(backDesignInput.files || []).map(item => item.name),
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
@@ -1984,15 +2096,15 @@
       const phone = document.getElementById("phoneField").value.trim();
       const message = document.getElementById("messageField").value.trim();
 
-      const originalFrontFiles = state.front.filter(item => item.file);
-      const originalBackFiles = state.back.filter(item => item.file);
+      const realFrontFiles = Array.from(frontDesignInput.files || []);
+      const realBackFiles = Array.from(backDesignInput.files || []);
 
       if(!name || !email){
         setFormMessage("error", t("errorMessage"));
         return;
       }
 
-      if(originalFrontFiles.length === 0 && originalBackFiles.length === 0){
+      if(realFrontFiles.length === 0 && realBackFiles.length === 0){
         setFormMessage("error", t("noDesignUploaded"));
         return;
       }
@@ -2014,12 +2126,12 @@
       formData.append("_captcha", "false");
       formData.append("_template", "table");
 
-      originalFrontFiles.forEach((item, index) => {
-        formData.append(`front_design_${index + 1}`, item.file, item.file.name);
+      realFrontFiles.forEach((file, index) => {
+        formData.append(`front_design_${index + 1}`, file, file.name);
       });
 
-      originalBackFiles.forEach((item, index) => {
-        formData.append(`back_design_${index + 1}`, item.file, item.file.name);
+      realBackFiles.forEach((file, index) => {
+        formData.append(`back_design_${index + 1}`, file, file.name);
       });
 
       try{
@@ -2064,6 +2176,7 @@
     switchSide("front");
     setLang("hu");
     updatePrice();
+    renderFileLists();
     showStatus(t("editorReady"));
   </script>
 </body>
