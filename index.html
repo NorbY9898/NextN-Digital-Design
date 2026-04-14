@@ -1068,33 +1068,31 @@
 
               <div class="upload-split">
                 <div class="upload-mini">
-                  <div class="upload-mini-title" id="frontUploadLabel">Első designok</div>
+                  <div class="upload-mini-title" id="frontUploadLabel">Első design</div>
                   <input
                     class="file-input"
                     type="file"
                     id="frontDesignInput"
-                    name="front_designs[]"
+                    name="front_design"
                     form="offerForm"
                     accept="image/png,image/jpeg,image/webp"
-                    multiple
                   >
-                  <small id="frontUploadHelp">Az elejére kerülő képek.</small>
+                  <small id="frontUploadHelp">Az elejére kerülő kép.</small>
                   <div class="file-list" id="frontFileList"></div>
                   <div class="file-empty" id="frontFileEmpty">Nincs kiválasztott fájl.</div>
                 </div>
 
                 <div class="upload-mini">
-                  <div class="upload-mini-title" id="backUploadLabel">Hátsó designok</div>
+                  <div class="upload-mini-title" id="backUploadLabel">Hátsó design</div>
                   <input
                     class="file-input"
                     type="file"
                     id="backDesignInput"
-                    name="back_designs[]"
+                    name="back_design"
                     form="offerForm"
                     accept="image/png,image/jpeg,image/webp"
-                    multiple
                   >
-                  <small id="backUploadHelp">A hátuljára kerülő képek.</small>
+                  <small id="backUploadHelp">A hátuljára kerülő kép.</small>
                   <div class="file-list" id="backFileList"></div>
                   <div class="file-empty" id="backFileEmpty">Nincs kiválasztott fájl.</div>
                 </div>
@@ -1337,7 +1335,7 @@
         copyBtn: "Másolás másik oldalra",
         clearBtn: "Kijelölt törlése",
         surfaceLabel: "Teljes póló felület",
-        editorReady: "Tölts fel első vagy hátsó designokat, majd válaszd ki és helyezd el őket.",
+        editorReady: "Tölts fel első vagy hátsó design képet, majd válaszd ki és helyezd el.",
         editorLoaded: "A design feltöltve.",
         editorCleared: "A kijelölt design törölve.",
         editorCopied: "A kijelölt design átmásolva a másik oldalra.",
@@ -1365,10 +1363,10 @@
         sendingMessage: "Ajánlatkérés küldése folyamatban...",
         successMessage: "Az ajánlatkérés sikeresen elküldve.",
         errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
-        frontUploadLabel: "Első designok",
-        backUploadLabel: "Hátsó designok",
-        frontUploadHelp: "Az elejére kerülő képek.",
-        backUploadHelp: "A hátuljára kerülő képek.",
+        frontUploadLabel: "Első design",
+        backUploadLabel: "Hátsó design",
+        frontUploadHelp: "Az elejére kerülő kép.",
+        backUploadHelp: "A hátuljára kerülő kép.",
         noFilesChosen: "Nincs kiválasztott fájl."
       },
       ro: {
@@ -1414,7 +1412,7 @@
         copyBtn: "Copiază pe cealaltă parte",
         clearBtn: "Șterge selectatul",
         surfaceLabel: "Toată suprafața tricoului",
-        editorReady: "Încarcă designuri pentru față sau spate, apoi selectează și poziționează.",
+        editorReady: "Încarcă un design pentru față sau spate, apoi selectează și poziționează.",
         editorLoaded: "Designul a fost încărcat.",
         editorCleared: "Designul selectat a fost șters.",
         editorCopied: "Designul selectat a fost copiat pe cealaltă parte.",
@@ -1442,10 +1440,10 @@
         sendingMessage: "Cererea se trimite...",
         successMessage: "Cererea a fost trimisă cu succes.",
         errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
-        frontUploadLabel: "Designuri față",
-        backUploadLabel: "Designuri spate",
-        frontUploadHelp: "Imaginile care merg pe partea din față.",
-        backUploadHelp: "Imaginile care merg pe partea din spate.",
+        frontUploadLabel: "Design față",
+        backUploadLabel: "Design spate",
+        frontUploadHelp: "Imaginea pentru partea din față.",
+        backUploadHelp: "Imaginea pentru partea din spate.",
         noFilesChosen: "Nu există fișiere selectate."
       }
     };
@@ -1756,122 +1754,63 @@
       updateHiddenFields();
     }
 
-    function mergeFilesIntoInput(input, newFiles){
-      const dt = new DataTransfer();
-      const existing = Array.from(input.files || []);
-      const add = Array.from(newFiles || []);
+    function createOrReplaceOriginal(side, file){
+      const existingOriginalIndex = state[side].findIndex(item => item.file);
+      let sourceId = null;
 
-      existing.forEach(file => dt.items.add(file));
-      add.forEach(file => {
-        const alreadyExists = existing.some(existingFile =>
-          existingFile.name === file.name &&
-          existingFile.size === file.size &&
-          existingFile.lastModified === file.lastModified
-        );
-        if(!alreadyExists){
-          dt.items.add(file);
-        }
-      });
+      if(existingOriginalIndex !== -1){
+        sourceId = state[side][existingOriginalIndex].sourceId;
+        state[side] = state[side].filter(item => item.sourceId !== sourceId);
+      }
 
-      input.files = dt.files;
+      const itemId = state.nextId++;
+      const finalSourceId = sourceId ?? itemId;
+
+      const newItem = {
+        id: itemId,
+        sourceId: finalSourceId,
+        src: "",
+        file,
+        fileName: file.name,
+        x: 50,
+        y: 50,
+        scale: 100,
+        rotation: 0
+      };
+
+      state[side].unshift(newItem);
+      state.selectedId = newItem.id;
+
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        newItem.src = ev.target.result;
+        renderDesigns();
+        updateEditorControls();
+      };
+      reader.readAsDataURL(file);
     }
 
-    function rebuildInputFromState(side){
-      const input = side === "front" ? frontDesignInput : backDesignInput;
-      const dt = new DataTransfer();
-
-      state[side]
-        .filter(item => item.file)
-        .forEach(item => dt.items.add(item.file));
-
-      input.files = dt.files;
-    }
-
-    function syncStateFromInputs(){
-      syncSideFromInput("front", frontDesignInput);
-      syncSideFromInput("back", backDesignInput);
-      renderFileLists();
-      renderDesigns();
-      updateEditorControls();
-    }
-
-    function syncSideFromInput(side, input){
-      const oldItems = state[side];
-      const oldOriginalsByKey = new Map();
-
-      oldItems
-        .filter(item => item.file)
-        .forEach(item => {
-          const key = `${item.file.name}__${item.file.size}__${item.file.lastModified}`;
-          oldOriginalsByKey.set(key, item);
-        });
-
-      const currentCopies = oldItems.filter(item => !item.file);
-      const nextOriginals = [];
-
-      Array.from(input.files || []).forEach(file => {
-        const key = `${file.name}__${file.size}__${file.lastModified}`;
-        const existing = oldOriginalsByKey.get(key);
-
-        if(existing){
-          nextOriginals.push({
-            ...existing,
-            file
-          });
-        } else {
-          nextOriginals.push({
-            id: state.nextId++,
-            sourceId: null,
-            src: "",
-            file,
-            fileName: file.name,
-            x: 50,
-            y: 50,
-            scale: 100,
-            rotation: 0
-          });
-        }
-      });
-
-      nextOriginals.forEach(item => {
-        if(item.sourceId == null){
-          item.sourceId = item.id;
-        }
-      });
-
-      const allowedSourceIds = new Set(nextOriginals.map(item => item.sourceId));
-      const keptCopies = currentCopies.filter(copy => allowedSourceIds.has(copy.sourceId));
-
-      state[side] = [...nextOriginals, ...keptCopies];
-
-      let pending = nextOriginals.length;
-      if(!pending){
+    frontDesignInput.addEventListener("change", () => {
+      const file = frontDesignInput.files?.[0];
+      if(!file){
+        renderFileLists();
         return;
       }
 
-      nextOriginals.forEach(item => {
-        if(item.src){
-          pending -= 1;
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(ev){
-          item.src = ev.target.result;
-        };
-        reader.readAsDataURL(item.file);
-      });
-    }
-
-    frontDesignInput.addEventListener("change", (e) => {
-      mergeFilesIntoInput(frontDesignInput, e.target.files);
-      syncStateFromInputs();
+      createOrReplaceOriginal("front", file);
+      renderFileLists();
       showStatus(t("editorLoaded"));
     });
 
-    backDesignInput.addEventListener("change", (e) => {
-      mergeFilesIntoInput(backDesignInput, e.target.files);
-      syncStateFromInputs();
+    backDesignInput.addEventListener("change", () => {
+      const file = backDesignInput.files?.[0];
+      if(!file){
+        renderFileLists();
+        return;
+      }
+
+      createOrReplaceOriginal("back", file);
+      renderFileLists();
       showStatus(t("editorLoaded"));
     });
 
@@ -1899,6 +1838,12 @@
       }
 
       const targetSide = state.currentSide === "front" ? "back" : "front";
+
+      state[targetSide] = state[targetSide].filter(item => !item.file && item.sourceId !== selected.sourceId).concat(
+        state[targetSide].filter(item => item.file || item.sourceId !== selected.sourceId)
+      );
+
+      state[targetSide] = state[targetSide].filter(item => !(item.sourceId === selected.sourceId && !item.file));
 
       state[targetSide].push({
         id: state.nextId++,
@@ -1928,12 +1873,16 @@
         state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
         state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
 
-        rebuildInputFromState("front");
-        rebuildInputFromState("back");
-        renderFileLists();
+        if(state.currentSide === "front"){
+          frontDesignInput.value = "";
+        } else {
+          backDesignInput.value = "";
+        }
       } else {
         state[state.currentSide] = state[state.currentSide].filter(item => item.id !== selected.id);
       }
+
+      renderFileLists();
 
       const currentItems = getCurrentItems();
       state.selectedId = currentItems.length ? currentItems[currentItems.length - 1].id : null;
@@ -2125,8 +2074,8 @@
           scale: item.scale,
           rotation: item.rotation
         })),
-        original_front_files: Array.from(frontDesignInput.files || []).map(file => file.name),
-        original_back_files: Array.from(backDesignInput.files || []).map(file => file.name),
+        original_front_file: frontDesignInput.files?.[0]?.name || "",
+        original_back_file: backDesignInput.files?.[0]?.name || "",
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
@@ -2140,8 +2089,8 @@
 
       const name = document.getElementById("nameField").value.trim();
       const email = document.getElementById("emailField").value.trim();
-      const realFrontFiles = Array.from(frontDesignInput.files || []);
-      const realBackFiles = Array.from(backDesignInput.files || []);
+      const realFrontFile = frontDesignInput.files?.[0] || null;
+      const realBackFile = backDesignInput.files?.[0] || null;
 
       if(!name || !email){
         e.preventDefault();
@@ -2149,7 +2098,7 @@
         return;
       }
 
-      if(realFrontFiles.length === 0 && realBackFiles.length === 0){
+      if(!realFrontFile && !realBackFile){
         e.preventDefault();
         setFormMessage("error", t("noDesignUploaded"));
         return;
