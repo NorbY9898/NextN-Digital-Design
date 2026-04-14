@@ -1069,7 +1069,15 @@
               <div class="upload-split">
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="frontUploadLabel">Első designok</div>
-                  <input class="file-input" type="file" id="frontDesignInput" accept="image/png,image/jpeg,image/webp" multiple>
+                  <input
+                    class="file-input"
+                    type="file"
+                    id="frontDesignInput"
+                    name="front_designs[]"
+                    form="offerForm"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                  >
                   <small id="frontUploadHelp">Az elejére kerülő képek.</small>
                   <div class="file-list" id="frontFileList"></div>
                   <div class="file-empty" id="frontFileEmpty">Nincs kiválasztott fájl.</div>
@@ -1077,7 +1085,15 @@
 
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="backUploadLabel">Hátsó designok</div>
-                  <input class="file-input" type="file" id="backDesignInput" accept="image/png,image/jpeg,image/webp" multiple>
+                  <input
+                    class="file-input"
+                    type="file"
+                    id="backDesignInput"
+                    name="back_designs[]"
+                    form="offerForm"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                  >
                   <small id="backUploadHelp">A hátuljára kerülő képek.</small>
                   <div class="file-list" id="backFileList"></div>
                   <div class="file-empty" id="backFileEmpty">Nincs kiválasztott fájl.</div>
@@ -1242,13 +1258,22 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form class="contact-form" id="offerForm" onsubmit="return false;">
+      <form
+        class="contact-form"
+        id="offerForm"
+        action="https://formsubmit.co/norbertnagy9898@yahoo.com"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
-        <input type="hidden" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
-        <input type="hidden" id="hiddenEditorData">
-        <input type="hidden" id="hiddenOptions">
-        <input type="hidden" id="hiddenEstimatedTotal">
+        <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" id="hiddenNext" value="">
+        <input type="hidden" name="editor_data" id="hiddenEditorData">
+        <input type="hidden" name="selected_options" id="hiddenOptions">
+        <input type="hidden" name="estimated_total" id="hiddenEstimatedTotal">
 
         <input class="field" type="text" id="nameField" name="name" placeholder="Név" required>
         <input class="field" type="email" id="emailField" name="email" placeholder="E-mail" required>
@@ -1268,8 +1293,6 @@
   </footer>
 
   <script>
-    const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/norbertnagy9898@yahoo.com";
-
     const texts = {
       hu: {
         nav1: "Bemutató",
@@ -1342,7 +1365,6 @@
         sendingMessage: "Ajánlatkérés küldése folyamatban...",
         successMessage: "Az ajánlatkérés sikeresen elküldve.",
         errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
-        activationMessage: "A FormSubmit még nincs aktiválva. Nézd meg az aktiváló e-mailt.",
         frontUploadLabel: "Első designok",
         backUploadLabel: "Hátsó designok",
         frontUploadHelp: "Az elejére kerülő képek.",
@@ -1420,7 +1442,6 @@
         sendingMessage: "Cererea se trimite...",
         successMessage: "Cererea a fost trimisă cu succes.",
         errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
-        activationMessage: "Formularul FormSubmit nu este încă activat. Verifică emailul de activare.",
         frontUploadLabel: "Designuri față",
         backUploadLabel: "Designuri spate",
         frontUploadHelp: "Imaginile care merg pe partea din față.",
@@ -1441,7 +1462,6 @@
       nextId: 1,
       front: [],
       back: [],
-      sending: false,
       dragState: null
     };
 
@@ -1472,6 +1492,7 @@
     const sendBtn = document.getElementById("sendBtn");
     const formMessage = document.getElementById("formMessage");
     const hiddenSubject = document.getElementById("hiddenSubject");
+    const hiddenNext = document.getElementById("hiddenNext");
     const textureStatus = document.getElementById("textureStatus");
     const frontDesignInput = document.getElementById("frontDesignInput");
     const backDesignInput = document.getElementById("backDesignInput");
@@ -1501,7 +1522,7 @@
     function setLang(lang){
       const tx = texts[lang];
 
-      for(let key in tx){
+      for(const key in tx){
         const el = document.getElementById(key);
         if(!el) continue;
 
@@ -1521,13 +1542,12 @@
 
       document.getElementById("surfaceLabelFront").textContent = tx.surfaceLabel;
       document.getElementById("surfaceLabelBack").textContent = tx.surfaceLabel;
+      frontFileEmpty.textContent = tx.noFilesChosen;
+      backFileEmpty.textContent = tx.noFilesChosen;
 
       hiddenSubject.value = lang === "ro"
         ? "Cerere nouă - Nextgen Digital Design"
         : "Új érdeklődés - Nextgen Digital Design";
-
-      frontFileEmpty.textContent = tx.noFilesChosen;
-      backFileEmpty.textContent = tx.noFilesChosen;
 
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
@@ -1546,6 +1566,7 @@
       const slider = sliders[name];
       const dotsWrap = document.getElementById(slider.dotsId);
       dotsWrap.innerHTML = "";
+
       slider.images.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "slider-dot" + (i === slider.index ? " active" : "");
@@ -1558,6 +1579,7 @@
       const slider = sliders[name];
       const img = document.getElementById(slider.imgId);
       img.style.opacity = "0";
+
       setTimeout(() => {
         img.src = slider.images[slider.index];
         img.style.opacity = "1";
@@ -1655,11 +1677,13 @@
 
     function updateEditorControls(){
       const selected = getSelectedItem();
+
       if(!selected){
         sizeValue.textContent = "--";
         rotateValue.textContent = "--";
         return;
       }
+
       sizeRange.value = selected.scale;
       rotateRange.value = selected.rotation;
       sizeValue.textContent = `${selected.scale}%`;
@@ -1719,6 +1743,7 @@
 
     function renderSide(side, surface){
       surface.querySelectorAll(".design-item").forEach(el => el.remove());
+
       getSideItems(side).forEach(item => {
         const node = createDesignNode(item, side, surface);
         surface.appendChild(node);
@@ -1731,29 +1756,72 @@
       updateHiddenFields();
     }
 
-    function rebuildSideFromInput(side, input){
-      const previous = state[side];
-      const previousMap = new Map();
+    function mergeFilesIntoInput(input, newFiles){
+      const dt = new DataTransfer();
+      const existing = Array.from(input.files || []);
+      const add = Array.from(newFiles || []);
 
-      previous.forEach(item => {
-        if(item.file && item.fileName){
-          previousMap.set(item.fileName, item);
+      existing.forEach(file => dt.items.add(file));
+      add.forEach(file => {
+        const alreadyExists = existing.some(existingFile =>
+          existingFile.name === file.name &&
+          existingFile.size === file.size &&
+          existingFile.lastModified === file.lastModified
+        );
+        if(!alreadyExists){
+          dt.items.add(file);
         }
       });
 
-      const nextItems = [];
+      input.files = dt.files;
+    }
+
+    function rebuildInputFromState(side){
+      const input = side === "front" ? frontDesignInput : backDesignInput;
+      const dt = new DataTransfer();
+
+      state[side]
+        .filter(item => item.file)
+        .forEach(item => dt.items.add(item.file));
+
+      input.files = dt.files;
+    }
+
+    function syncStateFromInputs(){
+      syncSideFromInput("front", frontDesignInput);
+      syncSideFromInput("back", backDesignInput);
+      renderFileLists();
+      renderDesigns();
+      updateEditorControls();
+    }
+
+    function syncSideFromInput(side, input){
+      const oldItems = state[side];
+      const oldOriginalsByKey = new Map();
+
+      oldItems
+        .filter(item => item.file)
+        .forEach(item => {
+          const key = `${item.file.name}__${item.file.size}__${item.file.lastModified}`;
+          oldOriginalsByKey.set(key, item);
+        });
+
+      const currentCopies = oldItems.filter(item => !item.file);
+      const nextOriginals = [];
+
       Array.from(input.files || []).forEach(file => {
-        const existing = previousMap.get(file.name);
+        const key = `${file.name}__${file.size}__${file.lastModified}`;
+        const existing = oldOriginalsByKey.get(key);
+
         if(existing){
-          nextItems.push({
+          nextOriginals.push({
             ...existing,
             file
           });
         } else {
-          const id = state.nextId++;
-          nextItems.push({
-            id,
-            sourceId: id,
+          nextOriginals.push({
+            id: state.nextId++,
+            sourceId: null,
             src: "",
             file,
             fileName: file.name,
@@ -1765,52 +1833,46 @@
         }
       });
 
-      const preservedCopies = previous.filter(item => !item.file);
-      state[side] = [...nextItems, ...preservedCopies.filter(copy => nextItems.some(orig => orig.sourceId === copy.sourceId))];
-    }
+      nextOriginals.forEach(item => {
+        if(item.sourceId == null){
+          item.sourceId = item.id;
+        }
+      });
 
-    function readFilesForSide(side, input){
-      rebuildSideFromInput(side, input);
+      const allowedSourceIds = new Set(nextOriginals.map(item => item.sourceId));
+      const keptCopies = currentCopies.filter(copy => allowedSourceIds.has(copy.sourceId));
 
-      const originals = state[side].filter(item => item.file);
-      if(!originals.length){
-        renderDesigns();
-        renderFileLists();
+      state[side] = [...nextOriginals, ...keptCopies];
+
+      let pending = nextOriginals.length;
+      if(!pending){
         return;
       }
 
-      let pending = originals.length;
+      nextOriginals.forEach(item => {
+        if(item.src){
+          pending -= 1;
+          return;
+        }
 
-      originals.forEach(item => {
         const reader = new FileReader();
         reader.onload = function(ev){
           item.src = ev.target.result;
-          pending -= 1;
-
-          if(pending === 0){
-            if(state.currentSide === side){
-              const current = getCurrentItems();
-              if(!current.find(x => x.id === state.selectedId) && current.length){
-                state.selectedId = current[current.length - 1].id;
-              }
-            }
-
-            renderDesigns();
-            updateEditorControls();
-            renderFileLists();
-            showStatus(t("editorLoaded"));
-          }
         };
         reader.readAsDataURL(item.file);
       });
     }
 
-    frontDesignInput.addEventListener("change", () => {
-      readFilesForSide("front", frontDesignInput);
+    frontDesignInput.addEventListener("change", (e) => {
+      mergeFilesIntoInput(frontDesignInput, e.target.files);
+      syncStateFromInputs();
+      showStatus(t("editorLoaded"));
     });
 
-    backDesignInput.addEventListener("change", () => {
-      readFilesForSide("back", backDesignInput);
+    backDesignInput.addEventListener("change", (e) => {
+      mergeFilesIntoInput(backDesignInput, e.target.files);
+      syncStateFromInputs();
+      showStatus(t("editorLoaded"));
     });
 
     centerBtn.addEventListener("click", () => {
@@ -1866,14 +1928,8 @@
         state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
         state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
 
-        if(state.currentSide === "front"){
-          frontDesignInput.value = "";
-          rebuildInputFromRemaining("front");
-        } else {
-          backDesignInput.value = "";
-          rebuildInputFromRemaining("back");
-        }
-
+        rebuildInputFromState("front");
+        rebuildInputFromState("back");
         renderFileLists();
       } else {
         state[state.currentSide] = state[state.currentSide].filter(item => item.id !== selected.id);
@@ -1887,20 +1943,10 @@
       showStatus(t("editorCleared"));
     });
 
-    function rebuildInputFromRemaining(side){
-      const input = side === "front" ? frontDesignInput : backDesignInput;
-      const dt = new DataTransfer();
-
-      state[side]
-        .filter(item => item.file)
-        .forEach(item => dt.items.add(item.file));
-
-      input.files = dt.files;
-    }
-
     sizeRange.addEventListener("input", () => {
       const selected = getSelectedItem();
       if(!selected) return;
+
       selected.scale = Number(sizeRange.value);
       sizeValue.textContent = `${selected.scale}%`;
       renderDesigns();
@@ -1909,6 +1955,7 @@
     rotateRange.addEventListener("input", () => {
       const selected = getSelectedItem();
       if(!selected) return;
+
       selected.rotation = Number(rotateRange.value);
       rotateValue.textContent = `${selected.rotation}°`;
       renderDesigns();
@@ -2078,8 +2125,8 @@
           scale: item.scale,
           rotation: item.rotation
         })),
-        original_front_files: Array.from(frontDesignInput.files || []).map(item => item.name),
-        original_back_files: Array.from(backDesignInput.files || []).map(item => item.name),
+        original_front_files: Array.from(frontDesignInput.files || []).map(file => file.name),
+        original_back_files: Array.from(backDesignInput.files || []).map(file => file.name),
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
@@ -2087,94 +2134,53 @@
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
     }
 
-    async function submitOffer(){
+    offerForm.addEventListener("submit", function(e){
       clearFormMessage();
       updateHiddenFields();
 
       const name = document.getElementById("nameField").value.trim();
       const email = document.getElementById("emailField").value.trim();
-      const phone = document.getElementById("phoneField").value.trim();
-      const message = document.getElementById("messageField").value.trim();
-
       const realFrontFiles = Array.from(frontDesignInput.files || []);
       const realBackFiles = Array.from(backDesignInput.files || []);
 
       if(!name || !email){
+        e.preventDefault();
         setFormMessage("error", t("errorMessage"));
         return;
       }
 
       if(realFrontFiles.length === 0 && realBackFiles.length === 0){
+        e.preventDefault();
         setFormMessage("error", t("noDesignUploaded"));
         return;
       }
 
-      if(state.sending) return;
-      state.sending = true;
+      hiddenNext.value = `${window.location.origin}${window.location.pathname}?sent=1&lang=${currentLang()}`;
       sendBtn.disabled = true;
       setFormMessage("info", t("sendingMessage"));
-
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("phone", phone);
-      formData.append("message", message);
-      formData.append("editor_data", document.getElementById("hiddenEditorData").value);
-      formData.append("selected_options", document.getElementById("hiddenOptions").value);
-      formData.append("estimated_total", document.getElementById("hiddenEstimatedTotal").value);
-      formData.append("_subject", hiddenSubject.value);
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
-
-      realFrontFiles.forEach((file, index) => {
-        formData.append(`front_design_${index + 1}`, file, file.name);
-      });
-
-      realBackFiles.forEach((file, index) => {
-        formData.append(`back_design_${index + 1}`, file, file.name);
-      });
-
-      try{
-        const response = await fetch(FORMSUBMIT_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Accept": "application/json"
-          },
-          body: formData
-        });
-
-        let data = null;
-        try{
-          data = await response.json();
-        } catch(err){}
-
-        if(response.ok){
-          setFormMessage("success", t("successMessage"));
-        } else {
-          const msg = (data && data.message ? String(data.message).toLowerCase() : "");
-          if(msg.includes("activate")){
-            setFormMessage("error", t("activationMessage"));
-          } else {
-            setFormMessage("error", t("errorMessage"));
-          }
-        }
-      } catch(err){
-        setFormMessage("error", t("errorMessage"));
-      } finally{
-        state.sending = false;
-        sendBtn.disabled = false;
-      }
-    }
-
-    offerForm.addEventListener("submit", function(e){
-      e.preventDefault();
-      submitOffer();
     });
+
+    (function handleReturn(){
+      const params = new URLSearchParams(window.location.search);
+      const sent = params.get("sent");
+      const lang = params.get("lang");
+
+      if(lang === "hu" || lang === "ro"){
+        setLang(lang);
+      } else {
+        setLang("hu");
+      }
+
+      if(sent === "1"){
+        setFormMessage("success", t("successMessage"));
+        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    })();
 
     window.addEventListener("resize", renderDesigns);
 
     switchSide("front");
-    setLang("hu");
     updatePrice();
     renderFileLists();
     showStatus(t("editorReady"));
