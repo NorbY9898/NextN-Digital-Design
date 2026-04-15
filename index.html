@@ -1011,6 +1011,31 @@
       "Piros":"#b91c1c", "Kék":"#2457d6", "Zöld":"#1f8a52", "Bordó":"#6b1220", "Lila":"#7b3fe4"
     };
 
+    const colorTranslations = {
+      hu: {
+        "Fekete":"Fekete",
+        "Fehér":"Fehér",
+        "Arany":"Arany",
+        "Szürke":"Szürke",
+        "Piros":"Piros",
+        "Kék":"Kék",
+        "Zöld":"Zöld",
+        "Bordó":"Bordó",
+        "Lila":"Lila"
+      },
+      ro: {
+        "Fekete":"Negru",
+        "Fehér":"Alb",
+        "Arany":"Auriu",
+        "Szürke":"Gri",
+        "Piros":"Roșu",
+        "Kék":"Albastru",
+        "Zöld":"Verde",
+        "Bordó":"Vișiniu",
+        "Lila":"Mov"
+      }
+    };
+
     const texts = {
       hu: {
         nav1:"Bemutató", nav2:"Kollekció", nav3:"Kapcsolat", nav4:"Kész modellek",
@@ -1047,7 +1072,14 @@
         couponPlaceholder:"Kuponkód megadása (pl. NEXT10)", applyCoupon:"Kupon alkalmazása", couponHelp:"Aktív tesztkuponok: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Kupon alkalmazva: ${code}`, couponInvalid:"Érvénytelen kuponkód.",
         colorLabel:"Szín", couponLabel:"Kupon", orderTypeLabel:"Rendelés típusa",
         premiumTag:"Prémium", colorsLabel:"Színek", sizesLabel:"Méretek",
-        cardSub:"Azonnal rendelhető modell gyors szín- és méretválasztással."
+        cardSub:"Azonnal rendelhető modell gyors szín- és méretválasztással.",
+        unitShort:"db",
+        unitLong:"darab",
+        unitPrice:"Egységár",
+        sizeDistribution:"Méreteloszlás",
+        readyModelType:"Kész modell",
+        modalTitleFallback:"Modell részletei",
+        specialNote:"Megjegyzés / külön kérés"
       },
       ro: {
         nav1:"Prezentare", nav2:"Colecție", nav3:"Contact", nav4:"Modele gata",
@@ -1084,7 +1116,14 @@
         couponPlaceholder:"Introdu codul de reducere (ex. NEXT10)", applyCoupon:"Aplică cupon", couponHelp:"Cupioane test active: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Cupon aplicat: ${code}`, couponInvalid:"Cod de reducere invalid.",
         colorLabel:"Culoare", couponLabel:"Cupon", orderTypeLabel:"Tip comandă",
         premiumTag:"Premium", colorsLabel:"Culori", sizesLabel:"Mărimi",
-        cardSub:"Model gata de comandă, cu selecție rapidă de culoare și mărimi."
+        cardSub:"Model gata de comandă, cu selecție rapidă de culoare și mărimi.",
+        unitShort:"buc",
+        unitLong:"bucăți",
+        unitPrice:"Preț unitar",
+        sizeDistribution:"Distribuție mărimi",
+        readyModelType:"Modele gata",
+        modalTitleFallback:"Detalii model",
+        specialNote:"Observații / cereri speciale"
       }
     };
 
@@ -1188,6 +1227,11 @@
     function currentLang(){ return document.documentElement.lang === "ro" ? "ro" : "hu"; }
     function t(key){ return texts[currentLang()][key]; }
     function formatRon(value){ return `${Math.max(0, Math.round(value))} RON`; }
+    function unitShort(){ return t("unitShort"); }
+    function translateColor(color){
+      return (colorTranslations[currentLang()] && colorTranslations[currentLang()][color]) || color;
+    }
+
     function setFormMessage(type, text){ formMessage.className = `form-message show ${type}`; formMessage.textContent = text; }
     function clearFormMessage(){ formMessage.className = "form-message"; formMessage.textContent = ""; }
     function setCatalogCheckoutMessage(type, text){ catalogCheckoutMessage.className = `catalog-message show ${type}`; catalogCheckoutMessage.textContent = text; }
@@ -1224,12 +1268,14 @@
       document.getElementById("catalogCustomerName").placeholder = tx.nameField;
       document.getElementById("catalogCustomerEmail").placeholder = tx.emailField;
       document.getElementById("catalogCustomerPhone").placeholder = tx.phoneField;
-      document.getElementById("catalogCustomerMessage").placeholder = lang === "ro" ? "Observații / cereri speciale" : "Megjegyzés / külön kérés";
+      document.getElementById("catalogCustomerMessage").placeholder = tx.specialNote;
       document.getElementById("catalogCheckoutBtn").textContent = tx.readyOrderBtn;
       catalogSearch.placeholder = tx.searchPlaceholder;
       couponInput.placeholder = tx.couponPlaceholder;
       applyCouponBtn.textContent = tx.applyCoupon;
       couponInfo.textContent = tx.couponHelp;
+      addToCartBtn.textContent = tx.addToCart;
+      modalModelTitle.textContent = tx.modalTitleFallback;
 
       hiddenSubject.value = lang === "ro" ? "Cerere nouă - Nextgen Digital Design" : "Új érdeklődés - Nextgen Digital Design";
       catalogCheckoutSubject.value = lang === "ro" ? "Comandă modele gata - Nextgen Digital Design" : "Új kész póló rendelés - Nextgen Digital Design";
@@ -1276,7 +1322,7 @@
 
             <div class="catalog-card-meta">
               <strong>${formatRon(model.price)}</strong>
-              <div class="stock-badge ${getStockClass(stock)}">${getStockText(stock)} • ${stock} db</div>
+              <div class="stock-badge ${getStockClass(stock)}">${getStockText(stock)} • ${stock} ${unitShort()}</div>
             </div>
 
             <div class="catalog-feature-grid">
@@ -1310,7 +1356,7 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = `color-chip${color === selectedColor ? " active" : ""}`;
-        btn.innerHTML = `<span class="color-dot" style="background:${colorVisuals[color] || '#999'}"></span><span>${color}</span>`;
+        btn.innerHTML = `<span class="color-dot" style="background:${colorVisuals[color] || '#999'}"></span><span>${translateColor(color)}</span>`;
         btn.addEventListener("click", () => openCatalogModal(model, color));
         colorGrid.appendChild(btn);
       });
@@ -1338,16 +1384,17 @@
       catalogPreviewImage.alt = model.name;
       catalogCodeText.textContent = model.code;
       catalogPriceText.textContent = formatRon(model.price);
-      catalogStockText.textContent = `${stock} db`;
+      catalogStockText.textContent = `${stock} ${unitShort()}`;
       catalogStockBar.style.width = `${stockPercent}%`;
       modalStockBadge.className = `stock-badge ${getStockClass(stock)}`;
-      modalStockBadge.textContent = `${getStockText(stock)} • ${stock} db`;
+      modalStockBadge.textContent = `${getStockText(stock)} • ${stock} ${unitShort()}`;
 
       renderColorOptions(model, selectedColor);
       renderSizeChart(model);
 
       [qtyXS, qtyS, qtyM, qtyL, qtyXL, qtyXXL].forEach(el => el.value = 0);
       clearCatalogModalMessage();
+      addToCartBtn.textContent = t("addToCart");
       catalogModal.classList.add("show");
       document.body.style.overflow = "hidden";
     }
@@ -1365,9 +1412,16 @@
     function getModalSizeMap(){
       return { XS:Number(qtyXS.value||0), S:Number(qtyS.value||0), M:Number(qtyM.value||0), L:Number(qtyL.value||0), XL:Number(qtyXL.value||0), XXL:Number(qtyXXL.value||0) };
     }
-    function totalQtyFromSizes(sizes){ return Object.values(sizes).reduce((sum, n) => sum + Number(n || 0), 0); }
+
+    function totalQtyFromSizes(sizes){
+      return Object.values(sizes).reduce((sum, n) => sum + Number(n || 0), 0);
+    }
+
     function sizeSummaryText(sizes){
-      return Object.entries(sizes).filter(([,qty]) => qty > 0).map(([size,qty]) => `${size}: ${qty} db`).join(" | ");
+      return Object.entries(sizes)
+        .filter(([,qty]) => qty > 0)
+        .map(([size,qty]) => `${size}: ${qty} ${unitShort()}`)
+        .join(" | ");
     }
 
     addToCartBtn.addEventListener("click", () => {
@@ -1379,7 +1433,12 @@
       const selectedColor = state.catalogSelectedColor || state.catalogModalModel.colors[0];
       const available = state.catalogModalModel.stock[selectedColor] || 0;
       if(qty > available){
-        setCatalogModalMessage("error", currentLang() === "ro" ? `Stoc insuficient pentru ${selectedColor}. Disponibil: ${available} buc.` : `Nincs elég készlet ebből a színből: ${selectedColor}. Elérhető: ${available} db.`);
+        setCatalogModalMessage(
+          "error",
+          currentLang() === "ro"
+            ? `Stoc insuficient pentru ${translateColor(selectedColor)}. Disponibil: ${available} ${unitShort()}.`
+            : `Nincs elég készlet ebből a színből: ${translateColor(selectedColor)}. Elérhető: ${available} ${unitShort()}.`
+        );
         return;
       }
 
@@ -1434,7 +1493,7 @@
             </div>
             <button class="remove-btn" type="button">${t("remove")}</button>
           </div>
-          <div>${t("colorLabel")}: <strong>${item.color}</strong></div>
+          <div>${t("colorLabel")}: <strong>${translateColor(item.color)}</strong></div>
           <div>${sizeSummaryText(item.sizes)}</div>
           <div class="price-line">
             <span>${t("totalQty")}: <strong>${qty}</strong></span>
@@ -1480,6 +1539,7 @@
     catalogCheckoutForm.addEventListener("submit", function(e){
       clearCatalogCheckoutMessage();
       if(!state.catalogCart.length){ e.preventDefault(); setCatalogCheckoutMessage("error", t("emptyCartError")); return; }
+
       const name = document.getElementById("catalogCustomerName").value.trim();
       const email = document.getElementById("catalogCustomerEmail").value.trim();
       if(!name || !email){ e.preventDefault(); setCatalogCheckoutMessage("error", t("fillNameEmail")); return; }
@@ -1489,12 +1549,12 @@
         const qty = totalQtyFromSizes(item.sizes);
         const subtotal = qty * item.price;
         return [
-          `${t("orderTypeLabel")}: ${currentLang()==='ro' ? 'Modele gata' : 'Kész modell'}`,
+          `${t("orderTypeLabel")}: ${t("readyModelType")}`,
           `Kód: ${item.code}`,
           `Név: ${item.name}`,
-          `${t("colorLabel")}: ${item.color}`,
-          `Egységár: ${formatRon(item.price)}`,
-          `Méreteloszlás: ${sizeSummaryText(item.sizes)}`,
+          `${t("colorLabel")}: ${translateColor(item.color)}`,
+          `${t("unitPrice")}: ${formatRon(item.price)}`,
+          `${t("sizeDistribution")}: ${sizeSummaryText(item.sizes)}`,
           `${t("totalQty")}: ${qty}`,
           `${t("partialTotal")}: ${formatRon(subtotal)}`
         ].join(" | ");
@@ -1575,6 +1635,7 @@
       if(!selected){ sizeValue.textContent = "--"; rotateValue.textContent = "--"; return; }
       sizeRange.value = selected.scale; rotateRange.value = selected.rotation; sizeValue.textContent = `${selected.scale}%`; rotateValue.textContent = `${selected.rotation}°`;
     }
+
     function showStatus(text){ textureStatus.textContent = text; }
 
     function renderFileListForInput(input, listEl, emptyEl){
@@ -1590,7 +1651,10 @@
       });
     }
 
-    function renderFileLists(){ renderFileListForInput(frontDesignInput, frontFileList, frontFileEmpty); renderFileListForInput(backDesignInput, backFileList, backFileEmpty); }
+    function renderFileLists(){
+      renderFileListForInput(frontDesignInput, frontFileList, frontFileEmpty);
+      renderFileListForInput(backDesignInput, backFileList, backFileEmpty);
+    }
 
     function createDesignNode(item, side, surface){
       const node = document.createElement("div");
@@ -1608,72 +1672,111 @@
       surface.querySelectorAll(".design-item").forEach(el => el.remove());
       getSideItems(side).forEach(item => surface.appendChild(createDesignNode(item, side, surface)));
     }
-    function renderDesigns(){ renderSide("front", frontSurface); renderSide("back", backSurface); updateHiddenFields(); }
+
+    function renderDesigns(){
+      renderSide("front", frontSurface);
+      renderSide("back", backSurface);
+      updateHiddenFields();
+    }
 
     function createOrReplaceOriginal(side, file){
       const existingOriginalIndex = state[side].findIndex(item => item.file);
       let sourceId = null;
-      if(existingOriginalIndex !== -1){ sourceId = state[side][existingOriginalIndex].sourceId; state[side] = state[side].filter(item => item.sourceId !== sourceId); }
+      if(existingOriginalIndex !== -1){
+        sourceId = state[side][existingOriginalIndex].sourceId;
+        state[side] = state[side].filter(item => item.sourceId !== sourceId);
+      }
       const itemId = state.nextId++;
       const finalSourceId = sourceId ?? itemId;
       const newItem = { id:itemId, sourceId:finalSourceId, src:"", file, fileName:file.name, x:50, y:50, scale:100, rotation:0 };
-      state[side].unshift(newItem); state.selectedId = newItem.id;
+      state[side].unshift(newItem);
+      state.selectedId = newItem.id;
       const reader = new FileReader();
       reader.onload = function(ev){ newItem.src = ev.target.result; renderDesigns(); updateEditorControls(); };
       reader.readAsDataURL(file);
     }
 
     frontDesignInput.addEventListener("change", () => {
-      const file = frontDesignInput.files?.[0]; if(!file){ renderFileLists(); return; }
-      createOrReplaceOriginal("front", file); renderFileLists(); showStatus(t("editorLoaded"));
+      const file = frontDesignInput.files?.[0];
+      if(!file){ renderFileLists(); return; }
+      createOrReplaceOriginal("front", file);
+      renderFileLists();
+      showStatus(t("editorLoaded"));
     });
+
     backDesignInput.addEventListener("change", () => {
-      const file = backDesignInput.files?.[0]; if(!file){ renderFileLists(); return; }
-      createOrReplaceOriginal("back", file); renderFileLists(); showStatus(t("editorLoaded"));
+      const file = backDesignInput.files?.[0];
+      if(!file){ renderFileLists(); return; }
+      createOrReplaceOriginal("back", file);
+      renderFileLists();
+      showStatus(t("editorLoaded"));
     });
 
     centerBtn.addEventListener("click", () => {
-      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
-      selected.x = 50; selected.y = 50; selected.scale = 100; selected.rotation = 0; renderDesigns(); updateEditorControls();
+      const selected = getSelectedItem();
+      if(!selected){ showStatus(t("noImageSelected")); return; }
+      selected.x = 50; selected.y = 50; selected.scale = 100; selected.rotation = 0;
+      renderDesigns();
+      updateEditorControls();
     });
 
     copyBtn.addEventListener("click", () => {
-      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageToCopy")); return; }
+      const selected = getSelectedItem();
+      if(!selected){ showStatus(t("noImageToCopy")); return; }
       const targetSide = state.currentSide === "front" ? "back" : "front";
       state[targetSide] = state[targetSide].filter(item => !(item.sourceId === selected.sourceId && !item.file));
       state[targetSide].push({ id:state.nextId++, sourceId:selected.sourceId, src:selected.src, file:null, fileName:selected.fileName || "", x:selected.x, y:selected.y, scale:selected.scale, rotation:selected.rotation });
-      renderDesigns(); showStatus(t("editorCopied"));
+      renderDesigns();
+      showStatus(t("editorCopied"));
     });
 
     clearBtn.addEventListener("click", () => {
-      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
+      const selected = getSelectedItem();
+      if(!selected){ showStatus(t("noImageSelected")); return; }
+
       if(selected.file){
         state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
         state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
-        if(state.currentSide === "front") frontDesignInput.value = ""; else backDesignInput.value = "";
+        if(state.currentSide === "front") frontDesignInput.value = "";
+        else backDesignInput.value = "";
       } else {
         state[state.currentSide] = state[state.currentSide].filter(item => item.id !== selected.id);
       }
+
       renderFileLists();
       const currentItems = getCurrentItems();
       state.selectedId = currentItems.length ? currentItems[currentItems.length - 1].id : null;
-      renderDesigns(); updateEditorControls(); showStatus(t("editorCleared"));
+      renderDesigns();
+      updateEditorControls();
+      showStatus(t("editorCleared"));
     });
 
     sizeRange.addEventListener("input", () => {
-      const selected = getSelectedItem(); if(!selected) return;
-      selected.scale = Number(sizeRange.value); sizeValue.textContent = `${selected.scale}%`; renderDesigns();
+      const selected = getSelectedItem();
+      if(!selected) return;
+      selected.scale = Number(sizeRange.value);
+      sizeValue.textContent = `${selected.scale}%`;
+      renderDesigns();
     });
+
     rotateRange.addEventListener("input", () => {
-      const selected = getSelectedItem(); if(!selected) return;
-      selected.rotation = Number(rotateRange.value); rotateValue.textContent = `${selected.rotation}°`; renderDesigns();
+      const selected = getSelectedItem();
+      if(!selected) return;
+      selected.rotation = Number(rotateRange.value);
+      rotateValue.textContent = `${selected.rotation}°`;
+      renderDesigns();
     });
 
     function applyPreset(x, y, scale, rotation = 0, side = null){
       if(side && state.currentSide !== side) switchSide(side);
-      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
-      selected.x = x; selected.y = y; selected.scale = scale; selected.rotation = rotation; renderDesigns(); updateEditorControls(); showStatus(t("editorLoaded"));
+      const selected = getSelectedItem();
+      if(!selected){ showStatus(t("noImageSelected")); return; }
+      selected.x = x; selected.y = y; selected.scale = scale; selected.rotation = rotation;
+      renderDesigns();
+      updateEditorControls();
+      showStatus(t("editorLoaded"));
     }
+
     presetChestBtn.addEventListener("click", () => applyPreset(38, 27, 26, 0, "front"));
     presetCenterBtn.addEventListener("click", () => applyPreset(50, 42, 48, 0));
     presetFullFrontBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "front"));
@@ -1681,7 +1784,8 @@
 
     function beginDrag(side, id, surface, clientX, clientY){
       state.currentSide = side; state.selectedId = id; switchSide(side);
-      const item = getSideItems(side).find(x => x.id === id); if(!item) return;
+      const item = getSideItems(side).find(x => x.id === id);
+      if(!item) return;
       const rect = surface.getBoundingClientRect();
       const startXPercent = ((clientX - rect.left) / rect.width) * 100;
       const startYPercent = ((clientY - rect.top) / rect.height) * 100;
@@ -1691,20 +1795,24 @@
     function moveDrag(clientX, clientY){
       if(!state.dragState) return;
       const { side, id, surface, startPointerX, startPointerY, startItemX, startItemY } = state.dragState;
-      const item = getSideItems(side).find(x => x.id === id); if(!item) return;
+      const item = getSideItems(side).find(x => x.id === id);
+      if(!item) return;
       const rect = surface.getBoundingClientRect();
       const nowXPercent = ((clientX - rect.left) / rect.width) * 100;
       const nowYPercent = ((clientY - rect.top) / rect.height) * 100;
       item.x = Math.max(0, Math.min(100, startItemX + (nowXPercent - startPointerX)));
       item.y = Math.max(0, Math.min(100, startItemY + (nowYPercent - startPointerY)));
-      renderDesigns(); updateEditorControls();
+      renderDesigns();
+      updateEditorControls();
     }
 
     function endDrag(){ state.dragState = null; }
+
     function makeDraggable(node, side, id, surface){
       node.addEventListener("mousedown", (e) => { e.preventDefault(); node.classList.add("dragging"); beginDrag(side, id, surface, e.clientX, e.clientY); });
       node.addEventListener("touchstart", (e) => { const touch = e.touches[0]; node.classList.add("dragging"); beginDrag(side, id, surface, touch.clientX, touch.clientY); }, { passive:true });
     }
+
     window.addEventListener("mousemove", (e) => { if(!state.dragState) return; moveDrag(e.clientX, e.clientY); });
     window.addEventListener("touchmove", (e) => { if(!state.dragState) return; const touch = e.touches[0]; moveDrag(touch.clientX, touch.clientY); }, { passive:true });
     window.addEventListener("mouseup", () => { document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging")); endDrag(); });
@@ -1721,6 +1829,7 @@
       extraPriceValue.textContent = `${extra} RON`;
       totalPriceValue.textContent = `${total} RON`;
       document.getElementById("hiddenEstimatedTotal").value = `${total} RON`;
+
       const lang = currentLang();
       const options = [];
       if(optFront.checked) options.push(lang === "ro" ? "Print față" : "Első nyomás");
@@ -1728,6 +1837,7 @@
       if(optPremium.checked) options.push(lang === "ro" ? "Print premium" : "Prémium nyomás");
       document.getElementById("hiddenOptions").value = options.join(", ");
     }
+
     optFront.addEventListener("change", updatePrice);
     optBack.addEventListener("change", updatePrice);
     optPremium.addEventListener("change", updatePrice);
@@ -1754,8 +1864,10 @@
       const email = document.getElementById("emailField").value.trim();
       const realFrontFile = frontDesignInput.files?.[0] || null;
       const realBackFile = backDesignInput.files?.[0] || null;
+
       if(!name || !email){ e.preventDefault(); setFormMessage("error", t("errorMessage")); return; }
       if(!realFrontFile && !realBackFile){ e.preventDefault(); setFormMessage("error", t("noDesignUploaded")); return; }
+
       hiddenNext.value = `${window.location.origin}${window.location.pathname}?sent=1&lang=${currentLang()}`;
       sendBtn.disabled = true;
       setFormMessage("info", t("sendingMessage"));
@@ -1766,8 +1878,12 @@
       const sent = params.get("sent");
       const catalogsent = params.get("catalogsent");
       const lang = params.get("lang");
-      if(lang === "hu" || lang === "ro") setLang(lang); else setLang("hu");
+
+      if(lang === "hu" || lang === "ro") setLang(lang);
+      else setLang("hu");
+
       if(sent === "1") setFormMessage("success", t("successMessage"));
+
       if(catalogsent === "1"){
         setCatalogCheckoutMessage("success", t("readyOrderSuccess"));
         state.catalogCart = [];
@@ -1777,6 +1893,7 @@
         renderCatalogCart();
         catalogCheckoutForm.reset();
       }
+
       if(sent === "1" || catalogsent === "1"){
         const cleanUrl = `${window.location.origin}${window.location.pathname}`;
         window.history.replaceState({}, document.title, cleanUrl);
