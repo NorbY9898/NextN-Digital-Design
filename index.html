@@ -278,14 +278,168 @@
 
     .catalog-toolbar{ display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; margin-top:26px; margin-bottom:18px; }
     .catalog-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
-    .catalog-card{ overflow:hidden; display:flex; flex-direction:column; }
-    .catalog-card-image{ height:300px; background:#0f0f0f; border-bottom:1px solid rgba(255,255,255,.04); }
-    .catalog-card-image img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .catalog-card-body{ padding:18px; display:grid; gap:10px; }
-    .catalog-card-code{ color:var(--gold2); font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
-    .catalog-card-title{ margin:0; font-size:20px; }
-    .catalog-card-meta{ color:#ddd; font-size:14px; }
-    .catalog-card-meta strong{ color:var(--gold2); font-size:17px; }
+
+    .catalog-card{
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+      background:
+        linear-gradient(180deg, rgba(18,18,18,.99), rgba(8,8,8,.99));
+    }
+    .catalog-card::before{
+      content:"";
+      position:absolute;
+      top:-120%;
+      left:-40%;
+      width:60%;
+      height:260%;
+      background:linear-gradient(
+        115deg,
+        transparent 0%,
+        rgba(255,255,255,.00) 25%,
+        rgba(242,214,117,.08) 42%,
+        rgba(255,255,255,.14) 50%,
+        rgba(242,214,117,.08) 58%,
+        rgba(255,255,255,0) 75%,
+        transparent 100%
+      );
+      transform:rotate(18deg);
+      pointer-events:none;
+      opacity:.0;
+    }
+    .catalog-card:hover{
+      transform:translateY(-8px);
+      border-color:var(--line-strong);
+      box-shadow:0 28px 65px rgba(0,0,0,.58);
+    }
+    .catalog-card:hover::before{
+      opacity:1;
+      animation:goldShine 1.35s ease forwards;
+    }
+    @keyframes goldShine{
+      0%{ transform:translateX(-40%) rotate(18deg); }
+      100%{ transform:translateX(230%) rotate(18deg); }
+    }
+
+    .catalog-card-image{
+      height:300px;
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,.10), transparent 40%),
+        linear-gradient(180deg, #131313 0%, #0a0a0a 100%);
+      border-bottom:1px solid rgba(255,255,255,.04);
+      position:relative;
+      overflow:hidden;
+    }
+    .catalog-card-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent 45%, rgba(0,0,0,.35) 100%);
+      pointer-events:none;
+    }
+    .catalog-card-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform .38s ease;
+    }
+    .catalog-card:hover .catalog-card-image img{
+      transform:scale(1.04);
+    }
+
+    .catalog-card-top{
+      position:absolute;
+      top:12px;
+      left:12px;
+      right:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      z-index:2;
+    }
+    .catalog-top-badge{
+      display:inline-flex;
+      align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.55);
+      backdrop-filter:blur(6px);
+    }
+    .catalog-top-badge.code{ color:var(--gold2); }
+    .catalog-top-badge.tag{ color:#fff; background:rgba(212,175,55,.16); }
+
+    .catalog-card-body{
+      padding:18px;
+      display:grid;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .catalog-card-code{
+      color:var(--gold2);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .catalog-card-title{
+      margin:0;
+      font-size:20px;
+      line-height:1.25;
+    }
+    .catalog-card-sub{
+      color:#969696;
+      font-size:13px;
+      line-height:1.55;
+      margin-top:-2px;
+    }
+
+    .catalog-card-meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .catalog-card-meta strong{
+      color:var(--gold2);
+      font-size:22px;
+    }
+
+    .catalog-feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+    .catalog-feature-box{
+      border:1px solid rgba(212,175,55,.10);
+      border-radius:14px;
+      background:#101010;
+      padding:10px 12px;
+      display:grid;
+      gap:4px;
+    }
+    .catalog-feature-label{
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#888;
+    }
+    .catalog-feature-value{
+      font-size:13px;
+      font-weight:700;
+      color:#f5f5f5;
+    }
+
     .stock-badge{
       display:inline-flex; align-items:center; gap:6px; width:max-content; padding:7px 10px; border-radius:999px; font-size:12px; font-weight:700;
       border:1px solid rgba(255,255,255,.08); background:#121212;
@@ -293,6 +447,12 @@
     .stock-high{ color:#b8f5b8; border-color:rgba(139,226,139,.2); background:rgba(139,226,139,.07); }
     .stock-mid{ color:#ffe8a6; border-color:rgba(255,220,120,.2); background:rgba(255,220,120,.07); }
     .stock-low{ color:#ffb1b1; border-color:rgba(255,107,107,.2); background:rgba(255,107,107,.07); }
+
+    .catalog-card-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      margin-top:2px;
+    }
 
     .cart-box{ margin-top:26px; padding:22px; }
     .cart-items{ display:grid; gap:12px; margin-top:16px; }
@@ -389,7 +549,7 @@
       .editor-stage{ height:500px; padding:12px; }
       .image-frame{ height:260px; }
       .slider-arrow{ width:38px; height:38px; }
-      .control-row,.size-grid,.editor-actions,.preset-grid,.color-grid{ grid-template-columns:1fr; }
+      .control-row,.size-grid,.editor-actions,.preset-grid,.color-grid,.catalog-feature-grid{ grid-template-columns:1fr; }
       .control-value{ text-align:left; }
       .brand{ font-size:22px; }
       .brand-logo{ width:46px; height:46px; }
@@ -885,7 +1045,9 @@
         colorTitle:"Szín", stockTitle:"Készletinformáció", stockLabel:"Elérhető darab", sizeChartTitle:"Mérettábla", qtyTitle:"Méret / darabszám",
         chartSizeHead:"Méret", chartWidthHead:"Mellkas", chartLengthHead:"Hossz", stockHigh:"Készleten", stockMid:"Korlátozott", stockLow:"Utolsó darabok",
         couponPlaceholder:"Kuponkód megadása (pl. NEXT10)", applyCoupon:"Kupon alkalmazása", couponHelp:"Aktív tesztkuponok: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Kupon alkalmazva: ${code}`, couponInvalid:"Érvénytelen kuponkód.",
-        colorLabel:"Szín", couponLabel:"Kupon", orderTypeLabel:"Rendelés típusa"
+        colorLabel:"Szín", couponLabel:"Kupon", orderTypeLabel:"Rendelés típusa",
+        premiumTag:"Prémium", colorsLabel:"Színek", sizesLabel:"Méretek",
+        cardSub:"Azonnal rendelhető modell gyors szín- és méretválasztással."
       },
       ro: {
         nav1:"Prezentare", nav2:"Colecție", nav3:"Contact", nav4:"Modele gata",
@@ -920,7 +1082,9 @@
         colorTitle:"Culoare", stockTitle:"Informații stoc", stockLabel:"Bucăți disponibile", sizeChartTitle:"Tabel mărimi", qtyTitle:"Mărime / cantitate",
         chartSizeHead:"Mărime", chartWidthHead:"Piept", chartLengthHead:"Lungime", stockHigh:"În stoc", stockMid:"Limitat", stockLow:"Ultimele bucăți",
         couponPlaceholder:"Introdu codul de reducere (ex. NEXT10)", applyCoupon:"Aplică cupon", couponHelp:"Cupioane test active: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Cupon aplicat: ${code}`, couponInvalid:"Cod de reducere invalid.",
-        colorLabel:"Culoare", couponLabel:"Cupon", orderTypeLabel:"Tip comandă"
+        colorLabel:"Culoare", couponLabel:"Cupon", orderTypeLabel:"Tip comandă",
+        premiumTag:"Premium", colorsLabel:"Culori", sizesLabel:"Mărimi",
+        cardSub:"Model gata de comandă, cu selecție rapidă de culoare și mărimi."
       }
     };
 
@@ -1096,21 +1260,46 @@
         const stock = model.stock[defaultColor] || 0;
         const card = document.createElement("div");
         card.className = "catalog-card";
+
         card.innerHTML = `
-          <div class="catalog-card-image"><img src="${model.image}" alt="${model.name}"></div>
+          <div class="catalog-card-image">
+            <div class="catalog-card-top">
+              <span class="catalog-top-badge code">${model.code}</span>
+              <span class="catalog-top-badge tag">${t("premiumTag")}</span>
+            </div>
+            <img src="${model.image}" alt="${model.name}">
+          </div>
           <div class="catalog-card-body">
             <div class="catalog-card-code">${model.code}</div>
             <h3 class="catalog-card-title">${model.name}</h3>
-            <div class="catalog-card-meta"><strong>${formatRon(model.price)}</strong></div>
-            <div class="stock-badge ${getStockClass(stock)}">${getStockText(stock)} • ${stock} db</div>
-            <button class="btn gold" type="button">${t("detailsOrder")}</button>
+            <div class="catalog-card-sub">${t("cardSub")}</div>
+
+            <div class="catalog-card-meta">
+              <strong>${formatRon(model.price)}</strong>
+              <div class="stock-badge ${getStockClass(stock)}">${getStockText(stock)} • ${stock} db</div>
+            </div>
+
+            <div class="catalog-feature-grid">
+              <div class="catalog-feature-box">
+                <div class="catalog-feature-label">${t("colorsLabel")}</div>
+                <div class="catalog-feature-value">${model.colors.length}</div>
+              </div>
+              <div class="catalog-feature-box">
+                <div class="catalog-feature-label">${t("sizesLabel")}</div>
+                <div class="catalog-feature-value">${Object.keys(model.chart).length}</div>
+              </div>
+            </div>
+
+            <div class="catalog-card-actions">
+              <button class="btn gold" type="button">${t("detailsOrder")}</button>
+            </div>
           </div>
         `;
         card.querySelector("button").addEventListener("click", () => openCatalogModal(model, model.colors[0]));
         catalogGrid.appendChild(card);
       });
 
-      catalogCountPill.textContent = currentLang() === "ro" ? `${filtered.length} ${t("modelText")}` : `${filtered.length} ${t("modelText")}`;
+      catalogCountPill.textContent = `${filtered.length} ${t("modelText")}`;
     }
 
     catalogSearch.addEventListener("input", renderCatalogGrid);
