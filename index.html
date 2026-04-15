@@ -21,6 +21,8 @@
       --success:#c8f7a7;
       --error:#ff9a9a;
       --info:#f2d675;
+      --danger:#ff6b6b;
+      --ok:#8be28b;
     }
 
     *{box-sizing:border-box}
@@ -35,10 +37,7 @@
       color:var(--text);
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
+    a{ color:inherit; text-decoration:none; }
 
     .container{
       width:min(calc(100% - 32px), var(--max));
@@ -60,89 +59,27 @@
       flex-wrap:wrap;
     }
 
-    .brand-wrap{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
+    .brand-wrap{ display:flex; align-items:center; gap:14px; }
     .brand-logo{
-      width:54px;
-      height:54px;
-      object-fit:contain;
-      display:block;
-      border-radius:12px;
-      background:rgba(255,255,255,.02);
-      border:1px solid rgba(212,175,55,.16);
-      padding:6px;
+      width:54px; height:54px; object-fit:contain; display:block; border-radius:12px;
+      background:rgba(255,255,255,.02); border:1px solid rgba(212,175,55,.16); padding:6px;
       box-shadow:0 8px 20px rgba(0,0,0,.25);
     }
+    .brand-text{ display:flex; flex-direction:column; gap:4px; }
+    .brand{ font-size:28px; font-weight:900; letter-spacing:.20em; color:var(--gold); line-height:1; }
+    .brand-sub{ font-size:11px; letter-spacing:.32em; color:#7b7b7b; text-transform:uppercase; }
 
-    .brand-text{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
+    .top-right{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    .nav{ display:flex; gap:16px; flex-wrap:wrap; }
+    .nav a{ color:#dddddd; font-size:14px; transition:.2s ease; }
+    .nav a:hover{ color:var(--gold2); }
 
-    .brand{
-      font-size:28px;
-      font-weight:900;
-      letter-spacing:.20em;
-      color:var(--gold);
-      line-height:1;
-    }
-
-    .brand-sub{
-      font-size:11px;
-      letter-spacing:.32em;
-      color:#7b7b7b;
-      text-transform:uppercase;
-    }
-
-    .top-right{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-
-    .nav a{
-      color:#dddddd;
-      font-size:14px;
-      transition:.2s ease;
-    }
-
-    .nav a:hover{
-      color:var(--gold2);
-    }
-
-    .lang-switch{
-      display:flex;
-      gap:8px;
-    }
-
+    .lang-switch{ display:flex; gap:8px; }
     .lang-btn{
-      padding:8px 12px;
-      border-radius:10px;
-      border:1px solid var(--line);
-      cursor:pointer;
-      background:rgba(212,175,55,.08);
-      color:var(--gold2);
-      font-weight:700;
-      transition:.2s ease;
+      padding:8px 12px; border-radius:10px; border:1px solid var(--line); cursor:pointer;
+      background:rgba(212,175,55,.08); color:var(--gold2); font-weight:700; transition:.2s ease;
     }
-
-    .lang-btn.active,
-    .lang-btn:hover{
-      background:linear-gradient(135deg,var(--gold2),var(--gold));
-      color:#000;
-    }
+    .lang-btn.active,.lang-btn:hover{ background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; }
 
     .hero{
       padding:56px 0 42px;
@@ -153,1123 +90,312 @@
     }
 
     .badge{
-      display:inline-block;
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid var(--line-strong);
-      background:rgba(212,175,55,.08);
-      color:var(--gold2);
-      font-size:12px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      margin-bottom:18px;
+      display:inline-block; padding:10px 16px; border-radius:999px; border:1px solid var(--line-strong);
+      background:rgba(212,175,55,.08); color:var(--gold2); font-size:12px; letter-spacing:.18em;
+      text-transform:uppercase; margin-bottom:18px;
     }
 
-    .hero h1{
-      margin:0;
-      font-size:clamp(34px, 6vw, 64px);
-      line-height:1.02;
-      font-weight:900;
-    }
+    .hero h1{ margin:0; font-size:clamp(34px, 6vw, 64px); line-height:1.02; font-weight:900; }
+    .hero h1 span{ color:var(--gold); }
+    .hero p{ max-width:650px; margin:18px 0 0; font-size:18px; line-height:1.7; color:var(--muted); }
 
-    .hero h1 span{
-      color:var(--gold);
-    }
-
-    .hero p{
-      max-width:650px;
-      margin:18px 0 0;
-      font-size:18px;
-      line-height:1.7;
-      color:var(--muted);
-    }
-
-    .hero-actions{
-      margin-top:28px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
+    .hero-actions{ margin-top:28px; display:flex; gap:14px; flex-wrap:wrap; }
 
     .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:14px 22px;
-      border-radius:14px;
-      font-weight:700;
-      cursor:pointer;
-      border:none;
-      transition:transform .18s ease, border-color .18s ease, opacity .18s ease;
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-    }
-
-    .btn:disabled{
-      opacity:.65;
-      cursor:not-allowed;
-      transform:none;
-    }
-
-    .gold{
-      background:linear-gradient(135deg,var(--gold2),var(--gold));
-      color:#000;
-      box-shadow:0 14px 30px rgba(212,175,55,.18);
-    }
-
-    .ghost{
-      border:1px solid #333;
-      background:#000;
-      color:#fff;
-    }
-
-    .ghost:hover{
-      border-color:var(--line-strong);
-      color:var(--gold2);
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:var(--shadow);
-    }
-
-    .builder-layout{
-      display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .preview-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-      flex-wrap:wrap;
-    }
-
-    .preview-label{
-      font-size:12px;
-      letter-spacing:.25em;
-      color:#7a7a7a;
-      text-transform:uppercase;
-      margin-bottom:4px;
-    }
-
-    .preview-title{
-      margin:0;
-      color:var(--gold);
-      font-size:24px;
-    }
-
-    .pill{
-      border-radius:999px;
-      border:1px solid var(--line-strong);
-      color:var(--gold2);
-      padding:8px 12px;
-      font-size:12px;
-      background:rgba(212,175,55,.08);
-    }
-
-    .editor-topbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-
-    .tab-btn{
-      border:1px solid #383838;
-      background:#121212;
-      color:#efefef;
-      padding:10px 14px;
-      border-radius:12px;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .tab-btn.active,
-    .tab-btn:hover{
-      border-color:var(--line-strong);
-      color:var(--gold2);
-      background:rgba(212,175,55,.08);
-    }
-
-    .editor-stage{
-      position:relative;
-      height:680px;
-      border:1px dashed var(--line-strong);
-      border-radius:20px;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at center, rgba(212,175,55,.07), transparent 46%),
-        linear-gradient(180deg, #161616, #090909);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-
-    .shirt-scene{
-      position:relative;
-      width:100%;
-      max-width:520px;
-      aspect-ratio:1 / 1.14;
-      user-select:none;
-    }
-
-    .mockup-wrap{
-      position:relative;
-      width:100%;
-      height:100%;
-    }
-
-    .shirt-photo{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-      z-index:1;
-      pointer-events:none;
-      user-select:none;
-      filter:drop-shadow(0 18px 30px rgba(0,0,0,.40));
-    }
-
-    .design-surface{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      z-index:3;
-      overflow:hidden;
-    }
-
-    .design-surface.front,
-    .design-surface.back{
-      top:9%;
-      width:72%;
-      height:82%;
-      clip-path:polygon(
-        17% 7%,
-        31% 0%,
-        43% 6%,
-        57% 6%,
-        69% 0%,
-        83% 7%,
-        100% 20%,
-        90% 35%,
-        81% 31%,
-        78% 100%,
-        22% 100%,
-        19% 31%,
-        10% 35%,
-        0% 20%
-      );
-      -webkit-clip-path:polygon(
-        17% 7%,
-        31% 0%,
-        43% 6%,
-        57% 6%,
-        69% 0%,
-        83% 7%,
-        100% 20%,
-        90% 35%,
-        81% 31%,
-        78% 100%,
-        22% 100%,
-        19% 31%,
-        10% 35%,
-        0% 20%
-      );
-    }
-
-    .design-surface::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border:2px dashed rgba(212,175,55,.42);
-      pointer-events:none;
-      z-index:8;
-      clip-path:inherit;
-      -webkit-clip-path:inherit;
-    }
-
-    .surface-label{
-      position:absolute;
-      top:10%;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:11px;
-      color:var(--gold2);
-      background:rgba(0,0,0,.55);
-      padding:5px 10px;
-      border-radius:999px;
-      pointer-events:none;
-      z-index:12;
-      white-space:nowrap;
-    }
-
-    .design-item{
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform-origin:center center;
-      cursor:grab;
-      touch-action:none;
-      user-select:none;
-      z-index:10;
-    }
-
-    .design-item.dragging{
-      cursor:grabbing;
-    }
-
-    .design-item.selected{
-      outline:2px solid rgba(242,214,117,.95);
-      outline-offset:2px;
-      border-radius:10px;
-    }
-
-    .design-item img{
-      display:block;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      pointer-events:none;
-      user-select:none;
-      mix-blend-mode:multiply;
-      opacity:.96;
-      filter:
-        contrast(1.08)
-        saturate(1.04)
-        drop-shadow(0 1px 2px rgba(0,0,0,.06));
-    }
-
-    .design-item::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,.10), transparent 35%),
-        linear-gradient(180deg, rgba(0,0,0,.08), transparent 30%, rgba(0,0,0,.10) 100%);
-      mix-blend-mode:multiply;
-      pointer-events:none;
-    }
-
-    .hidden{
-      display:none !important;
-    }
-
-    .editor-controls{
-      display:grid;
-      gap:12px;
-    }
-
-    .sub-card{
-      background:linear-gradient(180deg, rgba(20,20,20,.98), rgba(10,10,10,.98));
-      border:1px solid rgba(212,175,55,.12);
-      border-radius:18px;
-      padding:16px;
-    }
-
-    .sub-title{
-      margin:0 0 12px;
-      font-size:14px;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      color:#8e8e8e;
-    }
-
-    .upload-split{
-      display:grid;
-      gap:12px;
-    }
-
-    .upload-mini{
-      padding:12px;
-      border:1px solid rgba(212,175,55,.12);
-      border-radius:14px;
-      background:#0d0d0d;
-    }
-
-    .upload-mini-title{
-      font-size:13px;
-      font-weight:700;
-      color:#fff;
-      margin-bottom:8px;
-    }
-
-    .upload-mini small{
-      display:block;
-      margin-top:6px;
-      color:#8d8d8d;
-      line-height:1.4;
-    }
-
-    .file-input,.field,select{
-      width:100%;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid #333;
-      background:#090909;
-      color:#ddd;
-      outline:none;
-    }
-
-    .field{
-      margin-bottom:14px;
-      font-size:15px;
-    }
-
-    .field:focus,.file-input:focus,select:focus{
-      border-color:var(--line-strong);
-      box-shadow:0 0 0 3px rgba(212,175,55,.08);
-    }
-
-    textarea.field{
-      min-height:150px;
-      resize:vertical;
-    }
-
-    .file-list{
-      margin-top:8px;
-      display:grid;
-      gap:6px;
-    }
-
-    .file-pill{
-      font-size:12px;
-      color:#f1f1f1;
-      background:rgba(212,175,55,.08);
-      border:1px solid rgba(212,175,55,.18);
-      border-radius:10px;
-      padding:8px 10px;
-      word-break:break-word;
-    }
-
-    .file-empty{
-      font-size:12px;
-      color:#8d8d8d;
-      margin-top:8px;
-    }
-
-    .control-row{
-      display:grid;
-      grid-template-columns:112px 1fr 64px;
-      gap:10px;
-      align-items:center;
-      margin-top:10px;
-    }
-
-    .control-row:first-of-type{
-      margin-top:0;
-    }
-
-    .control-row label{
-      color:#ddd;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .control-row input[type="range"]{
-      width:100%;
-      accent-color:#d4af37;
-    }
-
-    .control-value{
-      text-align:right;
-      color:var(--gold2);
-      font-size:13px;
-    }
-
-    .editor-actions,
-    .preset-grid,
-    .option-grid,
-    .catalog-actions{
-      display:grid;
-      gap:10px;
-    }
-
-    .editor-actions{
-      grid-template-columns:repeat(3,1fr);
-    }
-
-    .preset-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-
-    .small-btn,
-    .preset-btn{
-      border:1px solid #383838;
-      background:#121212;
-      color:#efefef;
-      padding:11px 14px;
-      border-radius:12px;
-      text-align:center;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .small-btn:hover,
-    .preset-btn:hover{
-      border-color:var(--line-strong);
-      color:var(--gold2);
-      background:rgba(212,175,55,.08);
-    }
-
-    .price-box{
-      display:grid;
-      gap:10px;
-    }
-
-    .price-line{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      color:#ddd;
-      font-size:14px;
-    }
-
-    .price-line strong{
-      color:var(--gold2);
-      font-size:18px;
-    }
-
-    .checkbox-line{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
-      border:1px solid #292929;
-      border-radius:12px;
-      background:#0f0f0f;
-    }
-
-    .checkbox-line label{
-      color:#ddd;
-      font-size:14px;
-      font-weight:700;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .checkbox-line small{
-      color:#8a8a8a;
-      font-weight:400;
-    }
-
-    .checkbox-line input{
-      width:18px;
-      height:18px;
-      accent-color:#d4af37;
-      flex:0 0 auto;
-    }
-
-    .texture-status{
-      min-height:20px;
-      color:var(--gold2);
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .form-message,
-    .catalog-message{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:12px;
-      font-size:14px;
-      line-height:1.5;
-      display:none;
-      border:1px solid transparent;
-    }
-
-    .form-message.show,
-    .catalog-message.show{
-      display:block;
-    }
-
-    .form-message.success,
-    .catalog-message.success{
-      color:var(--success);
-      background:rgba(120,255,120,.06);
-      border-color:rgba(120,255,120,.18);
-    }
-
-    .form-message.error,
-    .catalog-message.error{
-      color:var(--error);
-      background:rgba(255,120,120,.06);
-      border-color:rgba(255,120,120,.18);
-    }
-
-    .form-message.info,
-    .catalog-message.info{
-      color:var(--info);
-      background:rgba(212,175,55,.06);
-      border-color:rgba(212,175,55,.18);
-    }
-
-    .section{
-      padding:24px 0 10px;
-    }
-
-    .section-head{
-      margin-bottom:12px;
-    }
-
-    .section-tag{
-      color:var(--gold);
-      text-transform:uppercase;
-      letter-spacing:.28em;
-      font-size:12px;
-      margin-bottom:10px;
-    }
-
-    .section-title{
-      margin:0;
-      font-size:clamp(28px, 4.5vw, 44px);
-      line-height:1.1;
-    }
-
-    .section-text{
-      color:var(--muted);
-      line-height:1.8;
-      max-width:760px;
-      margin-top:14px;
-      font-size:17px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:20px;
-      margin-top:30px;
-    }
-
-    .showcase-card{
-      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:var(--shadow);
-    }
-
-    .image-frame{
-      position:relative;
-      height:320px;
-      border-radius:18px;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at center, rgba(212,175,55,.12), transparent 40%),
-        linear-gradient(180deg, #181818 0%, #090909 100%);
-      border:1px solid rgba(255,255,255,.04);
-    }
-
-    .slider-image{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      opacity:1;
-      transition:opacity .45s ease;
-      user-select:none;
-    }
-
-    .slider-arrow{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:42px;
-      height:42px;
-      border:none;
-      border-radius:999px;
-      cursor:pointer;
-      background:rgba(0,0,0,.55);
-      color:#fff;
-      font-size:22px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition:.2s ease;
-      z-index:2;
-    }
-
-    .slider-arrow:hover{
-      background:rgba(212,175,55,.9);
-      color:#000;
-    }
-
-    .slider-arrow.left{ left:12px; }
-    .slider-arrow.right{ right:12px; }
-
-    .slider-dots{
-      position:absolute;
-      left:50%;
-      bottom:14px;
-      transform:translateX(-50%);
-      display:flex;
-      gap:8px;
-      z-index:2;
-    }
-
-    .slider-dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      border:none;
-      cursor:pointer;
-      background:rgba(255,255,255,.35);
-      transition:.2s ease;
-      padding:0;
-    }
-
-    .slider-dot.active{
-      background:var(--gold2);
-      transform:scale(1.15);
-    }
-
-    .feature-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:20px;
-      margin-top:30px;
-    }
-
-    .feature-box{
-      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      text-align:center;
-    }
-
-    .feature-icon{
-      width:62px;
-      height:62px;
-      margin:0 auto 14px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(212,175,55,.08);
-      border:1px solid var(--line-strong);
-      color:var(--gold2);
-      font-size:28px;
-    }
-
-    .feature-box h3{
-      margin:0;
-      font-size:22px;
-    }
-
-    .feature-box p{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.7;
-    }
-
-    .contact-wrap{
-      padding:56px 0 70px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
+      display:inline-flex; align-items:center; justify-content:center; padding:14px 22px; border-radius:14px;
+      font-weight:700; cursor:pointer; border:none; transition:transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    .btn:hover{ transform:translateY(-2px); }
+    .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
+    .gold{ background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; box-shadow:0 14px 30px rgba(212,175,55,.18); }
+    .ghost{ border:1px solid #333; background:#000; color:#fff; }
+    .ghost:hover{ border-color:var(--line-strong); color:var(--gold2); }
+
+    .card,
+    .catalog-card,
+    .showcase-card,
+    .feature-box,
+    .cart-box,
     .contact-panel,
     .contact-form{
       background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
       border:1px solid var(--line);
-      border-radius:26px;
-      padding:28px;
-      box-shadow:var(--shadow);
-    }
-
-    .contact-panel p{
-      color:var(--muted);
-      line-height:1.8;
-      max-width:520px;
-    }
-
-    .footer{
-      border-top:1px solid #222;
-      padding:22px 0 34px;
-      color:#777;
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .catalog-toolbar{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:14px;
-      align-items:center;
-      margin-top:26px;
-      margin-bottom:18px;
-    }
-
-    .catalog-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:20px;
-    }
-
-    .catalog-card{
-      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
-      border:1px solid var(--line);
       border-radius:24px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      display:flex;
-      flex-direction:column;
-    }
-
-    .catalog-card-image{
-      height:300px;
-      background:#0f0f0f;
-      border-bottom:1px solid rgba(255,255,255,.04);
-    }
-
-    .catalog-card-image img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .catalog-card-body{
-      padding:18px;
-      display:grid;
-      gap:10px;
-    }
-
-    .catalog-card-code{
-      color:var(--gold2);
-      font-size:12px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-    }
-
-    .catalog-card-title{
-      margin:0;
-      font-size:20px;
-    }
-
-    .catalog-card-meta{
-      color:#ddd;
-      font-size:14px;
-    }
-
-    .catalog-card-meta strong{
-      color:var(--gold2);
-      font-size:17px;
-    }
-
-    .cart-box{
-      margin-top:26px;
-      background:linear-gradient(180deg, rgba(17,17,17,.98), rgba(10,10,10,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:22px;
       box-shadow:var(--shadow);
     }
 
-    .cart-items{
-      display:grid;
-      gap:12px;
-      margin-top:16px;
+    .card{ padding:22px; }
+
+    .builder-layout{ display:grid; grid-template-columns:1.05fr .95fr; gap:18px; align-items:start; }
+    .preview-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .preview-label{ font-size:12px; letter-spacing:.25em; color:#7a7a7a; text-transform:uppercase; margin-bottom:4px; }
+    .preview-title{ margin:0; color:var(--gold); font-size:24px; }
+    .pill{ border-radius:999px; border:1px solid var(--line-strong); color:var(--gold2); padding:8px 12px; font-size:12px; background:rgba(212,175,55,.08); }
+
+    .editor-topbar{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+    .tab-btn,.small-btn,.preset-btn,.remove-btn,.stock-badge,.color-chip{
+      transition:.2s ease;
+    }
+    .tab-btn,.small-btn,.preset-btn{
+      border:1px solid #383838; background:#121212; color:#efefef; padding:11px 14px; border-radius:12px;
+      text-align:center; font-size:14px; font-weight:700; cursor:pointer;
+    }
+    .tab-btn.active,.tab-btn:hover,.small-btn:hover,.preset-btn:hover{
+      border-color:var(--line-strong); color:var(--gold2); background:rgba(212,175,55,.08);
     }
 
-    .cart-item{
-      border:1px solid rgba(212,175,55,.12);
-      border-radius:16px;
-      padding:14px;
-      background:#0d0d0d;
-      display:grid;
-      gap:8px;
+    .editor-stage{
+      position:relative; height:680px; border:1px dashed var(--line-strong); border-radius:20px; overflow:hidden;
+      background:radial-gradient(circle at center, rgba(212,175,55,.07), transparent 46%), linear-gradient(180deg, #161616, #090909);
+      display:flex; align-items:center; justify-content:center; padding:18px;
     }
 
-    .cart-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+    .shirt-scene{ position:relative; width:100%; max-width:520px; aspect-ratio:1 / 1.14; user-select:none; }
+    .mockup-wrap{ position:relative; width:100%; height:100%; }
+    .shirt-photo{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; z-index:1; pointer-events:none;
+      user-select:none; filter:drop-shadow(0 18px 30px rgba(0,0,0,.40));
     }
 
-    .cart-code{
-      color:var(--gold2);
-      font-size:12px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
+    .design-surface{ position:absolute; left:50%; transform:translateX(-50%); z-index:3; overflow:hidden; }
+    .design-surface.front,.design-surface.back{
+      top:9%; width:72%; height:82%;
+      clip-path:polygon(17% 7%,31% 0%,43% 6%,57% 6%,69% 0%,83% 7%,100% 20%,90% 35%,81% 31%,78% 100%,22% 100%,19% 31%,10% 35%,0% 20%);
+      -webkit-clip-path:polygon(17% 7%,31% 0%,43% 6%,57% 6%,69% 0%,83% 7%,100% 20%,90% 35%,81% 31%,78% 100%,22% 100%,19% 31%,10% 35%,0% 20%);
+    }
+    .design-surface::after{
+      content:""; position:absolute; inset:0; border:2px dashed rgba(212,175,55,.42); pointer-events:none; z-index:8;
+      clip-path:inherit; -webkit-clip-path:inherit;
+    }
+    .surface-label{
+      position:absolute; top:10%; left:50%; transform:translateX(-50%); font-size:11px; color:var(--gold2);
+      background:rgba(0,0,0,.55); padding:5px 10px; border-radius:999px; pointer-events:none; z-index:12; white-space:nowrap;
     }
 
-    .remove-btn{
-      border:1px solid #3a3a3a;
-      background:#111;
-      color:#fff;
-      border-radius:10px;
-      padding:8px 12px;
-      cursor:pointer;
-      font-weight:700;
+    .design-item{ position:absolute; top:50%; left:50%; transform-origin:center center; cursor:grab; touch-action:none; user-select:none; z-index:10; }
+    .design-item.dragging{ cursor:grabbing; }
+    .design-item.selected{ outline:2px solid rgba(242,214,117,.95); outline-offset:2px; border-radius:10px; }
+    .design-item img{
+      display:block; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none;
+      mix-blend-mode:multiply; opacity:.96; filter:contrast(1.08) saturate(1.04) drop-shadow(0 1px 2px rgba(0,0,0,.06));
+    }
+    .design-item::after{
+      content:""; position:absolute; inset:0;
+      background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.10), transparent 35%), linear-gradient(180deg, rgba(0,0,0,.08), transparent 30%, rgba(0,0,0,.10) 100%);
+      mix-blend-mode:multiply; pointer-events:none;
     }
 
-    .remove-btn:hover{
-      border-color:rgba(255,120,120,.35);
-      color:#ffb1b1;
-    }
+    .hidden{ display:none !important; }
+    .editor-controls{ display:grid; gap:12px; }
+    .sub-card{ background:linear-gradient(180deg, rgba(20,20,20,.98), rgba(10,10,10,.98)); border:1px solid rgba(212,175,55,.12); border-radius:18px; padding:16px; }
+    .sub-title{ margin:0 0 12px; font-size:14px; text-transform:uppercase; letter-spacing:.18em; color:#8e8e8e; }
+    .upload-split{ display:grid; gap:12px; }
+    .upload-mini{ padding:12px; border:1px solid rgba(212,175,55,.12); border-radius:14px; background:#0d0d0d; }
+    .upload-mini-title{ font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .upload-mini small{ display:block; margin-top:6px; color:#8d8d8d; line-height:1.4; }
 
-    .cart-empty{
-      color:#8b8b8b;
-      margin-top:16px;
+    .file-input,.field,select{
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid #333; background:#090909; color:#ddd; outline:none;
     }
+    .field{ margin-bottom:14px; font-size:15px; }
+    .field:focus,.file-input:focus,select:focus,.coupon-wrap input:focus{ border-color:var(--line-strong); box-shadow:0 0 0 3px rgba(212,175,55,.08); }
+    textarea.field{ min-height:150px; resize:vertical; }
 
-    .cart-total{
-      margin-top:16px;
-      padding-top:14px;
-      border-top:1px solid rgba(255,255,255,.07);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      color:#ddd;
-    }
+    .file-list{ margin-top:8px; display:grid; gap:6px; }
+    .file-pill{ font-size:12px; color:#f1f1f1; background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.18); border-radius:10px; padding:8px 10px; word-break:break-word; }
+    .file-empty{ font-size:12px; color:#8d8d8d; margin-top:8px; }
 
-    .cart-total strong{
-      color:var(--gold2);
-      font-size:20px;
+    .control-row{ display:grid; grid-template-columns:112px 1fr 64px; gap:10px; align-items:center; margin-top:10px; }
+    .control-row:first-of-type{ margin-top:0; }
+    .control-row label{ color:#ddd; font-size:14px; font-weight:700; }
+    .control-row input[type="range"]{ width:100%; accent-color:#d4af37; }
+    .control-value{ text-align:right; color:var(--gold2); font-size:13px; }
+
+    .editor-actions,.preset-grid,.option-grid,.catalog-actions{ display:grid; gap:10px; }
+    .editor-actions{ grid-template-columns:repeat(3,1fr); }
+    .preset-grid{ grid-template-columns:repeat(2,1fr); }
+
+    .price-box{ display:grid; gap:10px; }
+    .price-line{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:#ddd; font-size:14px; }
+    .price-line strong{ color:var(--gold2); font-size:18px; }
+
+    .checkbox-line{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px;
+      border:1px solid #292929; border-radius:12px; background:#0f0f0f;
     }
+    .checkbox-line label{ color:#ddd; font-size:14px; font-weight:700; display:flex; flex-direction:column; gap:4px; }
+    .checkbox-line small{ color:#8a8a8a; font-weight:400; }
+    .checkbox-line input{ width:18px; height:18px; accent-color:#d4af37; flex:0 0 auto; }
+
+    .texture-status{ min-height:20px; color:var(--gold2); font-size:14px; line-height:1.5; }
+
+    .form-message,.catalog-message{
+      margin-top:12px; padding:12px 14px; border-radius:12px; font-size:14px; line-height:1.5; display:none; border:1px solid transparent;
+    }
+    .form-message.show,.catalog-message.show{ display:block; }
+    .form-message.success,.catalog-message.success{ color:var(--success); background:rgba(120,255,120,.06); border-color:rgba(120,255,120,.18); }
+    .form-message.error,.catalog-message.error{ color:var(--error); background:rgba(255,120,120,.06); border-color:rgba(255,120,120,.18); }
+    .form-message.info,.catalog-message.info{ color:var(--info); background:rgba(212,175,55,.06); border-color:rgba(212,175,55,.18); }
+
+    .section{ padding:24px 0 10px; }
+    .section-head{ margin-bottom:12px; }
+    .section-tag{ color:var(--gold); text-transform:uppercase; letter-spacing:.28em; font-size:12px; margin-bottom:10px; }
+    .section-title{ margin:0; font-size:clamp(28px, 4.5vw, 44px); line-height:1.1; }
+    .section-text{ color:var(--muted); line-height:1.8; max-width:760px; margin-top:14px; font-size:17px; }
+
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:30px; }
+    .showcase-card{ padding:22px; }
+    .image-frame{
+      position:relative; height:320px; border-radius:18px; overflow:hidden;
+      background:radial-gradient(circle at center, rgba(212,175,55,.12), transparent 40%), linear-gradient(180deg, #181818 0%, #090909 100%);
+      border:1px solid rgba(255,255,255,.04);
+    }
+    .slider-image{ width:100%; height:100%; object-fit:cover; display:block; opacity:1; transition:opacity .45s ease; user-select:none; }
+    .slider-arrow{
+      position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border:none; border-radius:999px; cursor:pointer;
+      background:rgba(0,0,0,.55); color:#fff; font-size:22px; display:flex; align-items:center; justify-content:center; transition:.2s ease; z-index:2;
+    }
+    .slider-arrow:hover{ background:rgba(212,175,55,.9); color:#000; }
+    .slider-arrow.left{ left:12px; } .slider-arrow.right{ right:12px; }
+    .slider-dots{ position:absolute; left:50%; bottom:14px; transform:translateX(-50%); display:flex; gap:8px; z-index:2; }
+    .slider-dot{ width:10px; height:10px; border-radius:999px; border:none; cursor:pointer; background:rgba(255,255,255,.35); transition:.2s ease; padding:0; }
+    .slider-dot.active{ background:var(--gold2); transform:scale(1.15); }
+
+    .feature-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:30px; }
+    .feature-box{ padding:22px; text-align:center; }
+    .feature-icon{
+      width:62px; height:62px; margin:0 auto 14px; border-radius:999px; display:flex; align-items:center; justify-content:center;
+      background:rgba(212,175,55,.08); border:1px solid var(--line-strong); color:var(--gold2); font-size:28px;
+    }
+    .feature-box h3{ margin:0; font-size:22px; }
+    .feature-box p{ margin:10px 0 0; color:var(--muted); line-height:1.7; }
+
+    .contact-wrap{ padding:56px 0 70px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .contact-panel,.contact-form{ padding:28px; }
+    .contact-panel p{ color:var(--muted); line-height:1.8; max-width:520px; }
+
+    .footer{ border-top:1px solid #222; padding:22px 0 34px; color:#777; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+
+    .catalog-toolbar{ display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; margin-top:26px; margin-bottom:18px; }
+    .catalog-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+    .catalog-card{ overflow:hidden; display:flex; flex-direction:column; }
+    .catalog-card-image{ height:300px; background:#0f0f0f; border-bottom:1px solid rgba(255,255,255,.04); }
+    .catalog-card-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .catalog-card-body{ padding:18px; display:grid; gap:10px; }
+    .catalog-card-code{ color:var(--gold2); font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
+    .catalog-card-title{ margin:0; font-size:20px; }
+    .catalog-card-meta{ color:#ddd; font-size:14px; }
+    .catalog-card-meta strong{ color:var(--gold2); font-size:17px; }
+    .stock-badge{
+      display:inline-flex; align-items:center; gap:6px; width:max-content; padding:7px 10px; border-radius:999px; font-size:12px; font-weight:700;
+      border:1px solid rgba(255,255,255,.08); background:#121212;
+    }
+    .stock-high{ color:#b8f5b8; border-color:rgba(139,226,139,.2); background:rgba(139,226,139,.07); }
+    .stock-mid{ color:#ffe8a6; border-color:rgba(255,220,120,.2); background:rgba(255,220,120,.07); }
+    .stock-low{ color:#ffb1b1; border-color:rgba(255,107,107,.2); background:rgba(255,107,107,.07); }
+
+    .cart-box{ margin-top:26px; padding:22px; }
+    .cart-items{ display:grid; gap:12px; margin-top:16px; }
+    .cart-item{ border:1px solid rgba(212,175,55,.12); border-radius:16px; padding:14px; background:#0d0d0d; display:grid; gap:8px; }
+    .cart-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .cart-code{ color:var(--gold2); font-size:12px; letter-spacing:.14em; text-transform:uppercase; }
+    .remove-btn{ border:1px solid #3a3a3a; background:#111; color:#fff; border-radius:10px; padding:8px 12px; cursor:pointer; font-weight:700; }
+    .remove-btn:hover{ border-color:rgba(255,120,120,.35); color:#ffb1b1; }
+    .cart-empty{ color:#8b8b8b; margin-top:16px; }
+    .cart-total{ margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.07); display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; color:#ddd; }
+    .cart-total strong{ color:var(--gold2); font-size:20px; }
+
+    .coupon-wrap{
+      display:grid; grid-template-columns:1fr auto; gap:10px; margin-top:18px; padding:14px; border-radius:16px;
+      background:#0e0e0e; border:1px solid rgba(212,175,55,.10);
+    }
+    .coupon-wrap input{
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid #333; background:#090909; color:#ddd; outline:none;
+    }
+    .coupon-info{ color:#8d8d8d; font-size:13px; margin-top:8px; }
+    .discount-line{ color:#9fe59f; }
+
+    .order-summary-card{
+      margin-top:18px; padding:18px; border-radius:18px; border:1px solid rgba(212,175,55,.12);
+      background:linear-gradient(180deg, rgba(18,18,18,.98), rgba(8,8,8,.98));
+    }
+    .summary-row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; color:#ddd; border-bottom:1px dashed rgba(255,255,255,.06); }
+    .summary-row:last-child{ border-bottom:none; }
+    .summary-label{ color:#9a9a9a; }
 
     .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.78);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      z-index:9999;
+      position:fixed; inset:0; background:rgba(0,0,0,.78); display:none; align-items:center; justify-content:center; padding:20px; z-index:9999;
     }
-
-    .modal.show{
-      display:flex;
-    }
-
+    .modal.show{ display:flex; }
     .modal-box{
-      width:min(860px, 100%);
-      max-height:90vh;
-      overflow:auto;
-      background:linear-gradient(180deg, rgba(17,17,17,.99), rgba(8,8,8,.99));
-      border:1px solid var(--line-strong);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:24px;
+      width:min(920px, 100%); max-height:90vh; overflow:auto; background:linear-gradient(180deg, rgba(17,17,17,.99), rgba(8,8,8,.99));
+      border:1px solid var(--line-strong); border-radius:24px; box-shadow:var(--shadow); padding:24px;
+    }
+    .modal-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    .modal-title{ margin:0; color:var(--gold); font-size:28px; }
+    .modal-close{ width:42px; height:42px; border:none; border-radius:999px; background:#111; color:#fff; font-size:20px; cursor:pointer; border:1px solid #333; }
+    .modal-close:hover{ border-color:var(--line-strong); color:var(--gold2); }
+    .modal-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .modal-preview{ border:1px solid rgba(212,175,55,.12); border-radius:18px; overflow:hidden; background:#0f0f0f; min-height:460px; }
+    .modal-preview img{ width:100%; height:100%; display:block; object-fit:cover; }
+    .modal-info{ display:grid; gap:12px; align-content:start; }
+    .modal-code{ color:var(--gold2); font-size:13px; letter-spacing:.14em; text-transform:uppercase; }
+    .meta-chip-row{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    .color-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .color-chip{
+      border:1px solid #333; background:#0d0d0d; border-radius:14px; padding:12px; display:flex; gap:10px; align-items:center; cursor:pointer; color:#ddd;
+    }
+    .color-chip.active,.color-chip:hover{ border-color:var(--line-strong); background:rgba(212,175,55,.08); color:var(--gold2); }
+    .color-dot{ width:18px; height:18px; border-radius:999px; border:1px solid rgba(255,255,255,.18); }
+
+    .size-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:6px; }
+    .size-box{ border:1px solid #2f2f2f; border-radius:14px; padding:10px; background:#0c0c0c; }
+    .size-box label{ display:block; font-size:13px; color:#ddd; margin-bottom:8px; font-weight:700; }
+    .size-box input{ width:100%; padding:12px; border-radius:10px; border:1px solid #333; background:#090909; color:#fff; outline:none; }
+    .size-box input:focus{ border-color:var(--line-strong); }
+
+    .stock-progress{
+      height:10px; border-radius:999px; background:#151515; border:1px solid rgba(255,255,255,.05); overflow:hidden;
+    }
+    .stock-progress-bar{
+      height:100%; border-radius:999px; background:linear-gradient(90deg, #8be28b, #f2d675, #ff7f7f);
     }
 
-    .modal-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
+    .size-chart{
+      border:1px solid rgba(212,175,55,.12); border-radius:16px; overflow:hidden; background:#0d0d0d;
     }
-
-    .modal-title{
-      margin:0;
-      color:var(--gold);
-      font-size:28px;
-    }
-
-    .modal-close{
-      width:42px;
-      height:42px;
-      border:none;
-      border-radius:999px;
-      background:#111;
-      color:#fff;
-      font-size:20px;
-      cursor:pointer;
-      border:1px solid #333;
-    }
-
-    .modal-close:hover{
-      border-color:var(--line-strong);
-      color:var(--gold2);
-    }
-
-    .modal-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:20px;
-    }
-
-    .modal-preview{
-      border:1px solid rgba(212,175,55,.12);
-      border-radius:18px;
-      overflow:hidden;
-      background:#0f0f0f;
-      min-height:460px;
-    }
-
-    .modal-preview img{
-      width:100%;
-      height:100%;
-      display:block;
-      object-fit:cover;
-    }
-
-    .modal-info{
-      display:grid;
-      gap:12px;
-      align-content:start;
-    }
-
-    .modal-code{
-      color:var(--gold2);
-      font-size:13px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .size-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-      margin-top:6px;
-    }
-
-    .size-box{
-      border:1px solid #2f2f2f;
-      border-radius:14px;
-      padding:10px;
-      background:#0c0c0c;
-    }
-
-    .size-box label{
-      display:block;
-      font-size:13px;
-      color:#ddd;
-      margin-bottom:8px;
-      font-weight:700;
-    }
-
-    .size-box input{
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:1px solid #333;
-      background:#090909;
-      color:#fff;
-      outline:none;
-    }
-
-    .size-box input:focus{
-      border-color:var(--line-strong);
-    }
+    .size-chart table{ width:100%; border-collapse:collapse; font-size:13px; }
+    .size-chart th,.size-chart td{ padding:10px 12px; border-bottom:1px solid rgba(255,255,255,.05); text-align:left; }
+    .size-chart th{ color:var(--gold2); background:#111; }
+    .size-chart tr:last-child td{ border-bottom:none; }
 
     @media(max-width:1180px){
-      .builder-layout{
-        grid-template-columns:1fr;
-      }
-      .catalog-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
+      .builder-layout{ grid-template-columns:1fr; }
+      .catalog-grid{ grid-template-columns:repeat(3,1fr); }
     }
 
     @media(max-width:980px){
-      .hero,
-      .grid,
-      .feature-grid,
-      .contact-wrap,
-      .modal-grid{
-        grid-template-columns:1fr;
-      }
-
-      .top{
-        align-items:flex-start;
-      }
-
-      .editor-stage{
-        height:600px;
-      }
-
-      .catalog-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .catalog-toolbar{
-        grid-template-columns:1fr;
-      }
+      .hero,.grid,.feature-grid,.contact-wrap,.modal-grid{ grid-template-columns:1fr; }
+      .top{ align-items:flex-start; }
+      .editor-stage{ height:600px; }
+      .catalog-grid{ grid-template-columns:repeat(2,1fr); }
+      .catalog-toolbar{ grid-template-columns:1fr; }
     }
 
     @media(max-width:640px){
-      .container{
-        width:min(calc(100% - 22px), var(--max));
-      }
-
-      .hero p,
-      .section-text{
-        font-size:16px;
-      }
-
-      .editor-stage{
-        height:500px;
-        padding:12px;
-      }
-
-      .image-frame{
-        height:260px;
-      }
-
-      .slider-arrow{
-        width:38px;
-        height:38px;
-      }
-
-      .control-row,
-      .size-grid,
-      .editor-actions,
-      .preset-grid{
-        grid-template-columns:1fr;
-      }
-
-      .control-value{
-        text-align:left;
-      }
-
-      .brand{
-        font-size:22px;
-      }
-
-      .brand-logo{
-        width:46px;
-        height:46px;
-      }
-
-      .catalog-grid{
-        grid-template-columns:1fr;
-      }
-
-      .modal-preview{
-        min-height:320px;
-      }
+      .container{ width:min(calc(100% - 22px), var(--max)); }
+      .hero p,.section-text{ font-size:16px; }
+      .editor-stage{ height:500px; padding:12px; }
+      .image-frame{ height:260px; }
+      .slider-arrow{ width:38px; height:38px; }
+      .control-row,.size-grid,.editor-actions,.preset-grid,.color-grid{ grid-template-columns:1fr; }
+      .control-value{ text-align:left; }
+      .brand{ font-size:22px; }
+      .brand-logo{ width:46px; height:46px; }
+      .catalog-grid{ grid-template-columns:1fr; }
+      .modal-preview{ min-height:320px; }
+      .coupon-wrap{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -1357,14 +483,7 @@
               <div class="upload-split">
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="frontUploadLabel">Első design</div>
-                  <input
-                    class="file-input"
-                    type="file"
-                    id="frontDesignInput"
-                    name="front_design"
-                    form="offerForm"
-                    accept="image/png,image/jpeg,image/webp"
-                  >
+                  <input class="file-input" type="file" id="frontDesignInput" name="front_design" form="offerForm" accept="image/png,image/jpeg,image/webp">
                   <small id="frontUploadHelp">Az elejére kerülő kép.</small>
                   <div class="file-list" id="frontFileList"></div>
                   <div class="file-empty" id="frontFileEmpty">Nincs kiválasztott fájl.</div>
@@ -1372,14 +491,7 @@
 
                 <div class="upload-mini">
                   <div class="upload-mini-title" id="backUploadLabel">Hátsó design</div>
-                  <input
-                    class="file-input"
-                    type="file"
-                    id="backDesignInput"
-                    name="back_design"
-                    form="offerForm"
-                    accept="image/png,image/jpeg,image/webp"
-                  >
+                  <input class="file-input" type="file" id="backDesignInput" name="back_design" form="offerForm" accept="image/png,image/jpeg,image/webp">
                   <small id="backUploadHelp">A hátuljára kerülő kép.</small>
                   <div class="file-list" id="backFileList"></div>
                   <div class="file-empty" id="backFileEmpty">Nincs kiválasztott fájl.</div>
@@ -1453,18 +565,9 @@
             <div class="sub-card">
               <h4 class="sub-title" id="priceTitle">Becsült ár</h4>
               <div class="price-box">
-                <div class="price-line">
-                  <span id="basePriceText">Alap póló</span>
-                  <span id="basePriceValue">55 RON</span>
-                </div>
-                <div class="price-line">
-                  <span id="extraPriceText">Nyomás / extra</span>
-                  <span id="extraPriceValue">0 RON</span>
-                </div>
-                <div class="price-line">
-                  <span id="totalPriceText">Végösszeg</span>
-                  <strong id="totalPriceValue">55 RON</strong>
-                </div>
+                <div class="price-line"><span id="basePriceText">Alap póló</span><span id="basePriceValue">55 RON</span></div>
+                <div class="price-line"><span id="extraPriceText">Nyomás / extra</span><span id="extraPriceValue">0 RON</span></div>
+                <div class="price-line"><span id="totalPriceText">Végösszeg</span><strong id="totalPriceValue">55 RON</strong></div>
               </div>
             </div>
           </div>
@@ -1480,32 +583,9 @@
       </div>
 
       <div class="grid">
-        <div class="showcase-card">
-          <div class="image-frame">
-            <button class="slider-arrow left" onclick="prevSlide('left')">‹</button>
-            <img id="slider-left" class="slider-image" src="bal1.jpg" alt="Bal oldali póló">
-            <button class="slider-arrow right" onclick="nextSlide('left')">›</button>
-            <div class="slider-dots" id="dots-left"></div>
-          </div>
-        </div>
-
-        <div class="showcase-card">
-          <div class="image-frame">
-            <button class="slider-arrow left" onclick="prevSlide('center')">‹</button>
-            <img id="slider-center" class="slider-image" src="kozep1.jpg" alt="Középső póló">
-            <button class="slider-arrow right" onclick="nextSlide('center')">›</button>
-            <div class="slider-dots" id="dots-center"></div>
-          </div>
-        </div>
-
-        <div class="showcase-card">
-          <div class="image-frame">
-            <button class="slider-arrow left" onclick="prevSlide('right')">‹</button>
-            <img id="slider-right" class="slider-image" src="jobb1.jpg" alt="Jobb oldali póló">
-            <button class="slider-arrow right" onclick="nextSlide('right')">›</button>
-            <div class="slider-dots" id="dots-right"></div>
-          </div>
-        </div>
+        <div class="showcase-card"><div class="image-frame"><button class="slider-arrow left" onclick="prevSlide('left')">‹</button><img id="slider-left" class="slider-image" src="bal1.jpg" alt="Bal oldali póló"><button class="slider-arrow right" onclick="nextSlide('left')">›</button><div class="slider-dots" id="dots-left"></div></div></div>
+        <div class="showcase-card"><div class="image-frame"><button class="slider-arrow left" onclick="prevSlide('center')">‹</button><img id="slider-center" class="slider-image" src="kozep1.jpg" alt="Középső póló"><button class="slider-arrow right" onclick="nextSlide('center')">›</button><div class="slider-dots" id="dots-center"></div></div></div>
+        <div class="showcase-card"><div class="image-frame"><button class="slider-arrow left" onclick="prevSlide('right')">‹</button><img id="slider-right" class="slider-image" src="jobb1.jpg" alt="Jobb oldali póló"><button class="slider-arrow right" onclick="nextSlide('right')">›</button><div class="slider-dots" id="dots-right"></div></div></div>
       </div>
     </section>
 
@@ -1517,23 +597,9 @@
       </div>
 
       <div class="feature-grid">
-        <div class="feature-box">
-          <div class="feature-icon">👕</div>
-          <h3 id="f1">Férfi pólók</h3>
-          <p id="f1text">Modern szabás, erős megjelenés, különleges dizájnok.</p>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-icon">✨</div>
-          <h3 id="f2">Női pólók</h3>
-          <p id="f2text">Letisztult stílus, prémium hatás, egyedi megoldások.</p>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-icon">🎨</div>
-          <h3 id="f3">Egyedi nyomtatás</h3>
-          <p id="f3text">Saját feliratok, logók, grafikák és egyedi rendelés.</p>
-        </div>
+        <div class="feature-box"><div class="feature-icon">👕</div><h3 id="f1">Férfi pólók</h3><p id="f1text">Modern szabás, erős megjelenés, különleges dizájnok.</p></div>
+        <div class="feature-box"><div class="feature-icon">✨</div><h3 id="f2">Női pólók</h3><p id="f2text">Letisztult stílus, prémium hatás, egyedi megoldások.</p></div>
+        <div class="feature-box"><div class="feature-icon">🎨</div><h3 id="f3">Egyedi nyomtatás</h3><p id="f3text">Saját feliratok, logók, grafikák és egyedi rendelés.</p></div>
       </div>
     </section>
 
@@ -1541,7 +607,7 @@
       <div class="section-head">
         <div class="section-tag" id="readyTag">Kész modellek</div>
         <h2 class="section-title" id="readyTitle">Válassz a meglévő pólómodellek közül</h2>
-        <p class="section-text" id="readyText">Kereshető modellkatalógus, kosárszerű összeállítás, és rendezett rendelésküldés egy e-mailben.</p>
+        <p class="section-text" id="readyText">Kereshető modellkatalógus, színválasztás, készletjelzés, kuponkedvezmény és rendezett rendelésküldés egy e-mailben.</p>
       </div>
 
       <div class="catalog-toolbar">
@@ -1554,7 +620,7 @@
       <div class="cart-box">
         <div class="preview-head" style="margin-bottom:0;">
           <div>
-            <div class="preview-label">Kosár</div>
+            <div class="preview-label" id="cartMini">Kosár</div>
             <h3 class="preview-title" id="cartTitle">Kiválasztott kész modellek</h3>
           </div>
           <div class="pill" id="cartBadge">0 tétel</div>
@@ -1563,9 +629,16 @@
         <div class="cart-items" id="cartItems"></div>
         <div class="cart-empty" id="cartEmpty">Még nincs kiválasztott kész modell.</div>
 
-        <div class="cart-total">
-          <span id="cartTotalLabel">Becsült végösszeg</span>
-          <strong id="cartTotalValue">0 RON</strong>
+        <div class="coupon-wrap">
+          <input type="text" id="couponInput" placeholder="Kuponkód megadása (pl. NEXT10)">
+          <button class="btn gold" type="button" id="applyCouponBtn">Kupon alkalmazása</button>
+        </div>
+        <div class="coupon-info" id="couponInfo">Aktív tesztkuponok: NEXT10, GOLD15, VIP20</div>
+
+        <div class="order-summary-card">
+          <div class="summary-row"><span class="summary-label" id="summarySubtotalLabel">Termékek összege</span><strong id="summarySubtotalValue">0 RON</strong></div>
+          <div class="summary-row discount-line"><span class="summary-label" id="summaryDiscountLabel">Kedvezmény</span><strong id="summaryDiscountValue">0 RON</strong></div>
+          <div class="summary-row"><span class="summary-label" id="cartTotalLabel">Becsült végösszeg</span><strong id="cartTotalValue">0 RON</strong></div>
         </div>
 
         <form id="catalogCheckoutForm" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST">
@@ -1577,6 +650,8 @@
           <input type="hidden" name="order_type" value="Kész modellek rendelés">
           <input type="hidden" name="catalog_order_summary" id="catalogOrderSummary">
           <input type="hidden" name="catalog_total_price" id="catalogTotalPrice">
+          <input type="hidden" name="catalog_discount_value" id="catalogDiscountValue">
+          <input type="hidden" name="catalog_coupon_code" id="catalogCouponCode">
 
           <div class="contact-wrap" style="padding:22px 0 0; grid-template-columns:1fr 1fr;">
             <div>
@@ -1605,13 +680,7 @@
         <p id="contactText">Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.</p>
       </div>
 
-      <form
-        class="contact-form"
-        id="offerForm"
-        action="https://formsubmit.co/norbertnagy9898@yahoo.com"
-        method="POST"
-        enctype="multipart/form-data"
-      >
+      <form class="contact-form" id="offerForm" action="https://formsubmit.co/norbertnagy9898@yahoo.com" method="POST" enctype="multipart/form-data">
         <div class="section-tag" id="formTag">Ajánlatkérés</div>
 
         <input type="hidden" name="_subject" id="hiddenSubject" value="Új érdeklődés - Nextgen Digital Design">
@@ -1627,7 +696,6 @@
         <input class="field" type="text" id="phoneField" name="phone" placeholder="Telefonszám">
         <textarea class="field" id="messageField" name="message" placeholder="Írd meg, milyen pólót szeretnél."></textarea>
         <button class="btn gold" type="submit" id="sendBtn">Ajánlatkérés elküldése</button>
-
         <div id="formMessage" class="form-message"></div>
       </form>
     </section>
@@ -1653,14 +721,41 @@
 
         <div class="modal-info">
           <div class="modal-code" id="catalogCodeText">ND-001</div>
-          <div class="price-line">
-            <span>Ár</span>
-            <strong id="catalogPriceText">0 RON</strong>
+
+          <div class="meta-chip-row">
+            <div class="pill" id="catalogPriceText">0 RON</div>
+            <div class="stock-badge stock-high" id="modalStockBadge">Készleten</div>
           </div>
 
           <div class="sub-card" style="padding:14px;">
-            <h4 class="sub-title" style="margin-bottom:10px;">Méret / darabszám</h4>
+            <h4 class="sub-title" id="colorTitle" style="margin-bottom:10px;">Szín</h4>
+            <div class="color-grid" id="colorGrid"></div>
+          </div>
 
+          <div class="sub-card" style="padding:14px;">
+            <h4 class="sub-title" id="stockTitle" style="margin-bottom:10px;">Készletinformáció</h4>
+            <div class="price-line"><span id="stockLabel">Elérhető darab</span><strong id="catalogStockText">0 db</strong></div>
+            <div class="stock-progress"><div class="stock-progress-bar" id="catalogStockBar" style="width:0%"></div></div>
+          </div>
+
+          <div class="sub-card" style="padding:14px;">
+            <h4 class="sub-title" id="sizeChartTitle" style="margin-bottom:10px;">Mérettábla</h4>
+            <div class="size-chart">
+              <table>
+                <thead>
+                  <tr>
+                    <th id="chartSizeHead">Méret</th>
+                    <th id="chartWidthHead">Mellkas</th>
+                    <th id="chartLengthHead">Hossz</th>
+                  </tr>
+                </thead>
+                <tbody id="sizeChartBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sub-card" style="padding:14px;">
+            <h4 class="sub-title" id="qtyTitle" style="margin-bottom:10px;">Méret / darabszám</h4>
             <div class="size-grid">
               <div class="size-box"><label>XS</label><input type="number" id="qtyXS" min="0" value="0"></div>
               <div class="size-box"><label>S</label><input type="number" id="qtyS" min="0" value="0"></div>
@@ -1683,198 +778,170 @@
 
   <script>
     const readyModels = [
-      { code:"ND-001", name:"Nextgen Model 1", price:89, image:"nd-001.jpg" },
-      { code:"ND-002", name:"Nextgen Model 2", price:89, image:"nd-002.jpg" },
-      { code:"ND-003", name:"Nextgen Model 3", price:92, image:"nd-003.jpg" },
-      { code:"ND-004", name:"Nextgen Model 4", price:92, image:"nd-004.jpg" },
-      { code:"ND-005", name:"Nextgen Model 5", price:95, image:"nd-005.jpg" },
-      { code:"ND-006", name:"Nextgen Model 6", price:95, image:"nd-006.jpg" },
-      { code:"ND-007", name:"Nextgen Model 7", price:99, image:"nd-007.jpg" },
-      { code:"ND-008", name:"Nextgen Model 8", price:99, image:"nd-008.jpg" },
-      { code:"ND-009", name:"Nextgen Model 9", price:105, image:"nd-009.jpg" },
-      { code:"ND-010", name:"Nextgen Model 10", price:105, image:"nd-010.jpg" }
+      {
+        code:"ND-001", name:"Nextgen Model 1", price:89, image:"nd-001.jpg",
+        colors:["Fekete","Fehér","Arany"],
+        stock:{"Fekete":18,"Fehér":9,"Arany":4},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-002", name:"Nextgen Model 2", price:89, image:"nd-002.jpg",
+        colors:["Fekete","Szürke","Fehér"],
+        stock:{"Fekete":15,"Szürke":8,"Fehér":6},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-003", name:"Nextgen Model 3", price:92, image:"nd-003.jpg",
+        colors:["Fekete","Piros","Fehér"],
+        stock:{"Fekete":11,"Piros":5,"Fehér":7},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-004", name:"Nextgen Model 4", price:92, image:"nd-004.jpg",
+        colors:["Fekete","Kék","Szürke"],
+        stock:{"Fekete":14,"Kék":6,"Szürke":5},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-005", name:"Nextgen Model 5", price:95, image:"nd-005.jpg",
+        colors:["Fekete","Fehér","Zöld"],
+        stock:{"Fekete":7,"Fehér":6,"Zöld":3},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-006", name:"Nextgen Model 6", price:95, image:"nd-006.jpg",
+        colors:["Fekete","Arany","Bordó"],
+        stock:{"Fekete":13,"Arany":4,"Bordó":5},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-007", name:"Nextgen Model 7", price:99, image:"nd-007.jpg",
+        colors:["Fekete","Fehér","Lila"],
+        stock:{"Fekete":10,"Fehér":8,"Lila":2},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-008", name:"Nextgen Model 8", price:99, image:"nd-008.jpg",
+        colors:["Fekete","Szürke","Kék"],
+        stock:{"Fekete":9,"Szürke":7,"Kék":4},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-009", name:"Nextgen Model 9", price:105, image:"nd-009.jpg",
+        colors:["Fekete","Fehér","Piros"],
+        stock:{"Fekete":6,"Fehér":3,"Piros":2},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      },
+      {
+        code:"ND-010", name:"Nextgen Model 10", price:105, image:"nd-010.jpg",
+        colors:["Fekete","Arany","Fehér"],
+        stock:{"Fekete":5,"Arany":2,"Fehér":4},
+        chart:{XS:[48,66],S:[50,69],M:[53,72],L:[56,74],XL:[59,76],XXL:[62,78]}
+      }
     ];
+
+    const couponConfig = {
+      NEXT10: { type:"percent", value:10 },
+      GOLD15: { type:"percent", value:15 },
+      VIP20: { type:"percent", value:20 }
+    };
+
+    const colorVisuals = {
+      "Fekete":"#111111", "Fehér":"#f0f0f0", "Arany":"#d4af37", "Szürke":"#7d7d7d",
+      "Piros":"#b91c1c", "Kék":"#2457d6", "Zöld":"#1f8a52", "Bordó":"#6b1220", "Lila":"#7b3fe4"
+    };
 
     const texts = {
       hu: {
-        nav1: "Bemutató",
-        nav2: "Kollekció",
-        nav3: "Kapcsolat",
-        nav4: "Kész modellek",
-        badge: "Next-N stílus • fekete & arany",
-        title: 'Egyedi pólók. <span>Erős megjelenés.</span>',
-        subtitle: "Modern dizájn. Prémium hatás. Azonnali figyelem.",
-        btn1: "Ajánlatot kérek",
-        btn2: "Kollekció",
-        previewMini: "Preview",
-        preview: "Pólótervező",
-        soon: "Photo mockup editor",
-        showcaseTag: "Bemutató",
-        showcaseTitle: "Mutasd meg stílusosan",
-        showcaseText: "Tölts fel mintát, helyezd el a pólón, és a vevő azonnal látja az előnézetet elöl vagy hátul.",
-        collectionTag: "Kollekció",
-        collectionTitle: "Találd meg a saját stílusod",
-        collectionText: "Egyedi pólók, modern megjelenés és prémium vizuális élmény.",
-        readyTag: "Kész modellek",
-        readyTitle: "Válassz a meglévő pólómodellek közül",
-        readyText: "Kereshető modellkatalógus, kosárszerű összeállítás, és rendezett rendelésküldés egy e-mailben.",
-        f1: "Férfi pólók",
-        f1text: "Modern szabás, erős megjelenés, különleges dizájnok.",
-        f2: "Női pólók",
-        f2text: "Letisztult stílus, prémium hatás, egyedi megoldások.",
-        f3: "Egyedi nyomtatás",
-        f3text: "Saját feliratok, logók, grafikák és egyedi rendelés.",
-        contactTag: "Kapcsolat",
-        contactTitle: "Kérj ajánlatot most",
-        contactText: "Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.",
-        formTag: "Ajánlatkérés",
-        nameField: "Név",
-        emailField: "E-mail",
-        phoneField: "Telefonszám",
-        messageField: "Írd meg, milyen pólót szeretnél.",
-        sendBtn: "Ajánlatkérés elküldése",
-        footer1: "© 2026 Nextgen Digital Design. Minden jog fenntartva.",
-        footer2: "Prémium megjelenés egyedi pólókhoz.",
-        frontBtn: "Elöl",
-        backBtn: "Hátul",
-        sizeLabel: "Méret",
-        rotateLabel: "Forgatás",
-        centerBtn: "Középre",
-        copyBtn: "Másolás másik oldalra",
-        clearBtn: "Kijelölt törlése",
-        surfaceLabel: "Teljes póló felület",
-        editorReady: "Tölts fel első vagy hátsó design képet, majd válaszd ki és helyezd el.",
-        editorLoaded: "A design feltöltve.",
-        editorCleared: "A kijelölt design törölve.",
-        editorCopied: "A kijelölt design átmásolva a másik oldalra.",
-        noImageToCopy: "Nincs kijelölt design a másoláshoz.",
-        noImageSelected: "Nincs kijelölt design.",
-        noDesignUploaded: "Nincs feltöltött design.",
-        uploadTitle: "Design feltöltése",
-        adjustTitle: "Pozíció és méret",
-        presetTitle: "Gyors elhelyezés",
-        optionsTitle: "Opciók",
-        priceTitle: "Becsült ár",
-        presetChestBtn: "Bal mellkas",
-        presetCenterBtn: "Közép",
-        presetFullFrontBtn: "Teljes eleje",
-        presetFullBackBtn: "Teljes hátulja",
-        optFrontText: "Első nyomás",
-        optFrontSub: "Póló elejére",
-        optBackText: "Hátsó nyomás",
-        optBackSub: "Póló hátára",
-        optPremiumText: "Prémium nyomás",
-        optPremiumSub: "Erősebb anyag / jobb fedés",
-        basePriceText: "Alap póló",
-        extraPriceText: "Nyomás / extra",
-        totalPriceText: "Végösszeg",
-        sendingMessage: "Ajánlatkérés küldése folyamatban...",
-        successMessage: "Az ajánlatkérés sikeresen elküldve.",
-        errorMessage: "Hiba történt a küldés közben. Kérlek próbáld újra.",
-        frontUploadLabel: "Első design",
-        backUploadLabel: "Hátsó design",
-        frontUploadHelp: "Az elejére kerülő kép.",
-        backUploadHelp: "A hátuljára kerülő kép.",
-        noFilesChosen: "Nincs kiválasztott fájl."
+        nav1:"Bemutató", nav2:"Kollekció", nav3:"Kapcsolat", nav4:"Kész modellek",
+        badge:"Next-N stílus • fekete & arany",
+        title:'Egyedi pólók. <span>Erős megjelenés.</span>',
+        subtitle:"Modern dizájn. Prémium hatás. Azonnali figyelem.",
+        btn1:"Ajánlatot kérek", btn2:"Kollekció",
+        previewMini:"Preview", preview:"Pólótervező", soon:"Photo mockup editor",
+        showcaseTag:"Bemutató", showcaseTitle:"Mutasd meg stílusosan", showcaseText:"Tölts fel mintát, helyezd el a pólón, és a vevő azonnal látja az előnézetet elöl vagy hátul.",
+        collectionTag:"Kollekció", collectionTitle:"Találd meg a saját stílusod", collectionText:"Egyedi pólók, modern megjelenés és prémium vizuális élmény.",
+        readyTag:"Kész modellek", readyTitle:"Válassz a meglévő pólómodellek közül", readyText:"Kereshető modellkatalógus, színválasztás, készletjelzés, kuponkedvezmény és rendezett rendelésküldés egy e-mailben.",
+        f1:"Férfi pólók", f1text:"Modern szabás, erős megjelenés, különleges dizájnok.",
+        f2:"Női pólók", f2text:"Letisztult stílus, prémium hatás, egyedi megoldások.",
+        f3:"Egyedi nyomtatás", f3text:"Saját feliratok, logók, grafikák és egyedi rendelés.",
+        contactTag:"Kapcsolat", contactTitle:"Kérj ajánlatot most", contactText:"Írd meg röviden, milyen pólót szeretnél, és indulhat a közös tervezés.",
+        formTag:"Ajánlatkérés", nameField:"Név", emailField:"E-mail", phoneField:"Telefonszám", messageField:"Írd meg, milyen pólót szeretnél.", sendBtn:"Ajánlatkérés elküldése",
+        footer1:"© 2026 Nextgen Digital Design. Minden jog fenntartva.", footer2:"Prémium megjelenés egyedi pólókhoz.",
+        frontBtn:"Elöl", backBtn:"Hátul", sizeLabel:"Méret", rotateLabel:"Forgatás", centerBtn:"Középre", copyBtn:"Másolás másik oldalra", clearBtn:"Kijelölt törlése",
+        surfaceLabel:"Teljes póló felület",
+        editorReady:"Tölts fel első vagy hátsó design képet, majd válaszd ki és helyezd el.", editorLoaded:"A design feltöltve.", editorCleared:"A kijelölt design törölve.", editorCopied:"A kijelölt design átmásolva a másik oldalra.",
+        noImageToCopy:"Nincs kijelölt design a másoláshoz.", noImageSelected:"Nincs kijelölt design.", noDesignUploaded:"Nincs feltöltött design.",
+        uploadTitle:"Design feltöltése", adjustTitle:"Pozíció és méret", presetTitle:"Gyors elhelyezés", optionsTitle:"Opciók", priceTitle:"Becsült ár",
+        presetChestBtn:"Bal mellkas", presetCenterBtn:"Közép", presetFullFrontBtn:"Teljes eleje", presetFullBackBtn:"Teljes hátulja",
+        optFrontText:"Első nyomás", optFrontSub:"Póló elejére", optBackText:"Hátsó nyomás", optBackSub:"Póló hátára", optPremiumText:"Prémium nyomás", optPremiumSub:"Erősebb anyag / jobb fedés",
+        basePriceText:"Alap póló", extraPriceText:"Nyomás / extra", totalPriceText:"Végösszeg",
+        sendingMessage:"Ajánlatkérés küldése folyamatban...", successMessage:"Az ajánlatkérés sikeresen elküldve.", errorMessage:"Hiba történt a küldés közben. Kérlek próbáld újra.",
+        frontUploadLabel:"Első design", backUploadLabel:"Hátsó design", frontUploadHelp:"Az elejére kerülő kép.", backUploadHelp:"A hátuljára kerülő kép.", noFilesChosen:"Nincs kiválasztott fájl.",
+        cartMini:"Kosár", cartTitle:"Kiválasztott kész modellek", cartEmpty:"Még nincs kiválasztott kész modell.", cartTotalLabel:"Becsült végösszeg", summarySubtotalLabel:"Termékek összege", summaryDiscountLabel:"Kedvezmény",
+        addToCart:"Hozzáadás a kosárhoz", detailsOrder:"Részletek / rendelés", remove:"Törlés", totalQty:"Összes darab", partialTotal:"Részösszeg", itemText:"tétel", modelText:"modell",
+        searchPlaceholder:"Keresés kód vagy név alapján", readyOrderBtn:"Kész modellek rendelésének elküldése", readyOrderSuccess:"A kész modellek rendelése sikeresen elküldve.", readyOrderSending:"Rendelés küldése folyamatban...", emptyCartError:"A kosár üres.", fillNameEmail:"Töltsd ki a nevet és az e-mail címet.",
+        qtyError:"Adj meg legalább 1 darabot.", addedToCart:"A modell hozzáadva a kosárhoz.",
+        colorTitle:"Szín", stockTitle:"Készletinformáció", stockLabel:"Elérhető darab", sizeChartTitle:"Mérettábla", qtyTitle:"Méret / darabszám",
+        chartSizeHead:"Méret", chartWidthHead:"Mellkas", chartLengthHead:"Hossz", stockHigh:"Készleten", stockMid:"Korlátozott", stockLow:"Utolsó darabok",
+        couponPlaceholder:"Kuponkód megadása (pl. NEXT10)", applyCoupon:"Kupon alkalmazása", couponHelp:"Aktív tesztkuponok: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Kupon alkalmazva: ${code}`, couponInvalid:"Érvénytelen kuponkód.",
+        colorLabel:"Szín", couponLabel:"Kupon", orderTypeLabel:"Rendelés típusa"
       },
       ro: {
-        nav1: "Prezentare",
-        nav2: "Colecție",
-        nav3: "Contact",
-        nav4: "Modele gata",
-        badge: "Stil Next-N • negru & auriu",
-        title: 'Tricouri personalizate. <span>Impact vizual puternic.</span>',
-        subtitle: "Design modern. Aspect premium. Atenție instantă.",
-        btn1: "Cere ofertă",
-        btn2: "Colecție",
-        previewMini: "Preview",
-        preview: "Configurator tricou",
-        soon: "Editor mockup foto",
-        showcaseTag: "Prezentare",
-        showcaseTitle: "Arată totul cu stil",
-        showcaseText: "Încarcă designul, așază-l pe tricou și clientul vede instant previzualizarea față sau spate.",
-        collectionTag: "Colecție",
-        collectionTitle: "Găsește-ți propriul stil",
-        collectionText: "Tricouri personalizate, aspect modern și experiență vizuală premium.",
-        readyTag: "Modele gata",
-        readyTitle: "Alege din modelele deja existente",
-        readyText: "Catalog cu căutare, coș pentru mai multe modele și trimitere organizată într-un singur email.",
-        f1: "Tricouri pentru bărbați",
-        f1text: "Croială modernă, aspect puternic și designuri speciale.",
-        f2: "Tricouri pentru femei",
-        f2text: "Stil curat, efect premium și soluții unice.",
-        f3: "Print personalizat",
-        f3text: "Texte proprii, logo-uri, grafică și comandă personalizată.",
-        contactTag: "Contact",
-        contactTitle: "Cere ofertă acum",
-        contactText: "Scrie pe scurt ce tricou dorești și putem începe designul împreună.",
-        formTag: "Cerere ofertă",
-        nameField: "Nume",
-        emailField: "E-mail",
-        phoneField: "Telefon",
-        messageField: "Scrie ce tip de tricou dorești.",
-        sendBtn: "Trimite cererea",
-        footer1: "© 2026 Nextgen Digital Design. Toate drepturile rezervate.",
-        footer2: "Aspect premium pentru tricouri personalizate.",
-        frontBtn: "Față",
-        backBtn: "Spate",
-        sizeLabel: "Mărime",
-        rotateLabel: "Rotire",
-        centerBtn: "Centrează",
-        copyBtn: "Copiază pe cealaltă parte",
-        clearBtn: "Șterge selectatul",
-        surfaceLabel: "Toată suprafața tricoului",
-        editorReady: "Încarcă un design pentru față sau spate, apoi selectează și poziționează.",
-        editorLoaded: "Designul a fost încărcat.",
-        editorCleared: "Designul selectat a fost șters.",
-        editorCopied: "Designul selectat a fost copiat pe cealaltă parte.",
-        noImageToCopy: "Nu există un design selectat pentru copiere.",
-        noImageSelected: "Nu există un design selectat.",
-        noDesignUploaded: "Nu există design încărcat.",
-        uploadTitle: "Încarcă designul",
-        adjustTitle: "Poziție și mărime",
-        presetTitle: "Poziții rapide",
-        optionsTitle: "Opțiuni",
-        priceTitle: "Preț estimat",
-        presetChestBtn: "Piept stânga",
-        presetCenterBtn: "Centru",
-        presetFullFrontBtn: "Față completă",
-        presetFullBackBtn: "Spate complet",
-        optFrontText: "Print față",
-        optFrontSub: "Pe partea din față",
-        optBackText: "Print spate",
-        optBackSub: "Pe partea din spate",
-        optPremiumText: "Print premium",
-        optPremiumSub: "Material mai bun / acoperire mai bună",
-        basePriceText: "Tricou de bază",
-        extraPriceText: "Print / extra",
-        totalPriceText: "Total",
-        sendingMessage: "Cererea se trimite...",
-        successMessage: "Cererea a fost trimisă cu succes.",
-        errorMessage: "A apărut o eroare la trimitere. Te rog încearcă din nou.",
-        frontUploadLabel: "Design față",
-        backUploadLabel: "Design spate",
-        frontUploadHelp: "Imaginea pentru partea din față.",
-        backUploadHelp: "Imaginea pentru partea din spate.",
-        noFilesChosen: "Nu există fișiere selectate."
+        nav1:"Prezentare", nav2:"Colecție", nav3:"Contact", nav4:"Modele gata",
+        badge:"Stil Next-N • negru & auriu",
+        title:'Tricouri personalizate. <span>Impact vizual puternic.</span>',
+        subtitle:"Design modern. Aspect premium. Atenție instantă.",
+        btn1:"Cere ofertă", btn2:"Colecție",
+        previewMini:"Preview", preview:"Configurator tricou", soon:"Editor mockup foto",
+        showcaseTag:"Prezentare", showcaseTitle:"Arată totul cu stil", showcaseText:"Încarcă designul, așază-l pe tricou și clientul vede instant previzualizarea față sau spate.",
+        collectionTag:"Colecție", collectionTitle:"Găsește-ți propriul stil", collectionText:"Tricouri personalizate, aspect modern și experiență vizuală premium.",
+        readyTag:"Modele gata", readyTitle:"Alege din modelele deja existente", readyText:"Catalog cu căutare, alegere de culoare, stoc, cupon și trimitere ordonată într-un singur email.",
+        f1:"Tricouri pentru bărbați", f1text:"Croială modernă, aspect puternic și designuri speciale.",
+        f2:"Tricouri pentru femei", f2text:"Stil curat, efect premium și soluții unice.",
+        f3:"Print personalizat", f3text:"Texte proprii, logo-uri, grafică și comandă personalizată.",
+        contactTag:"Contact", contactTitle:"Cere ofertă acum", contactText:"Scrie pe scurt ce tricou dorești și putem începe designul împreună.",
+        formTag:"Cerere ofertă", nameField:"Nume", emailField:"E-mail", phoneField:"Telefon", messageField:"Scrie ce tip de tricou dorești.", sendBtn:"Trimite cererea",
+        footer1:"© 2026 Nextgen Digital Design. Toate drepturile rezervate.", footer2:"Aspect premium pentru tricouri personalizate.",
+        frontBtn:"Față", backBtn:"Spate", sizeLabel:"Mărime", rotateLabel:"Rotire", centerBtn:"Centrează", copyBtn:"Copiază pe cealaltă parte", clearBtn:"Șterge selectatul",
+        surfaceLabel:"Toată suprafața tricoului",
+        editorReady:"Încarcă un design pentru față sau spate, apoi selectează și poziționează.", editorLoaded:"Designul a fost încărcat.", editorCleared:"Designul selectat a fost șters.", editorCopied:"Designul selectat a fost copiat pe cealaltă parte.",
+        noImageToCopy:"Nu există un design selectat pentru copiere.", noImageSelected:"Nu există un design selectat.", noDesignUploaded:"Nu există design încărcat.",
+        uploadTitle:"Încarcă designul", adjustTitle:"Poziție și mărime", presetTitle:"Poziții rapide", optionsTitle:"Opțiuni", priceTitle:"Preț estimat",
+        presetChestBtn:"Piept stânga", presetCenterBtn:"Centru", presetFullFrontBtn:"Față completă", presetFullBackBtn:"Spate complet",
+        optFrontText:"Print față", optFrontSub:"Pe partea din față", optBackText:"Print spate", optBackSub:"Pe partea din spate", optPremiumText:"Print premium", optPremiumSub:"Material mai bun / acoperire mai bună",
+        basePriceText:"Tricou de bază", extraPriceText:"Print / extra", totalPriceText:"Total",
+        sendingMessage:"Cererea se trimite...", successMessage:"Cererea a fost trimisă cu succes.", errorMessage:"A apărut o eroare la trimitere. Te rog încearcă din nou.",
+        frontUploadLabel:"Design față", backUploadLabel:"Design spate", frontUploadHelp:"Imaginea pentru partea din față.", backUploadHelp:"Imaginea pentru partea din spate.", noFilesChosen:"Nu există fișiere selectate.",
+        cartMini:"Coș", cartTitle:"Modele gata selectate", cartEmpty:"Încă nu există modele selectate.", cartTotalLabel:"Total estimat", summarySubtotalLabel:"Subtotal produse", summaryDiscountLabel:"Reducere",
+        addToCart:"Adaugă în coș", detailsOrder:"Detalii / comandă", remove:"Șterge", totalQty:"Cantitate totală", partialTotal:"Subtotal", itemText:"poziții", modelText:"modele",
+        searchPlaceholder:"Căutare după cod sau nume", readyOrderBtn:"Trimite comanda modelelor gata", readyOrderSuccess:"Comanda pentru modelele gata a fost trimisă cu succes.", readyOrderSending:"Comanda se trimite...", emptyCartError:"Coșul este gol.", fillNameEmail:"Completează numele și emailul.",
+        qtyError:"Introdu cel puțin 1 bucată.", addedToCart:"Modelul a fost adăugat în coș.",
+        colorTitle:"Culoare", stockTitle:"Informații stoc", stockLabel:"Bucăți disponibile", sizeChartTitle:"Tabel mărimi", qtyTitle:"Mărime / cantitate",
+        chartSizeHead:"Mărime", chartWidthHead:"Piept", chartLengthHead:"Lungime", stockHigh:"În stoc", stockMid:"Limitat", stockLow:"Ultimele bucăți",
+        couponPlaceholder:"Introdu codul de reducere (ex. NEXT10)", applyCoupon:"Aplică cupon", couponHelp:"Cupioane test active: NEXT10, GOLD15, VIP20", couponApplied:(code)=>`Cupon aplicat: ${code}`, couponInvalid:"Cod de reducere invalid.",
+        colorLabel:"Culoare", couponLabel:"Cupon", orderTypeLabel:"Tip comandă"
       }
     };
 
     const sliders = {
-      left: { imgId: "slider-left", dotsId: "dots-left", images: ["bal1.jpg", "bal2.jpg", "bal3.jpg"], index: 0, timer: null },
-      center: { imgId: "slider-center", dotsId: "dots-center", images: ["kozep1.jpg", "kozep2.jpg", "kozep3.jpg"], index: 0, timer: null },
-      right: { imgId: "slider-right", dotsId: "dots-right", images: ["jobb1.jpg", "jobb2.jpg", "jobb3.jpg"], index: 0, timer: null }
+      left:{ imgId:"slider-left", dotsId:"dots-left", images:["bal1.jpg","bal2.jpg","bal3.jpg"], index:0, timer:null },
+      center:{ imgId:"slider-center", dotsId:"dots-center", images:["kozep1.jpg","kozep2.jpg","kozep3.jpg"], index:0, timer:null },
+      right:{ imgId:"slider-right", dotsId:"dots-right", images:["jobb1.jpg","jobb2.jpg","jobb3.jpg"], index:0, timer:null }
     };
 
     const state = {
-      currentSide: "front",
-      selectedId: null,
-      nextId: 1,
-      front: [],
-      back: [],
-      dragState: null,
-      catalogModalModel: null,
-      catalogCart: []
+      currentSide:"front",
+      selectedId:null,
+      nextId:1,
+      front:[],
+      back:[],
+      dragState:null,
+      catalogModalModel:null,
+      catalogSelectedColor:null,
+      catalogCart:[],
+      activeCoupon:null,
+      discountValue:0
     };
 
     const sceneFront = document.getElementById("sceneFront");
@@ -1920,11 +987,17 @@
     const cartEmpty = document.getElementById("cartEmpty");
     const cartBadge = document.getElementById("cartBadge");
     const cartTotalValue = document.getElementById("cartTotalValue");
-    const cartTitle = document.getElementById("cartTitle");
+    const couponInput = document.getElementById("couponInput");
+    const applyCouponBtn = document.getElementById("applyCouponBtn");
+    const couponInfo = document.getElementById("couponInfo");
+    const summarySubtotalValue = document.getElementById("summarySubtotalValue");
+    const summaryDiscountValue = document.getElementById("summaryDiscountValue");
     const catalogCheckoutForm = document.getElementById("catalogCheckoutForm");
     const catalogCheckoutMessage = document.getElementById("catalogCheckoutMessage");
     const catalogOrderSummary = document.getElementById("catalogOrderSummary");
     const catalogTotalPrice = document.getElementById("catalogTotalPrice");
+    const catalogDiscountValue = document.getElementById("catalogDiscountValue");
+    const catalogCouponCode = document.getElementById("catalogCouponCode");
     const catalogCheckoutNext = document.getElementById("catalogCheckoutNext");
     const catalogCheckoutSubject = document.getElementById("catalogCheckoutSubject");
 
@@ -1934,9 +1007,13 @@
     const catalogPreviewImage = document.getElementById("catalogPreviewImage");
     const catalogCodeText = document.getElementById("catalogCodeText");
     const catalogPriceText = document.getElementById("catalogPriceText");
+    const modalStockBadge = document.getElementById("modalStockBadge");
+    const catalogStockText = document.getElementById("catalogStockText");
+    const catalogStockBar = document.getElementById("catalogStockBar");
+    const colorGrid = document.getElementById("colorGrid");
+    const sizeChartBody = document.getElementById("sizeChartBody");
     const addToCartBtn = document.getElementById("addToCartBtn");
     const catalogModalMessage = document.getElementById("catalogModalMessage");
-
     const qtyXS = document.getElementById("qtyXS");
     const qtyS = document.getElementById("qtyS");
     const qtyM = document.getElementById("qtyM");
@@ -1944,88 +1021,54 @@
     const qtyXL = document.getElementById("qtyXL");
     const qtyXXL = document.getElementById("qtyXXL");
 
-    function currentLang(){
-      return document.documentElement.lang === "ro" ? "ro" : "hu";
+    function currentLang(){ return document.documentElement.lang === "ro" ? "ro" : "hu"; }
+    function t(key){ return texts[currentLang()][key]; }
+    function formatRon(value){ return `${Math.max(0, Math.round(value))} RON`; }
+    function setFormMessage(type, text){ formMessage.className = `form-message show ${type}`; formMessage.textContent = text; }
+    function clearFormMessage(){ formMessage.className = "form-message"; formMessage.textContent = ""; }
+    function setCatalogCheckoutMessage(type, text){ catalogCheckoutMessage.className = `catalog-message show ${type}`; catalogCheckoutMessage.textContent = text; }
+    function clearCatalogCheckoutMessage(){ catalogCheckoutMessage.className = "catalog-message"; catalogCheckoutMessage.textContent = ""; }
+    function setCatalogModalMessage(type, text){ catalogModalMessage.className = `catalog-message show ${type}`; catalogModalMessage.textContent = text; }
+    function clearCatalogModalMessage(){ catalogModalMessage.className = "catalog-message"; catalogModalMessage.textContent = ""; }
+
+    function getStockClass(stock){
+      if(stock <= 5) return "stock-low";
+      if(stock <= 10) return "stock-mid";
+      return "stock-high";
     }
 
-    function t(key){
-      return texts[currentLang()][key];
-    }
-
-    function formatRon(value){
-      return `${value} RON`;
-    }
-
-    function setFormMessage(type, text){
-      formMessage.className = "form-message show " + type;
-      formMessage.textContent = text;
-    }
-
-    function clearFormMessage(){
-      formMessage.className = "form-message";
-      formMessage.textContent = "";
-    }
-
-    function setCatalogCheckoutMessage(type, text){
-      catalogCheckoutMessage.className = "catalog-message show " + type;
-      catalogCheckoutMessage.textContent = text;
-    }
-
-    function clearCatalogCheckoutMessage(){
-      catalogCheckoutMessage.className = "catalog-message";
-      catalogCheckoutMessage.textContent = "";
-    }
-
-    function setCatalogModalMessage(type, text){
-      catalogModalMessage.className = "catalog-message show " + type;
-      catalogModalMessage.textContent = text;
-    }
-
-    function clearCatalogModalMessage(){
-      catalogModalMessage.className = "catalog-message";
-      catalogModalMessage.textContent = "";
+    function getStockText(stock){
+      if(stock <= 5) return t("stockLow");
+      if(stock <= 10) return t("stockMid");
+      return t("stockHigh");
     }
 
     function setLang(lang){
       const tx = texts[lang];
-
       for(const key in tx){
         const el = document.getElementById(key);
         if(!el) continue;
-
-        if(key === "title"){
-          el.innerHTML = tx[key];
-        } else if(
-          key === "nameField" ||
-          key === "emailField" ||
-          key === "phoneField" ||
-          key === "messageField"
-        ){
-          el.placeholder = tx[key];
-        } else {
-          el.textContent = tx[key];
-        }
+        if(key === "title") el.innerHTML = tx[key];
+        else if(["nameField","emailField","phoneField","messageField"].includes(key)) el.placeholder = tx[key];
+        else if(typeof tx[key] === "string") el.textContent = tx[key];
       }
 
       document.getElementById("surfaceLabelFront").textContent = tx.surfaceLabel;
       document.getElementById("surfaceLabelBack").textContent = tx.surfaceLabel;
       frontFileEmpty.textContent = tx.noFilesChosen;
       backFileEmpty.textContent = tx.noFilesChosen;
-
-      document.getElementById("catalogCustomerName").placeholder = lang === "ro" ? "Nume" : "Név";
-      document.getElementById("catalogCustomerEmail").placeholder = lang === "ro" ? "E-mail" : "E-mail";
-      document.getElementById("catalogCustomerPhone").placeholder = lang === "ro" ? "Telefon" : "Telefonszám";
+      document.getElementById("catalogCustomerName").placeholder = tx.nameField;
+      document.getElementById("catalogCustomerEmail").placeholder = tx.emailField;
+      document.getElementById("catalogCustomerPhone").placeholder = tx.phoneField;
       document.getElementById("catalogCustomerMessage").placeholder = lang === "ro" ? "Observații / cereri speciale" : "Megjegyzés / külön kérés";
-      document.getElementById("catalogCheckoutBtn").textContent = lang === "ro" ? "Trimite comanda modelelor gata" : "Kész modellek rendelésének elküldése";
-      catalogSearch.placeholder = lang === "ro" ? "Căutare după cod sau nume" : "Keresés kód vagy név alapján";
+      document.getElementById("catalogCheckoutBtn").textContent = tx.readyOrderBtn;
+      catalogSearch.placeholder = tx.searchPlaceholder;
+      couponInput.placeholder = tx.couponPlaceholder;
+      applyCouponBtn.textContent = tx.applyCoupon;
+      couponInfo.textContent = tx.couponHelp;
 
-      hiddenSubject.value = lang === "ro"
-        ? "Cerere nouă - Nextgen Digital Design"
-        : "Új érdeklődés - Nextgen Digital Design";
-
-      catalogCheckoutSubject.value = lang === "ro"
-        ? "Comandă modele gata - Nextgen Digital Design"
-        : "Új kész póló rendelés - Nextgen Digital Design";
+      hiddenSubject.value = lang === "ro" ? "Cerere nouă - Nextgen Digital Design" : "Új érdeklődés - Nextgen Digital Design";
+      catalogCheckoutSubject.value = lang === "ro" ? "Comandă modele gata - Nextgen Digital Design" : "Új kész póló rendelés - Nextgen Digital Design";
 
       document.documentElement.lang = lang;
       document.getElementById("huBtn").classList.toggle("active", lang === "hu");
@@ -2036,6 +1079,7 @@
       renderFileLists();
       renderCatalogGrid();
       renderCatalogCart();
+      if(state.catalogModalModel) openCatalogModal(state.catalogModalModel, state.catalogSelectedColor || state.catalogModalModel.colors[0]);
       textureStatus.textContent = (state.front.length || state.back.length) ? tx.editorLoaded : tx.editorReady;
     }
 
@@ -2044,51 +1088,76 @@
 
     function renderCatalogGrid(){
       const query = (catalogSearch.value || "").trim().toLowerCase();
-      const filtered = readyModels.filter(model => {
-        return model.code.toLowerCase().includes(query) || model.name.toLowerCase().includes(query);
-      });
-
+      const filtered = readyModels.filter(model => model.code.toLowerCase().includes(query) || model.name.toLowerCase().includes(query));
       catalogGrid.innerHTML = "";
+
       filtered.forEach(model => {
+        const defaultColor = model.colors[0];
+        const stock = model.stock[defaultColor] || 0;
         const card = document.createElement("div");
         card.className = "catalog-card";
         card.innerHTML = `
-          <div class="catalog-card-image">
-            <img src="${model.image}" alt="${model.name}">
-          </div>
+          <div class="catalog-card-image"><img src="${model.image}" alt="${model.name}"></div>
           <div class="catalog-card-body">
             <div class="catalog-card-code">${model.code}</div>
             <h3 class="catalog-card-title">${model.name}</h3>
             <div class="catalog-card-meta"><strong>${formatRon(model.price)}</strong></div>
-            <button class="btn gold" type="button">${currentLang() === "ro" ? "Detalii / comandă" : "Részletek / rendelés"}</button>
+            <div class="stock-badge ${getStockClass(stock)}">${getStockText(stock)} • ${stock} db</div>
+            <button class="btn gold" type="button">${t("detailsOrder")}</button>
           </div>
         `;
-        card.querySelector("button").addEventListener("click", () => openCatalogModal(model));
+        card.querySelector("button").addEventListener("click", () => openCatalogModal(model, model.colors[0]));
         catalogGrid.appendChild(card);
       });
 
-      catalogCountPill.textContent = currentLang() === "ro"
-        ? `${filtered.length} modele`
-        : `${filtered.length} modell`;
+      catalogCountPill.textContent = currentLang() === "ro" ? `${filtered.length} ${t("modelText")}` : `${filtered.length} ${t("modelText")}`;
     }
 
     catalogSearch.addEventListener("input", renderCatalogGrid);
 
-    function openCatalogModal(model){
+    function renderColorOptions(model, selectedColor){
+      colorGrid.innerHTML = "";
+      model.colors.forEach(color => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `color-chip${color === selectedColor ? " active" : ""}`;
+        btn.innerHTML = `<span class="color-dot" style="background:${colorVisuals[color] || '#999'}"></span><span>${color}</span>`;
+        btn.addEventListener("click", () => openCatalogModal(model, color));
+        colorGrid.appendChild(btn);
+      });
+    }
+
+    function renderSizeChart(model){
+      sizeChartBody.innerHTML = "";
+      Object.entries(model.chart).forEach(([size, values]) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${size}</td><td>${values[0]} cm</td><td>${values[1]} cm</td>`;
+        sizeChartBody.appendChild(tr);
+      });
+    }
+
+    function openCatalogModal(model, color = null){
       state.catalogModalModel = model;
+      state.catalogSelectedColor = color || model.colors[0];
+      const selectedColor = state.catalogSelectedColor;
+      const stock = model.stock[selectedColor] || 0;
+      const maxStock = Math.max(...Object.values(model.stock));
+      const stockPercent = maxStock ? Math.round((stock / maxStock) * 100) : 0;
+
       modalModelTitle.textContent = model.name;
       catalogPreviewImage.src = model.image;
       catalogPreviewImage.alt = model.name;
       catalogCodeText.textContent = model.code;
       catalogPriceText.textContent = formatRon(model.price);
+      catalogStockText.textContent = `${stock} db`;
+      catalogStockBar.style.width = `${stockPercent}%`;
+      modalStockBadge.className = `stock-badge ${getStockClass(stock)}`;
+      modalStockBadge.textContent = `${getStockText(stock)} • ${stock} db`;
 
-      qtyXS.value = 0;
-      qtyS.value = 0;
-      qtyM.value = 0;
-      qtyL.value = 0;
-      qtyXL.value = 0;
-      qtyXXL.value = 0;
+      renderColorOptions(model, selectedColor);
+      renderSizeChart(model);
 
+      [qtyXS, qtyS, qtyM, qtyL, qtyXL, qtyXXL].forEach(el => el.value = 0);
       clearCatalogModalMessage();
       catalogModal.classList.add("show");
       document.body.style.overflow = "hidden";
@@ -2098,87 +1167,74 @@
       catalogModal.classList.remove("show");
       document.body.style.overflow = "";
       state.catalogModalModel = null;
+      state.catalogSelectedColor = null;
     }
 
     closeCatalogModal.addEventListener("click", closeCatalog);
-    catalogModal.addEventListener("click", (e) => {
-      if(e.target === catalogModal) closeCatalog();
-    });
+    catalogModal.addEventListener("click", (e) => { if(e.target === catalogModal) closeCatalog(); });
 
     function getModalSizeMap(){
-      return {
-        XS: Number(qtyXS.value || 0),
-        S: Number(qtyS.value || 0),
-        M: Number(qtyM.value || 0),
-        L: Number(qtyL.value || 0),
-        XL: Number(qtyXL.value || 0),
-        XXL: Number(qtyXXL.value || 0)
-      };
+      return { XS:Number(qtyXS.value||0), S:Number(qtyS.value||0), M:Number(qtyM.value||0), L:Number(qtyL.value||0), XL:Number(qtyXL.value||0), XXL:Number(qtyXXL.value||0) };
     }
-
-    function totalQtyFromSizes(sizes){
-      return Object.values(sizes).reduce((sum, n) => sum + Number(n || 0), 0);
-    }
-
+    function totalQtyFromSizes(sizes){ return Object.values(sizes).reduce((sum, n) => sum + Number(n || 0), 0); }
     function sizeSummaryText(sizes){
-      return Object.entries(sizes)
-        .filter(([, qty]) => qty > 0)
-        .map(([size, qty]) => `${size}: ${qty} db`)
-        .join(" | ");
+      return Object.entries(sizes).filter(([,qty]) => qty > 0).map(([size,qty]) => `${size}: ${qty} db`).join(" | ");
     }
 
     addToCartBtn.addEventListener("click", () => {
       if(!state.catalogModalModel) return;
-
       const sizes = getModalSizeMap();
       const qty = totalQtyFromSizes(sizes);
+      if(qty <= 0){ setCatalogModalMessage("error", t("qtyError")); return; }
 
-      if(qty <= 0){
-        setCatalogModalMessage("error", currentLang() === "ro"
-          ? "Introdu cel puțin 1 bucată."
-          : "Adj meg legalább 1 darabot.");
+      const selectedColor = state.catalogSelectedColor || state.catalogModalModel.colors[0];
+      const available = state.catalogModalModel.stock[selectedColor] || 0;
+      if(qty > available){
+        setCatalogModalMessage("error", currentLang() === "ro" ? `Stoc insuficient pentru ${selectedColor}. Disponibil: ${available} buc.` : `Nincs elég készlet ebből a színből: ${selectedColor}. Elérhető: ${available} db.`);
         return;
       }
 
-      const existingIndex = state.catalogCart.findIndex(item => item.code === state.catalogModalModel.code);
+      const key = `${state.catalogModalModel.code}_${selectedColor}`;
+      const existingIndex = state.catalogCart.findIndex(item => item.key === key);
       const payload = {
+        key,
         code: state.catalogModalModel.code,
         name: state.catalogModalModel.name,
         price: state.catalogModalModel.price,
         image: state.catalogModalModel.image,
-        sizes
+        color: selectedColor,
+        sizes,
+        unitStock: available
       };
 
-      if(existingIndex >= 0){
-        state.catalogCart[existingIndex] = payload;
-      } else {
-        state.catalogCart.push(payload);
-      }
+      if(existingIndex >= 0) state.catalogCart[existingIndex] = payload;
+      else state.catalogCart.push(payload);
 
       renderCatalogCart();
-      setCatalogModalMessage("success", currentLang() === "ro"
-        ? "Modelul a fost adăugat în coș."
-        : "A modell hozzáadva a kosárhoz.");
+      setCatalogModalMessage("success", t("addedToCart"));
     });
+
+    function calculateCartTotals(){
+      const subtotal = state.catalogCart.reduce((sum, item) => sum + totalQtyFromSizes(item.sizes) * item.price, 0);
+      let discount = 0;
+      if(state.activeCoupon && couponConfig[state.activeCoupon]){
+        const coupon = couponConfig[state.activeCoupon];
+        if(coupon.type === "percent") discount = Math.round(subtotal * (coupon.value / 100));
+      }
+      state.discountValue = discount;
+      const total = Math.max(0, subtotal - discount);
+      return { subtotal, discount, total };
+    }
 
     function renderCatalogCart(){
       cartItems.innerHTML = "";
+      cartEmpty.style.display = state.catalogCart.length ? "none" : "block";
 
-      if(!state.catalogCart.length){
-        cartEmpty.style.display = "block";
-      } else {
-        cartEmpty.style.display = "none";
-      }
-
-      let grandTotal = 0;
       let itemCount = 0;
-
       state.catalogCart.forEach(item => {
         const qty = totalQtyFromSizes(item.sizes);
         const subtotal = qty * item.price;
-        grandTotal += subtotal;
         itemCount += 1;
-
         const box = document.createElement("div");
         box.className = "cart-item";
         box.innerHTML = `
@@ -2187,77 +1243,91 @@
               <div class="cart-code">${item.code}</div>
               <strong>${item.name}</strong>
             </div>
-            <button class="remove-btn" type="button">${currentLang() === "ro" ? "Șterge" : "Törlés"}</button>
+            <button class="remove-btn" type="button">${t("remove")}</button>
           </div>
+          <div>${t("colorLabel")}: <strong>${item.color}</strong></div>
           <div>${sizeSummaryText(item.sizes)}</div>
           <div class="price-line">
-            <span>${currentLang() === "ro" ? "Cantitate totală" : "Összes darab"}: <strong>${qty}</strong></span>
-            <span>${currentLang() === "ro" ? "Részösszeg" : "Részösszeg"}: <strong>${formatRon(subtotal)}</strong></span>
+            <span>${t("totalQty")}: <strong>${qty}</strong></span>
+            <span>${t("partialTotal")}: <strong>${formatRon(subtotal)}</strong></span>
           </div>
         `;
         box.querySelector("button").addEventListener("click", () => {
-          state.catalogCart = state.catalogCart.filter(x => x.code !== item.code);
+          state.catalogCart = state.catalogCart.filter(x => x.key !== item.key);
           renderCatalogCart();
         });
         cartItems.appendChild(box);
       });
 
-      cartBadge.textContent = currentLang() === "ro"
-        ? `${itemCount} poziții`
-        : `${itemCount} tétel`;
-
-      cartTotalValue.textContent = formatRon(grandTotal);
-      catalogTotalPrice.value = formatRon(grandTotal);
+      const totals = calculateCartTotals();
+      cartBadge.textContent = `${itemCount} ${t("itemText")}`;
+      summarySubtotalValue.textContent = formatRon(totals.subtotal);
+      summaryDiscountValue.textContent = formatRon(totals.discount);
+      cartTotalValue.textContent = formatRon(totals.total);
+      catalogTotalPrice.value = formatRon(totals.total);
+      catalogDiscountValue.value = formatRon(totals.discount);
+      catalogCouponCode.value = state.activeCoupon || "";
     }
+
+    applyCouponBtn.addEventListener("click", () => {
+      const code = (couponInput.value || "").trim().toUpperCase();
+      if(!code){
+        state.activeCoupon = null;
+        couponInfo.textContent = t("couponHelp");
+        renderCatalogCart();
+        return;
+      }
+      if(couponConfig[code]){
+        state.activeCoupon = code;
+        couponInfo.textContent = t("couponApplied")(code);
+        renderCatalogCart();
+      } else {
+        state.activeCoupon = null;
+        couponInfo.textContent = t("couponInvalid");
+        renderCatalogCart();
+      }
+    });
 
     catalogCheckoutForm.addEventListener("submit", function(e){
       clearCatalogCheckoutMessage();
-
-      if(!state.catalogCart.length){
-        e.preventDefault();
-        setCatalogCheckoutMessage("error", currentLang() === "ro"
-          ? "Coșul este gol."
-          : "A kosár üres.");
-        return;
-      }
-
+      if(!state.catalogCart.length){ e.preventDefault(); setCatalogCheckoutMessage("error", t("emptyCartError")); return; }
       const name = document.getElementById("catalogCustomerName").value.trim();
       const email = document.getElementById("catalogCustomerEmail").value.trim();
+      if(!name || !email){ e.preventDefault(); setCatalogCheckoutMessage("error", t("fillNameEmail")); return; }
 
-      if(!name || !email){
-        e.preventDefault();
-        setCatalogCheckoutMessage("error", currentLang() === "ro"
-          ? "Completează numele și emailul."
-          : "Töltsd ki a nevet és az e-mail címet.");
-        return;
-      }
-
+      const totals = calculateCartTotals();
       const summary = state.catalogCart.map(item => {
         const qty = totalQtyFromSizes(item.sizes);
         const subtotal = qty * item.price;
         return [
+          `${t("orderTypeLabel")}: ${currentLang()==='ro' ? 'Modele gata' : 'Kész modell'}`,
           `Kód: ${item.code}`,
           `Név: ${item.name}`,
-          `Ár: ${formatRon(item.price)}`,
+          `${t("colorLabel")}: ${item.color}`,
+          `Egységár: ${formatRon(item.price)}`,
           `Méreteloszlás: ${sizeSummaryText(item.sizes)}`,
-          `Összes darab: ${qty}`,
-          `Részösszeg: ${formatRon(subtotal)}`
+          `${t("totalQty")}: ${qty}`,
+          `${t("partialTotal")}: ${formatRon(subtotal)}`
         ].join(" | ");
       }).join("\n\n");
 
-      catalogOrderSummary.value = summary;
-      catalogCheckoutNext.value = `${window.location.origin}${window.location.pathname}?catalogsent=1&lang=${currentLang()}`;
+      catalogOrderSummary.value = [
+        summary,
+        "",
+        `${t("summarySubtotalLabel")}: ${formatRon(totals.subtotal)}`,
+        `${t("couponLabel")}: ${state.activeCoupon || '-'}`,
+        `${t("summaryDiscountLabel")}: ${formatRon(totals.discount)}`,
+        `${t("cartTotalLabel")}: ${formatRon(totals.total)}`
+      ].join("\n");
 
-      setCatalogCheckoutMessage("info", currentLang() === "ro"
-        ? "Comanda se trimite..."
-        : "Rendelés küldése folyamatban...");
+      catalogCheckoutNext.value = `${window.location.origin}${window.location.pathname}?catalogsent=1&lang=${currentLang()}`;
+      setCatalogCheckoutMessage("info", t("readyOrderSending"));
     });
 
     function renderDots(name){
       const slider = sliders[name];
       const dotsWrap = document.getElementById(slider.dotsId);
       dotsWrap.innerHTML = "";
-
       slider.images.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "slider-dot" + (i === slider.index ? " active" : "");
@@ -2270,7 +1340,6 @@
       const slider = sliders[name];
       const img = document.getElementById(slider.imgId);
       img.style.opacity = "0";
-
       setTimeout(() => {
         img.src = slider.images[slider.index];
         img.style.opacity = "1";
@@ -2278,64 +1347,17 @@
       }, 180);
     }
 
-    function goToSlide(name, index, resetAuto = false){
-      const slider = sliders[name];
-      slider.index = index;
-      updateSlide(name);
-      if(resetAuto) restartAuto(name);
-    }
+    function goToSlide(name, index, resetAuto = false){ const slider = sliders[name]; slider.index = index; updateSlide(name); if(resetAuto) restartAuto(name); }
+    function nextSlide(name){ const slider = sliders[name]; slider.index = (slider.index + 1) % slider.images.length; updateSlide(name); restartAuto(name); }
+    function prevSlide(name){ const slider = sliders[name]; slider.index = (slider.index - 1 + slider.images.length) % slider.images.length; updateSlide(name); restartAuto(name); }
+    function startAuto(name){ const slider = sliders[name]; slider.timer = setInterval(() => { slider.index = (slider.index + 1) % slider.images.length; updateSlide(name); }, 3000); }
+    function restartAuto(name){ const slider = sliders[name]; clearInterval(slider.timer); startAuto(name); }
+    function initSlider(name){ const slider = sliders[name]; const img = document.getElementById(slider.imgId); img.src = slider.images[0]; renderDots(name); startAuto(name); }
+    initSlider("left"); initSlider("center"); initSlider("right");
 
-    function nextSlide(name){
-      const slider = sliders[name];
-      slider.index = (slider.index + 1) % slider.images.length;
-      updateSlide(name);
-      restartAuto(name);
-    }
-
-    function prevSlide(name){
-      const slider = sliders[name];
-      slider.index = (slider.index - 1 + slider.images.length) % slider.images.length;
-      updateSlide(name);
-      restartAuto(name);
-    }
-
-    function startAuto(name){
-      const slider = sliders[name];
-      slider.timer = setInterval(() => {
-        slider.index = (slider.index + 1) % slider.images.length;
-        updateSlide(name);
-      }, 3000);
-    }
-
-    function restartAuto(name){
-      const slider = sliders[name];
-      clearInterval(slider.timer);
-      startAuto(name);
-    }
-
-    function initSlider(name){
-      const slider = sliders[name];
-      const img = document.getElementById(slider.imgId);
-      img.src = slider.images[0];
-      renderDots(name);
-      startAuto(name);
-    }
-
-    initSlider("left");
-    initSlider("center");
-    initSlider("right");
-
-    function getSideItems(side){
-      return state[side];
-    }
-
-    function getCurrentItems(){
-      return getSideItems(state.currentSide);
-    }
-
-    function getSelectedItem(){
-      return getCurrentItems().find(item => item.id === state.selectedId) || null;
-    }
+    function getSideItems(side){ return state[side]; }
+    function getCurrentItems(){ return getSideItems(state.currentSide); }
+    function getSelectedItem(){ return getCurrentItems().find(item => item.id === state.selectedId) || null; }
 
     function updateNodePosition(node, item, surface){
       const base = Math.min(surface.clientWidth, surface.clientHeight) * 0.9 * (item.scale / 100);
@@ -2352,50 +1374,25 @@
       sceneBack.classList.toggle("hidden", side !== "back");
       frontBtn.classList.toggle("active", side === "front");
       backBtn.classList.toggle("active", side === "back");
-
       const items = getCurrentItems();
-      if(!items.find(x => x.id === state.selectedId)){
-        state.selectedId = items.length ? items[items.length - 1].id : null;
-      }
-
-      renderDesigns();
-      updateEditorControls();
-      textureStatus.textContent = items.length ? t("editorLoaded") : t("editorReady");
+      if(!items.find(x => x.id === state.selectedId)) state.selectedId = items.length ? items[items.length - 1].id : null;
+      renderDesigns(); updateEditorControls(); textureStatus.textContent = items.length ? t("editorLoaded") : t("editorReady");
     }
-
     frontBtn.addEventListener("click", () => switchSide("front"));
     backBtn.addEventListener("click", () => switchSide("back"));
 
     function updateEditorControls(){
       const selected = getSelectedItem();
-
-      if(!selected){
-        sizeValue.textContent = "--";
-        rotateValue.textContent = "--";
-        return;
-      }
-
-      sizeRange.value = selected.scale;
-      rotateRange.value = selected.rotation;
-      sizeValue.textContent = `${selected.scale}%`;
-      rotateValue.textContent = `${selected.rotation}°`;
+      if(!selected){ sizeValue.textContent = "--"; rotateValue.textContent = "--"; return; }
+      sizeRange.value = selected.scale; rotateRange.value = selected.rotation; sizeValue.textContent = `${selected.scale}%`; rotateValue.textContent = `${selected.rotation}°`;
     }
-
-    function showStatus(text){
-      textureStatus.textContent = text;
-    }
+    function showStatus(text){ textureStatus.textContent = text; }
 
     function renderFileListForInput(input, listEl, emptyEl){
       listEl.innerHTML = "";
       const files = Array.from(input.files || []);
-
-      if(!files.length){
-        emptyEl.style.display = "block";
-        return;
-      }
-
+      if(!files.length){ emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
-
       files.forEach(file => {
         const div = document.createElement("div");
         div.className = "file-pill";
@@ -2404,395 +1401,172 @@
       });
     }
 
-    function renderFileLists(){
-      renderFileListForInput(frontDesignInput, frontFileList, frontFileEmpty);
-      renderFileListForInput(backDesignInput, backFileList, backFileEmpty);
-    }
+    function renderFileLists(){ renderFileListForInput(frontDesignInput, frontFileList, frontFileEmpty); renderFileListForInput(backDesignInput, backFileList, backFileEmpty); }
 
     function createDesignNode(item, side, surface){
       const node = document.createElement("div");
       node.className = "design-item" + (item.id === state.selectedId ? " selected" : "");
       node.dataset.id = item.id;
-
       updateNodePosition(node, item, surface);
-
       const img = document.createElement("img");
-      img.src = item.src;
-      img.alt = item.fileName || "design";
-      node.appendChild(img);
-
-      node.addEventListener("click", (e) => {
-        e.stopPropagation();
-        state.currentSide = side;
-        state.selectedId = item.id;
-        switchSide(side);
-      });
-
+      img.src = item.src; img.alt = item.fileName || "design"; node.appendChild(img);
+      node.addEventListener("click", (e) => { e.stopPropagation(); state.currentSide = side; state.selectedId = item.id; switchSide(side); });
       makeDraggable(node, side, item.id, surface);
       return node;
     }
 
     function renderSide(side, surface){
       surface.querySelectorAll(".design-item").forEach(el => el.remove());
-
-      getSideItems(side).forEach(item => {
-        const node = createDesignNode(item, side, surface);
-        surface.appendChild(node);
-      });
+      getSideItems(side).forEach(item => surface.appendChild(createDesignNode(item, side, surface)));
     }
-
-    function renderDesigns(){
-      renderSide("front", frontSurface);
-      renderSide("back", backSurface);
-      updateHiddenFields();
-    }
+    function renderDesigns(){ renderSide("front", frontSurface); renderSide("back", backSurface); updateHiddenFields(); }
 
     function createOrReplaceOriginal(side, file){
       const existingOriginalIndex = state[side].findIndex(item => item.file);
       let sourceId = null;
-
-      if(existingOriginalIndex !== -1){
-        sourceId = state[side][existingOriginalIndex].sourceId;
-        state[side] = state[side].filter(item => item.sourceId !== sourceId);
-      }
-
+      if(existingOriginalIndex !== -1){ sourceId = state[side][existingOriginalIndex].sourceId; state[side] = state[side].filter(item => item.sourceId !== sourceId); }
       const itemId = state.nextId++;
       const finalSourceId = sourceId ?? itemId;
-
-      const newItem = {
-        id: itemId,
-        sourceId: finalSourceId,
-        src: "",
-        file,
-        fileName: file.name,
-        x: 50,
-        y: 50,
-        scale: 100,
-        rotation: 0
-      };
-
-      state[side].unshift(newItem);
-      state.selectedId = newItem.id;
-
+      const newItem = { id:itemId, sourceId:finalSourceId, src:"", file, fileName:file.name, x:50, y:50, scale:100, rotation:0 };
+      state[side].unshift(newItem); state.selectedId = newItem.id;
       const reader = new FileReader();
-      reader.onload = function(ev){
-        newItem.src = ev.target.result;
-        renderDesigns();
-        updateEditorControls();
-      };
+      reader.onload = function(ev){ newItem.src = ev.target.result; renderDesigns(); updateEditorControls(); };
       reader.readAsDataURL(file);
     }
 
     frontDesignInput.addEventListener("change", () => {
-      const file = frontDesignInput.files?.[0];
-      if(!file){
-        renderFileLists();
-        return;
-      }
-
-      createOrReplaceOriginal("front", file);
-      renderFileLists();
-      showStatus(t("editorLoaded"));
+      const file = frontDesignInput.files?.[0]; if(!file){ renderFileLists(); return; }
+      createOrReplaceOriginal("front", file); renderFileLists(); showStatus(t("editorLoaded"));
     });
-
     backDesignInput.addEventListener("change", () => {
-      const file = backDesignInput.files?.[0];
-      if(!file){
-        renderFileLists();
-        return;
-      }
-
-      createOrReplaceOriginal("back", file);
-      renderFileLists();
-      showStatus(t("editorLoaded"));
+      const file = backDesignInput.files?.[0]; if(!file){ renderFileLists(); return; }
+      createOrReplaceOriginal("back", file); renderFileLists(); showStatus(t("editorLoaded"));
     });
 
     centerBtn.addEventListener("click", () => {
-      const selected = getSelectedItem();
-      if(!selected){
-        showStatus(t("noImageSelected"));
-        return;
-      }
-
-      selected.x = 50;
-      selected.y = 50;
-      selected.scale = 100;
-      selected.rotation = 0;
-
-      renderDesigns();
-      updateEditorControls();
+      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
+      selected.x = 50; selected.y = 50; selected.scale = 100; selected.rotation = 0; renderDesigns(); updateEditorControls();
     });
 
     copyBtn.addEventListener("click", () => {
-      const selected = getSelectedItem();
-      if(!selected){
-        showStatus(t("noImageToCopy"));
-        return;
-      }
-
+      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageToCopy")); return; }
       const targetSide = state.currentSide === "front" ? "back" : "front";
-
       state[targetSide] = state[targetSide].filter(item => !(item.sourceId === selected.sourceId && !item.file));
-
-      state[targetSide].push({
-        id: state.nextId++,
-        sourceId: selected.sourceId,
-        src: selected.src,
-        file: null,
-        fileName: selected.fileName || "",
-        x: selected.x,
-        y: selected.y,
-        scale: selected.scale,
-        rotation: selected.rotation
-      });
-
-      renderDesigns();
-      showStatus(t("editorCopied"));
+      state[targetSide].push({ id:state.nextId++, sourceId:selected.sourceId, src:selected.src, file:null, fileName:selected.fileName || "", x:selected.x, y:selected.y, scale:selected.scale, rotation:selected.rotation });
+      renderDesigns(); showStatus(t("editorCopied"));
     });
 
     clearBtn.addEventListener("click", () => {
-      const selected = getSelectedItem();
-
-      if(!selected){
-        showStatus(t("noImageSelected"));
-        return;
-      }
-
+      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
       if(selected.file){
         state.front = state.front.filter(item => item.sourceId !== selected.sourceId);
         state.back = state.back.filter(item => item.sourceId !== selected.sourceId);
-
-        if(state.currentSide === "front"){
-          frontDesignInput.value = "";
-        } else {
-          backDesignInput.value = "";
-        }
+        if(state.currentSide === "front") frontDesignInput.value = ""; else backDesignInput.value = "";
       } else {
         state[state.currentSide] = state[state.currentSide].filter(item => item.id !== selected.id);
       }
-
       renderFileLists();
-
       const currentItems = getCurrentItems();
       state.selectedId = currentItems.length ? currentItems[currentItems.length - 1].id : null;
-
-      renderDesigns();
-      updateEditorControls();
-      showStatus(t("editorCleared"));
+      renderDesigns(); updateEditorControls(); showStatus(t("editorCleared"));
     });
 
     sizeRange.addEventListener("input", () => {
-      const selected = getSelectedItem();
-      if(!selected) return;
-
-      selected.scale = Number(sizeRange.value);
-      sizeValue.textContent = `${selected.scale}%`;
-      renderDesigns();
+      const selected = getSelectedItem(); if(!selected) return;
+      selected.scale = Number(sizeRange.value); sizeValue.textContent = `${selected.scale}%`; renderDesigns();
     });
-
     rotateRange.addEventListener("input", () => {
-      const selected = getSelectedItem();
-      if(!selected) return;
-
-      selected.rotation = Number(rotateRange.value);
-      rotateValue.textContent = `${selected.rotation}°`;
-      renderDesigns();
+      const selected = getSelectedItem(); if(!selected) return;
+      selected.rotation = Number(rotateRange.value); rotateValue.textContent = `${selected.rotation}°`; renderDesigns();
     });
 
     function applyPreset(x, y, scale, rotation = 0, side = null){
-      if(side && state.currentSide !== side){
-        switchSide(side);
-      }
-
-      const selected = getSelectedItem();
-      if(!selected){
-        showStatus(t("noImageSelected"));
-        return;
-      }
-
-      selected.x = x;
-      selected.y = y;
-      selected.scale = scale;
-      selected.rotation = rotation;
-
-      renderDesigns();
-      updateEditorControls();
-      showStatus(t("editorLoaded"));
+      if(side && state.currentSide !== side) switchSide(side);
+      const selected = getSelectedItem(); if(!selected){ showStatus(t("noImageSelected")); return; }
+      selected.x = x; selected.y = y; selected.scale = scale; selected.rotation = rotation; renderDesigns(); updateEditorControls(); showStatus(t("editorLoaded"));
     }
-
     presetChestBtn.addEventListener("click", () => applyPreset(38, 27, 26, 0, "front"));
     presetCenterBtn.addEventListener("click", () => applyPreset(50, 42, 48, 0));
     presetFullFrontBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "front"));
     presetFullBackBtn.addEventListener("click", () => applyPreset(50, 52, 92, 0, "back"));
 
     function beginDrag(side, id, surface, clientX, clientY){
-      state.currentSide = side;
-      state.selectedId = id;
-      switchSide(side);
-
-      const item = getSideItems(side).find(x => x.id === id);
-      if(!item) return;
-
+      state.currentSide = side; state.selectedId = id; switchSide(side);
+      const item = getSideItems(side).find(x => x.id === id); if(!item) return;
       const rect = surface.getBoundingClientRect();
       const startXPercent = ((clientX - rect.left) / rect.width) * 100;
       const startYPercent = ((clientY - rect.top) / rect.height) * 100;
-
-      state.dragState = {
-        side,
-        id,
-        surface,
-        startPointerX: startXPercent,
-        startPointerY: startYPercent,
-        startItemX: item.x,
-        startItemY: item.y
-      };
+      state.dragState = { side, id, surface, startPointerX:startXPercent, startPointerY:startYPercent, startItemX:item.x, startItemY:item.y };
     }
 
     function moveDrag(clientX, clientY){
       if(!state.dragState) return;
-
       const { side, id, surface, startPointerX, startPointerY, startItemX, startItemY } = state.dragState;
-      const item = getSideItems(side).find(x => x.id === id);
-      if(!item) return;
-
+      const item = getSideItems(side).find(x => x.id === id); if(!item) return;
       const rect = surface.getBoundingClientRect();
       const nowXPercent = ((clientX - rect.left) / rect.width) * 100;
       const nowYPercent = ((clientY - rect.top) / rect.height) * 100;
-
-      const deltaX = nowXPercent - startPointerX;
-      const deltaY = nowYPercent - startPointerY;
-
-      item.x = Math.max(0, Math.min(100, startItemX + deltaX));
-      item.y = Math.max(0, Math.min(100, startItemY + deltaY));
-
-      renderDesigns();
-      updateEditorControls();
+      item.x = Math.max(0, Math.min(100, startItemX + (nowXPercent - startPointerX)));
+      item.y = Math.max(0, Math.min(100, startItemY + (nowYPercent - startPointerY)));
+      renderDesigns(); updateEditorControls();
     }
 
-    function endDrag(){
-      state.dragState = null;
-    }
-
+    function endDrag(){ state.dragState = null; }
     function makeDraggable(node, side, id, surface){
-      node.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        node.classList.add("dragging");
-        beginDrag(side, id, surface, e.clientX, e.clientY);
-      });
-
-      node.addEventListener("touchstart", (e) => {
-        const touch = e.touches[0];
-        node.classList.add("dragging");
-        beginDrag(side, id, surface, touch.clientX, touch.clientY);
-      }, { passive: true });
+      node.addEventListener("mousedown", (e) => { e.preventDefault(); node.classList.add("dragging"); beginDrag(side, id, surface, e.clientX, e.clientY); });
+      node.addEventListener("touchstart", (e) => { const touch = e.touches[0]; node.classList.add("dragging"); beginDrag(side, id, surface, touch.clientX, touch.clientY); }, { passive:true });
     }
-
-    window.addEventListener("mousemove", (e) => {
-      if(!state.dragState) return;
-      moveDrag(e.clientX, e.clientY);
-    });
-
-    window.addEventListener("touchmove", (e) => {
-      if(!state.dragState) return;
-      const touch = e.touches[0];
-      moveDrag(touch.clientX, touch.clientY);
-    }, { passive: true });
-
-    window.addEventListener("mouseup", () => {
-      document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging"));
-      endDrag();
-    });
-
-    window.addEventListener("touchend", () => {
-      document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging"));
-      endDrag();
-    });
+    window.addEventListener("mousemove", (e) => { if(!state.dragState) return; moveDrag(e.clientX, e.clientY); });
+    window.addEventListener("touchmove", (e) => { if(!state.dragState) return; const touch = e.touches[0]; moveDrag(touch.clientX, touch.clientY); }, { passive:true });
+    window.addEventListener("mouseup", () => { document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging")); endDrag(); });
+    window.addEventListener("touchend", () => { document.querySelectorAll(".design-item.dragging").forEach(el => el.classList.remove("dragging")); endDrag(); });
 
     function updatePrice(){
       const base = 55;
       let extra = 0;
-
       if(optFront.checked) extra += 20;
       if(optBack.checked) extra += 20;
       if(optPremium.checked) extra += 18;
-
       const total = base + extra;
-
       basePriceValue.textContent = `${base} RON`;
       extraPriceValue.textContent = `${extra} RON`;
       totalPriceValue.textContent = `${total} RON`;
-
       document.getElementById("hiddenEstimatedTotal").value = `${total} RON`;
-
       const lang = currentLang();
       const options = [];
       if(optFront.checked) options.push(lang === "ro" ? "Print față" : "Első nyomás");
       if(optBack.checked) options.push(lang === "ro" ? "Print spate" : "Hátsó nyomás");
       if(optPremium.checked) options.push(lang === "ro" ? "Print premium" : "Prémium nyomás");
-
       document.getElementById("hiddenOptions").value = options.join(", ");
     }
-
     optFront.addEventListener("change", updatePrice);
     optBack.addEventListener("change", updatePrice);
     optPremium.addEventListener("change", updatePrice);
 
     function updateHiddenFields(){
       updatePrice();
-
       const payload = {
         lang: currentLang(),
         currentSide: state.currentSide,
-        front: state.front.map(item => ({
-          id: item.id,
-          sourceId: item.sourceId,
-          name: item.fileName || "",
-          hasRealFile: !!item.file,
-          x: item.x,
-          y: item.y,
-          scale: item.scale,
-          rotation: item.rotation
-        })),
-        back: state.back.map(item => ({
-          id: item.id,
-          sourceId: item.sourceId,
-          name: item.fileName || "",
-          hasRealFile: !!item.file,
-          x: item.x,
-          y: item.y,
-          scale: item.scale,
-          rotation: item.rotation
-        })),
+        front: state.front.map(item => ({ id:item.id, sourceId:item.sourceId, name:item.fileName || "", hasRealFile:!!item.file, x:item.x, y:item.y, scale:item.scale, rotation:item.rotation })),
+        back: state.back.map(item => ({ id:item.id, sourceId:item.sourceId, name:item.fileName || "", hasRealFile:!!item.file, x:item.x, y:item.y, scale:item.scale, rotation:item.rotation })),
         original_front_file: frontDesignInput.files?.[0]?.name || "",
         original_back_file: backDesignInput.files?.[0]?.name || "",
         options: document.getElementById("hiddenOptions").value,
         estimatedTotal: document.getElementById("hiddenEstimatedTotal").value
       };
-
       document.getElementById("hiddenEditorData").value = JSON.stringify(payload);
     }
 
     offerForm.addEventListener("submit", function(e){
       clearFormMessage();
       updateHiddenFields();
-
       const name = document.getElementById("nameField").value.trim();
       const email = document.getElementById("emailField").value.trim();
       const realFrontFile = frontDesignInput.files?.[0] || null;
       const realBackFile = backDesignInput.files?.[0] || null;
-
-      if(!name || !email){
-        e.preventDefault();
-        setFormMessage("error", t("errorMessage"));
-        return;
-      }
-
-      if(!realFrontFile && !realBackFile){
-        e.preventDefault();
-        setFormMessage("error", t("noDesignUploaded"));
-        return;
-      }
-
+      if(!name || !email){ e.preventDefault(); setFormMessage("error", t("errorMessage")); return; }
+      if(!realFrontFile && !realBackFile){ e.preventDefault(); setFormMessage("error", t("noDesignUploaded")); return; }
       hiddenNext.value = `${window.location.origin}${window.location.pathname}?sent=1&lang=${currentLang()}`;
       sendBtn.disabled = true;
       setFormMessage("info", t("sendingMessage"));
@@ -2803,26 +1577,17 @@
       const sent = params.get("sent");
       const catalogsent = params.get("catalogsent");
       const lang = params.get("lang");
-
-      if(lang === "hu" || lang === "ro"){
-        setLang(lang);
-      } else {
-        setLang("hu");
-      }
-
-      if(sent === "1"){
-        setFormMessage("success", t("successMessage"));
-      }
-
+      if(lang === "hu" || lang === "ro") setLang(lang); else setLang("hu");
+      if(sent === "1") setFormMessage("success", t("successMessage"));
       if(catalogsent === "1"){
-        setCatalogCheckoutMessage("success", currentLang() === "ro"
-          ? "Comanda pentru modelele gata a fost trimisă cu succes."
-          : "A kész modellek rendelése sikeresen elküldve.");
+        setCatalogCheckoutMessage("success", t("readyOrderSuccess"));
         state.catalogCart = [];
+        state.activeCoupon = null;
+        couponInput.value = "";
+        couponInfo.textContent = t("couponHelp");
         renderCatalogCart();
         catalogCheckoutForm.reset();
       }
-
       if(sent === "1" || catalogsent === "1"){
         const cleanUrl = `${window.location.origin}${window.location.pathname}`;
         window.history.replaceState({}, document.title, cleanUrl);
@@ -2830,7 +1595,6 @@
     })();
 
     window.addEventListener("resize", renderDesigns);
-
     switchSide("front");
     updatePrice();
     renderFileLists();
